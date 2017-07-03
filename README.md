@@ -1,2 +1,3 @@
-# void-pointer
-Choose data structures and earn them as a service
+# void *pointer
+Choose data structures and earn them as a service. 
+
