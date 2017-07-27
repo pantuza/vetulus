@@ -1,25 +1,29 @@
-#!/bin/bash
+#!/bin/sh
 
 # Installs Pistache library
 
 echo "- Installing Pistache.."
 
 git clone https://github.com/oktal/pistache.git
-git submodule update --init
 
-pushd pistache
+cd pistache
 mkdir build
 cd build
 cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release ..
 make
-sudo make install
+
+if [ $(which sudo) ]; then
+    sudo make install
+else
+    make install
+fi
 
 if [ "$?" == 0 ]; then
-    popd
+    cd ../..
     rm -rf pistache
     echo "Done";
 else
-    popd
+    cd ../..
     echo "Fail";
     exit 1
 fi
