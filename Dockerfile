@@ -1,7 +1,7 @@
 FROM alpine:latest
 
 RUN apk update && \
-    apk add git g++ cmake ninja make bash
+    apk add git g++ cmake ninja make bash vim
 
 RUN mkdir -pv /vetulus
 
