@@ -17,6 +17,8 @@
 
 #include <pistache/endpoint.h>
 
+#include "../config/config.h"
+
 
 using namespace Pistache;
 
@@ -35,6 +37,10 @@ class HelloHandler : public Http::Handler {
 
 int main() {
 
-    Http::listenAndServe<HelloHandler>("*:4242");
+    ConfigLoader loader;
+    loader.load("api.conf");
+
+    cout << "Vetulus API listening at " << loader.port << endl;
+    Http::listenAndServe<HelloHandler>(loader.port);
 }
 
