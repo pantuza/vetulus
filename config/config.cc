@@ -30,14 +30,12 @@ using namespace std;
 void
 ConfigLoader::load (string filename) {
 
-    cout << "Loading configuration" << endl;
-
     map<string, vector<string>> variables;
     string name;
     string value;
     string tmp_value;
 
-    ifstream ifile("api.conf");
+    ifstream ifile(filename);
 
     if(ifile.is_open()) {
         getline(ifile, name, ' ');
@@ -65,7 +63,10 @@ ConfigLoader::load (string filename) {
             }
             cout << endl;
         }
+
+        this->port = variables["Port"][0];
+
     } else {
-        cout << "Can't open configuration file" << endl;
+        cout << "Can't open configuration file: " << filename << endl;
     }
 }

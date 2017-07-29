@@ -9,4 +9,5 @@ class ConfigLoader {
     public:
 
         void load (string filename);
+        string port;
 };
