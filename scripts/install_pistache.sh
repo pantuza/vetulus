@@ -2,7 +2,11 @@
 
 # Installs Pistache library
 
-echo "- Installing Pistache.."
+echo
+echo "#"
+echo "# Installing Pistache.."
+echo "#"
+echo
 
 git clone https://github.com/oktal/pistache.git
 
