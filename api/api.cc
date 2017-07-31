@@ -15,9 +15,10 @@
  * ============================================================================
  */
 
+
 #include <pistache/endpoint.h>
 
-#include "../config/config.h"
+#include "config.h"
 
 
 using namespace Pistache;
@@ -30,15 +31,22 @@ class HelloHandler : public Http::Handler {
         HTTP_PROTOTYPE(HelloHandler)
 
         void onRequest(const Http::Request& request, Http::ResponseWriter response) {
-             response.send(Http::Code::Ok, "Hello, World");
+
+             response.send(Http::Code::Ok, "{\"status\": 200, \"body\": \"Hello, World\"}");
         }
 };
 
 
-int main() {
+int main(int argc, char* argv[]) {
 
-    ConfigLoader loader;
-    loader.load("api.conf");
+    string config_file = "/etc/vetulus/api.conf";
+
+    if(argc > 1) {
+        config_file = argv[1];
+    }
+
+    APIConfigLoader loader;
+    loader.load(config_file);
 
     cout << "Vetulus API listening at " << loader.port << endl;
     Http::listenAndServe<HelloHandler>(loader.port);
