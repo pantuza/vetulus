@@ -8,3 +8,6 @@ echo "* You should run this script from inside scripts directory"
 
 # Installs pistache library
 ./install_pistache.sh
+
+# Installs Google Test library
+./install_googletest.sh
