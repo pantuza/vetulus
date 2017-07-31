@@ -27,10 +27,19 @@
 
 using namespace std;
 
-void
-ConfigLoader::load (string filename) {
 
-    map<string, vector<string>> variables;
+/*
+ * Parses text from a givem file. It reads file content into a map of string
+ * vectors. Vetulus configuration file format must be in the following format:
+ *
+ * Port *:4242
+ * Users Gustavo Alice Bob
+ *
+ * The key of configuration will be the first string. And the value is a vector
+ * of string of the current line. Each line must represent one configuration.
+ */
+void ConfigLoader::load (string filename) {
+
     string name;
     string value;
     string tmp_value;
@@ -49,24 +58,28 @@ ConfigLoader::load (string filename) {
                 values.push_back(tmp_value);
             }
 
-            variables[name] = values;
+            this->variables[name] = values;
 
             getline(ifile, name, ' ');
             getline(ifile, value);
         }
         ifile.close();
 
-        for(auto& item: variables) {
-            cout << item.first << ": ";
-            for(auto value: item.second) {
-                cout << value << " ";
-            }
-            cout << endl;
-        }
-
-        this->port = variables["Port"][0];
+        /* Calls the set_config. This method should exist at inheritor class */
+        this->set_config();
 
     } else {
-        cout << "Can't open configuration file: " << filename << endl;
+        throw invalid_argument("Can't open configuration file: " + filename);
     }
+}
+
+
+/*
+ * This method should be overridden by child class. Each class should write
+ * its own configuration specific needs. For the generic class this method
+ * raises a runtime exception.
+ */
+void ConfigLoader::set_config ()
+{
+    throw runtime_error("Generic ConfigLoader can not set variables");
 }
