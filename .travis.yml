@@ -6,7 +6,7 @@ before_install:
     - sudo apt-get update -qq
 
 install:
-  - sudo apt-get install -qq g++-6 ninja
+  - sudo apt-get install -qq g++-6 ninja-build
   - cd scripts && sudo ./install_deps.sh
 
 script:
