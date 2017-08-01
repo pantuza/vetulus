@@ -7,7 +7,7 @@ before_install:
 
 install:
   - sudo apt-get install -qq g++-6
-  - sudo scripts/install_deps.sh
+  - cd scripts && sudo ./install_deps.sh
 
 script:
   - ./scripts/travis_build.sh
