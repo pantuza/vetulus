@@ -41,7 +41,7 @@ TEST(ConfigurationTest, TestThrowExceptionOnSetConfigMethod) {
     fputs("Port *:4242", file);
 
     ConfigLoader loader;
-    ASSERT_THROW(loader.load("api.conf"), runtime_error);
+    ASSERT_THROW(loader.load(filename), runtime_error);
 
     fclose(file);  // Closes the temporary file. cstdio also removes it
 }
