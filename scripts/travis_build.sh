@@ -8,7 +8,7 @@ echo "# Building Vetulus server"
 echo "#"
 echo
 
-cd config
+cd ../config
 mkdir build
 cd build
 cmake -G Ninja ..

@@ -10,4 +10,4 @@ install:
   - cd scripts && sudo ./install_deps.sh
 
 script:
-  - ./scripts/travis_build.sh
+  - pwd && ./travis_build.sh
