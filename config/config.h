@@ -19,7 +19,7 @@ class ConfigLoader {
 
     protected:
         /* Class member to store file parsed variables */
-        map<string, vector<string>> variables;
+        map<string, vector<string> > variables;
 
     private:
         virtual void set_config ();
