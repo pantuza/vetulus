@@ -1,6 +1,8 @@
 # Vetulus
 Choose data structures and earn them as a service.
 
+[![Build Status](https://travis-ci.org/pantuza/vetulus.svg?branch=master)](https://travis-ci.org/pantuza/vetulus)
+
 ## How it works
 Create a protobuffer or message-pack and give it to Vetulus.
 Choose a data structure that will store and handle it for you. 
