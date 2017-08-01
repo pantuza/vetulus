@@ -44,7 +44,7 @@ void ConfigLoader::load (string filename) {
     string value;
     string tmp_value;
 
-    ifstream ifile(filename);
+    ifstream ifile(filename.c_str());
 
     if(ifile.is_open()) {
         getline(ifile, name, ' ');
