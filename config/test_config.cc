@@ -16,6 +16,7 @@
  */
 
 #include <stdexcept>
+#include <cstdio>
 
 #include <gtest/gtest.h>
 
@@ -33,8 +34,16 @@ TEST(ConfigurationTest, TestFakefileAsInput) {
 /* Tests throwing an exception as a not implemented error */
 TEST(ConfigurationTest, TestThrowExceptionOnSetConfigMethod) {
 
+    /* Creates a fake configuration file */
+    char filename[L_tmpnam];
+    tmpnam(filename);
+    FILE* file = fopen(filename, "w");
+    fputs("Port *:4242", file);
+
     ConfigLoader loader;
     ASSERT_THROW(loader.load("api.conf"), runtime_error);
+
+    fclose(file);  // Closes the temporary file. cstdio also removes it
 }
 
 
