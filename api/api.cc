@@ -19,22 +19,34 @@
 #include <pistache/endpoint.h>
 
 #include "config.h"
+#include "info.h"
+#include "api.h"
 
 
 using namespace Pistache;
 
 
-class HelloHandler : public Http::Handler {
+void VetulusAPI::configure ()
+{
+    auto opts = Http::Endpoint::options().threads(2);
+	this->init(opts);
+}
 
-    public:
 
-        HTTP_PROTOTYPE(HelloHandler)
+void VetulusAPI::load_routes ()
+{
 
-        void onRequest(const Http::Request& request, Http::ResponseWriter response) {
+}
 
-             response.send(Http::Code::Ok, "{\"status\": 200, \"body\": \"Hello, World\"}");
-        }
-};
+
+void VetulusAPI::listen ()
+{
+	this->setHandler(this->router.handler());
+
+    cout << "Vetulus API listening at " << this->port << endl;
+    this->serve();
+    this->shutdown();
+}
 
 
 int main(int argc, char* argv[]) {
@@ -48,7 +60,9 @@ int main(int argc, char* argv[]) {
     APIConfigLoader loader;
     loader.load(config_file);
 
-    cout << "Vetulus API listening at " << loader.port << endl;
-    Http::listenAndServe<HelloHandler>(loader.port);
-}
+    Address addr(Ipv4::any(), Port(loader.port));
+    VetulusAPI server(addr);
 
+    server.configure();
+    server.listen();
+}
