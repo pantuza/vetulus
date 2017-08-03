@@ -1,7 +1,7 @@
-FROM alpine:latest
+FROM opensuse:latest
 
-RUN apk update && \
-    apk add git g++ cmake ninja make bash vim
+RUN zypper update -y && \
+    zypper install -y git gcc-c++ cmake ninja make vim which
 
 RUN mkdir -pv /vetulus
 
@@ -9,6 +9,6 @@ WORKDIR /vetulus
 
 ADD . /vetulus/
 
-RUN cd /vetulus/scripts/ && . install_deps.sh
+RUN cd /vetulus/scripts/ && ./install_deps.sh
 
 EXPOSE 4242
