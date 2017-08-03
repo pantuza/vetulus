@@ -18,24 +18,45 @@
 
 #include <pistache/endpoint.h>
 
-#include "config.h"
-#include "info.h"
 #include "api.h"
 
 
 using namespace Pistache;
 
 
+VetulusAPI::VetulusAPI (APIConfigLoader config)
+    : port(Port(stoi(config.port))),
+      addr(Ipv4::any(), port),
+      Endpoint(addr)
+{
+    this->configure();
+    this->load_routes();
+}
+
+
 void VetulusAPI::configure ()
 {
-    auto opts = Http::Endpoint::options().threads(2);
+    auto opts = Http::Endpoint::options().threads(2).flags(
+            Tcp::Options::InstallSignalHandler);
+
 	this->init(opts);
 }
 
 
+void VetulusAPI::simpleResponse (const Rest::Request& request, Http::ResponseWriter response)
+{
+     response.send(Http::Code::Ok, "{\"status\": 200, \"body\": \"Hello, World\"}");
+}
+
 void VetulusAPI::load_routes ()
 {
+    using namespace Rest;
 
+    Routes::Get(
+        this->router,
+        "/",
+        Routes::bind(&VetulusAPI::simpleResponse, this)
+    );
 }
 
 
@@ -43,7 +64,7 @@ void VetulusAPI::listen ()
 {
 	this->setHandler(this->router.handler());
 
-    cout << "Vetulus API listening at " << this->port << endl;
+    cout << "Vetulus API listening at " << this->addr.host() << ":" << this->addr.port() << endl;
     this->serve();
     this->shutdown();
 }
@@ -57,12 +78,10 @@ int main(int argc, char* argv[]) {
         config_file = argv[1];
     }
 
-    APIConfigLoader loader;
-    loader.load(config_file);
+    APIConfigLoader config;
+    config.load(config_file);
 
-    Address addr(Ipv4::any(), Port(loader.port));
-    VetulusAPI server(addr);
+    VetulusAPI server(config);
 
-    server.configure();
     server.listen();
 }
