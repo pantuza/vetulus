@@ -17,18 +17,17 @@
 
 
 #include <pistache/endpoint.h>
+#include <pistache/router.h>
 
 
 using namespace Pistache;
 
 
-class HelloHandler : public Http::Handler {
+class InfoHandler {
 
     public:
 
-        HTTP_PROTOTYPE(HelloHandler)
-
-        void onRequest(const Http::Request& request, Http::ResponseWriter response) {
+        void getInfo(const Rest::Request& request, Http::ResponseWriter response) {
 
              response.send(Http::Code::Ok, "{\"status\": 200, \"body\": \"Hello, World\"}");
         }
