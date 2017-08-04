@@ -26,6 +26,15 @@ using namespace Pistache;
 class InfoHandler {
 
     public:
+        void setRoutes(Rest::Router router) {
+            using namespace Rest;
+
+            Routes::Get(
+                router,
+                "/info",
+                Routes::bind(&InfoHandler::getInfo, this)
+            );
+        }
 
         void getInfo(const Rest::Request& request, Http::ResponseWriter response) {
 
