@@ -29,10 +29,12 @@ class APIConfigLoader: public ConfigLoader {
 
     public:
         string port;
+        string addr;
 
     private:
         void set_config () {
 
             this->port = this->variables["Port"][0];
+            this->addr = this->variables["Addr"][0];
         }
 };
