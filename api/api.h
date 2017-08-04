@@ -9,7 +9,7 @@
 using namespace Pistache;
 
 
-class VetulusAPI: public Http::Endpoint {
+class VetulusAPI {
 
     public:
         VetulusAPI (APIConfigLoader config);
@@ -20,10 +20,11 @@ class VetulusAPI: public Http::Endpoint {
 
     private:
         void configure();
-        void load_routes();
+        void setRoutes();
         void simpleResponse(const Rest::Request& request, Http::ResponseWriter response);
 
         InfoHandler info_handler;
         Port port;
         Address addr;
+        shared_ptr<Http::Endpoint> endpoint;
 };
