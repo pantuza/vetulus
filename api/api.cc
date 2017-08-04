@@ -57,6 +57,8 @@ void VetulusAPI::setRoutes ()
         "/",
         Routes::bind(&VetulusAPI::simpleResponse, this)
     );
+
+    this->info_handler.setRoutes(this->router);
 }
 
 

@@ -38,6 +38,6 @@ class InfoHandler {
 
         void getInfo(const Rest::Request& request, Http::ResponseWriter response) {
 
-             response.send(Http::Code::Ok, "{\"status\": 200, \"body\": \"Hello, World\"}");
+             response.send(Http::Code::Ok, "{\"status\": 200, \"body\": \"Info message\"}");
         }
 };
