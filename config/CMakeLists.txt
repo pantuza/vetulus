@@ -9,7 +9,7 @@ set (vetulus_api_VERSION_MAJOR 0)
 set (vetulus_api_VERSION_MINOR 1)
 
 
-SET(CMAKE_C_FLAGS "-std=c++11" CACHE STRING "" FORCE)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 # Target binary
 add_executable(test_vetulus_config config.cc test_config.cc)
