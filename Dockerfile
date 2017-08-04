@@ -1,7 +1,7 @@
 FROM opensuse:latest
 
 RUN zypper update -y && \
-    zypper install -y git gcc-c++ gcc7-c++ cmake ninja make vim which
+    zypper install -y git gcc-c++ cmake ninja make vim which curl
 
 RUN mkdir -pv /vetulus
 
