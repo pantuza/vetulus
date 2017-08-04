@@ -26,7 +26,7 @@ using namespace Pistache;
 
 VetulusAPI::VetulusAPI (APIConfigLoader config)
     : port(Port(stoi(config.port))),
-      addr("0.0.0.0", port),
+      addr(config.addr, port),
       endpoint(make_shared<Http::Endpoint>(addr))
 {
     this->configure();
