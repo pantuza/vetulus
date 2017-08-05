@@ -26,7 +26,7 @@ using namespace Pistache;
 class InfoHandler {
 
     public:
-        void setRoutes(Rest::Router router) {
+        void setRoutes(Rest::Router& router) {
             using namespace Rest;
 
             Routes::Get(
