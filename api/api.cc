@@ -49,6 +49,7 @@ void VetulusAPI::simpleResponse (const Rest::Request& request, Http::ResponseWri
      response.send(Http::Code::Ok, "{\"status\": 200, \"body\": \"Hello, World\"}");
 }
 
+
 void VetulusAPI::setRoutes ()
 {
     using namespace Rest;
@@ -59,6 +60,10 @@ void VetulusAPI::setRoutes ()
         Routes::bind(&VetulusAPI::simpleResponse, this)
     );
 
+    /*
+     * Every new API goes here. A new class should implement the setRoutes
+     * method to assign its own routes and handlers callbacks
+     */
     this->info_handler.setRoutes(this->router);
 }
 
