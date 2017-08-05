@@ -26,5 +26,6 @@ class VetulusAPI {
         InfoHandler info_handler;
         Port port;
         Address addr;
+        int threads;
         shared_ptr<Http::Endpoint> endpoint;
 };

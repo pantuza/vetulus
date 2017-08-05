@@ -25,9 +25,10 @@ using namespace Pistache;
 
 
 VetulusAPI::VetulusAPI (APIConfigLoader config)
-    : port(Port(stoi(config.port))),
-      addr(config.addr, port),
-      endpoint(make_shared<Http::Endpoint>(addr))
+    : port(Port(stoi(config.port)))
+    , addr(config.addr, port)
+    , threads(stoi(config.threads))
+    , endpoint(make_shared<Http::Endpoint>(addr))
 {
     this->configure();
     this->setRoutes();
@@ -36,7 +37,7 @@ VetulusAPI::VetulusAPI (APIConfigLoader config)
 
 void VetulusAPI::configure ()
 {
-    auto opts = Http::Endpoint::options().threads(2).flags(
+    auto opts = Http::Endpoint::options().threads(this->threads).flags(
             Tcp::Options::InstallSignalHandler);
 
 	this->endpoint->init(opts);
@@ -66,7 +67,10 @@ void VetulusAPI::listen ()
 {
 	this->endpoint->setHandler(this->router.handler());
 
-    cout << "Vetulus API listening at " << this->addr.host() << ":" << this->addr.port() << endl;
+    cout << "Vetulus API listening at " << this->addr.host()
+         << ":" << this->addr.port() << " with "
+         << this->threads << " threads" << endl;
+
     this->endpoint->serve();
     this->endpoint->shutdown();
 }
