@@ -16,11 +16,14 @@ file(GLOB Config_SRC
     "../config/config.h"
 )
 
+
 # Target binary
 add_executable(vetulus_api api.cc ${Config_SRC})
+add_executable(test_vetulus_api test_api.cc)
 
 # Links binary with pistache library
 target_link_libraries(vetulus_api pistache)
+target_link_libraries(test_vetulus_api gtest)
 
 # Links binary with pthread library
 set(THREADS_PREFER_PTHREAD_FLAG ON)
