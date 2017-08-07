@@ -2,6 +2,7 @@
 Choose data structures and earn them as a service.
 
 [![Build Status](https://travis-ci.org/pantuza/vetulus.svg?branch=master)](https://travis-ci.org/pantuza/vetulus)
+[![GPL licensed](https://img.shields.io/badge/license-GPL-blue.svg)](https://github.com/pantuza/vetulus/blob/master/LICENSE)
 
 ## How it works
 Create a protobuffer or message-pack and give it to Vetulus.
