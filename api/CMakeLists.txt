@@ -23,9 +23,10 @@ add_executable(test_vetulus_api test_api.cc)
 
 # Links binary with pistache library
 target_link_libraries(vetulus_api pistache)
-target_link_libraries(test_vetulus_api gtest)
+target_link_libraries(test_vetulus_api gtest pistache)
 
 # Links binary with pthread library
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 target_link_libraries(vetulus_api Threads::Threads)
+target_link_libraries(test_vetulus_api Threads::Threads)
