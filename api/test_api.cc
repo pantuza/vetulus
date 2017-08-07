@@ -22,15 +22,15 @@
 
 
 using namespace Pistache;
-
+using namespace Pistache::Http;
 
 /* Tests loading a fake file as input */
 TEST(ConfigurationTest, TestFakefileAsInput) {
 
     Http::Client client;
-    client.init(Http::Client::options());
+    client.init(Http::Client::options().threads(1).maxConnectionsPerHost(8));
 
-    auto resp = client.get("localhost:4242").send();
+    auto resp = client.get("http://localhost:4242").send();
     resp.then([&](Http::Response response) {
         ASSERT_EQ(response.code(), Http::Code::Ok);
     }, Async::IgnoreException);
