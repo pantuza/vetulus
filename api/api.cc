@@ -32,6 +32,7 @@ VetulusAPI::VetulusAPI (APIConfigLoader config)
 {
     this->configure();
     this->setRoutes();
+    this->setListeners();
 }
 
 
@@ -41,6 +42,19 @@ void VetulusAPI::configure ()
             Tcp::Options::InstallSignalHandler);
 
 	this->endpoint->init(opts);
+}
+
+
+void VetulusAPI::setListeners ()
+{
+    signal(SIGINT, VetulusAPI::sigintCallback);
+}
+
+
+static void VetulusAPI::sigintCallback (int signal)
+{
+    cout << "Caught keyboard interruption. Shuting down Vetulus API" << endl;
+    exit(1);
 }
 
 
