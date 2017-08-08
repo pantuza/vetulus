@@ -23,17 +23,19 @@
 
 using namespace Pistache;
 using namespace Pistache::Http;
+using namespace std;
 
 /* Tests loading a fake file as input */
-TEST(ConfigurationTest, TestFakefileAsInput) {
+TEST(APITest, TestBaseAPIRequest) {
 
     Http::Client client;
     client.init(Http::Client::options().threads(1).maxConnectionsPerHost(8));
 
     auto resp = client.get("http://localhost:4242").send();
     resp.then([&](Http::Response response) {
+        cout << "Aqui chegamos" << endl; 
         ASSERT_EQ(response.code(), Http::Code::Ok);
-    }, Async::IgnoreException);
+    }, Async::Throw);
 }
 
 
