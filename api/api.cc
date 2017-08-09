@@ -41,7 +41,6 @@ VetulusAPI::VetulusAPI (APIConfigLoader config)
 {
     this->configure();
     this->setRoutes();
-    this->setListeners();
 }
 
 
