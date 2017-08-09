@@ -2,6 +2,7 @@
 Choose data structures and earn them as a service.
 
 [![Build Status](https://travis-ci.org/pantuza/vetulus.svg?branch=master)](https://travis-ci.org/pantuza/vetulus)
+[![Coverage Status](https://coveralls.io/repos/github/pantuza/vetulus/badge.svg?branch=master)](https://coveralls.io/github/pantuza/vetulus?branch=master)
 [![GPL licensed](https://img.shields.io/badge/license-GPL-blue.svg)](https://github.com/pantuza/vetulus/blob/master/LICENSE)
 
 ## How it works
