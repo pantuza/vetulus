@@ -25,7 +25,8 @@ using namespace Pistache;
 using namespace Pistache::Http;
 using namespace std;
 
-/* Tests loading a fake file as input */
+
+/* Tests requesting simple request to Vetulus API */
 TEST(APITest, TestBaseAPIRequest) {
 
     Http::Client client;
@@ -33,9 +34,23 @@ TEST(APITest, TestBaseAPIRequest) {
 
     auto resp = client.get("http://localhost:4242").send();
     resp.then([&](Http::Response response) {
-        cout << "Aqui chegamos" << endl; 
         ASSERT_EQ(response.code(), Http::Code::Ok);
     }, Async::Throw);
+    client.shutdown();
+}
+
+
+/* Tests requesting simple request to Vetulus API */
+TEST(APITest, TestBaseInfoAPIRequest) {
+
+    Http::Client client;
+    client.init(Http::Client::options().threads(1).maxConnectionsPerHost(8));
+
+    auto resp = client.get("http://localhost:4242/info").send();
+    resp.then([&](Http::Response response) {
+        ASSERT_EQ(response.code(), Http::Code::Ok);
+    }, Async::Throw);
+    client.shutdown();
 }
 
 
