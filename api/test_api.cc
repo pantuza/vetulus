@@ -35,8 +35,8 @@ TEST(APITest, TestBaseAPIRequest) {
     auto resp = client.get("http://localhost:4242").send();
     resp.then([&](Http::Response response) {
         ASSERT_EQ(response.code(), Http::Code::Ok);
+        client.shutdown();
     }, Async::Throw);
-    client.shutdown();
 }
 
 
@@ -49,8 +49,8 @@ TEST(APITest, TestBaseInfoAPIRequest) {
     auto resp = client.get("http://localhost:4242/info").send();
     resp.then([&](Http::Response response) {
         ASSERT_EQ(response.code(), Http::Code::Ok);
+        client.shutdown();
     }, Async::Throw);
-    client.shutdown();
 }
 
 
