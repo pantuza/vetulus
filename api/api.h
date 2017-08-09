@@ -1,6 +1,4 @@
 
-#include <signal.h>
-
 #include <pistache/endpoint.h>
 #include <pistache/router.h>
 
@@ -23,8 +21,6 @@ class VetulusAPI {
     private:
         void configure();
         void setRoutes();
-        void setListeners();
-        static void sigintCallback(int signal);
 
         void simpleResponse(const Rest::Request& request, Http::ResponseWriter response);
 

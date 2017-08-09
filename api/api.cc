@@ -15,6 +15,7 @@
  * ============================================================================
  */
 
+#include <signal.h>
 
 #include <pistache/endpoint.h>
 
@@ -22,6 +23,14 @@
 
 
 using namespace Pistache;
+
+
+static void sigintCallback (int signal)
+{
+    cout << "Caught keyboard interruption. Shuting down Vetulus API" << endl;
+    exit(1);
+}
+
 
 
 VetulusAPI::VetulusAPI (APIConfigLoader config)
@@ -42,19 +51,6 @@ void VetulusAPI::configure ()
             Tcp::Options::InstallSignalHandler);
 
 	this->endpoint->init(opts);
-}
-
-
-void VetulusAPI::setListeners ()
-{
-    signal(SIGINT, VetulusAPI::sigintCallback);
-}
-
-
-static void VetulusAPI::sigintCallback (int signal)
-{
-    cout << "Caught keyboard interruption. Shuting down Vetulus API" << endl;
-    exit(1);
 }
 
 
@@ -102,6 +98,8 @@ int main(int argc, char* argv[]) {
     if(argc > 1) {
         config_file = argv[1];
     }
+
+    signal(SIGINT, sigintCallback);
 
     APIConfigLoader config;
     config.load(config_file);
