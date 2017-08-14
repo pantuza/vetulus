@@ -14,7 +14,7 @@ cd googletest
 
 mkdir build
 cd build
-cmake -G Ninja ..
+cmake -D BUILD_GTEST=ON -G Ninja ..
 ninja
 
 if [ $(which sudo) ]; then
