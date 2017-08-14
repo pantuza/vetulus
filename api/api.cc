@@ -20,6 +20,9 @@
 #include <pistache/endpoint.h>
 
 #include "api.h"
+#include "json.hpp"
+
+using json = nlohmann::json;
 
 
 using namespace Pistache;
@@ -55,7 +58,12 @@ void VetulusAPI::configure ()
 
 void VetulusAPI::simpleResponse (const Rest::Request& request, Http::ResponseWriter response)
 {
-     response.send(Http::Code::Ok, "{\"status\": 200, \"body\": \"Hello, World\"}");
+    json data;
+    data["status"] = 200;
+    data["body"] = "Hello Nurse";
+    string data_str = data.dump();
+
+    response.send(Http::Code::Ok, data_str);
 }
 
 
