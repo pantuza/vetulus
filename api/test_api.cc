@@ -30,7 +30,7 @@ using namespace std;
 TEST(APITest, TestBaseAPIRequest) {
 
     Http::Client client;
-    client.init(Http::Client::options().threads(1).maxConnectionsPerHost(8));
+    client.init(Http::Client::options().threads(1).maxConnectionsPerHost(1));
 
     auto resp = client.get("http://localhost:4242").send();
     resp.then([&](Http::Response response) {
@@ -44,7 +44,7 @@ TEST(APITest, TestBaseAPIRequest) {
 TEST(APITest, TestBaseInfoAPIRequest) {
 
     Http::Client client;
-    client.init(Http::Client::options().threads(1).maxConnectionsPerHost(8));
+    client.init(Http::Client::options().threads(1).maxConnectionsPerHost(1));
 
     auto resp = client.get("http://localhost:4242/info").send();
     resp.then([&](Http::Response response) {
