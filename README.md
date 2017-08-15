@@ -17,3 +17,8 @@ Let's take a look at an example:
 > you will earn Enqueue, Dequeue, Size methods and etc. 
 
 Vetulus is your **data structure as a service**.
+
+## How to contribute
+
+Please check the
+[Contributing](https://github.com/pantuza/vetulus/blob/master/CONTRIBUTING.md) file.
