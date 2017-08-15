@@ -16,10 +16,15 @@ file(GLOB Config_SRC
     "../config/config.h"
 )
 
+# Adds include directory
+set(Headers_SRC "../include")
+include_directories(${Headers_SRC})
+
+
 
 # Target binary
-add_executable(vetulus_api api.cc ${Config_SRC})
-add_executable(test_vetulus_api test_api.cc)
+add_executable(vetulus_api api.cc ${Config_SRC} ${Headers_SRC}/json.hpp ${Headers_SRC}/spdlog)
+add_executable(test_vetulus_api test_api.cc ${Headers_SRC}/json.hpp ${Headers_SRC}/spdlog)
 
 # Links binary with pistache library
 target_link_libraries(vetulus_api pistache)
