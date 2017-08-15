@@ -28,6 +28,10 @@ using json = nlohmann::json;
 using namespace Pistache;
 
 
+
+/**
+ * Callback to handle SIGINT signal when caught
+ */
 static void sigintCallback (int signal)
 {
     cout << "Caught keyboard interruption. Shuting down Vetulus API" << endl;
@@ -36,6 +40,9 @@ static void sigintCallback (int signal)
 
 
 
+/**
+ * Vetulus API Constructor. We create a Pistache HTTP Endpoint
+ */
 VetulusAPI::VetulusAPI (APIConfigLoader config)
     : port(Port(stoi(config.port)))
     , addr(config.addr, port)
@@ -47,6 +54,9 @@ VetulusAPI::VetulusAPI (APIConfigLoader config)
 }
 
 
+/**
+ * Configures the Web server based on configuration file
+ */
 void VetulusAPI::configure ()
 {
     auto opts = Http::Endpoint::options().threads(this->threads).flags(
@@ -56,17 +66,9 @@ void VetulusAPI::configure ()
 }
 
 
-void VetulusAPI::simpleResponse (const Rest::Request& request, Http::ResponseWriter response)
-{
-    json data;
-    data["status"] = 200;
-    data["body"] = "Hello Nurse";
-    string data_str = data.dump();
-
-    response.send(Http::Code::Ok, data_str);
-}
-
-
+/**
+ * Set L7 routes handled by Pistache
+ */
 void VetulusAPI::setRoutes ()
 {
     using namespace Rest;
@@ -85,6 +87,20 @@ void VetulusAPI::setRoutes ()
 }
 
 
+void VetulusAPI::simpleResponse (const Rest::Request& request, Http::ResponseWriter response)
+{
+    json data;
+    data["status"] = 200;
+    data["body"] = "Hello Nurse";
+    string data_str = data.dump();
+
+    response.send(Http::Code::Ok, data_str);
+}
+
+
+/**
+ * Enters in listen mode and waits for connections
+ */
 void VetulusAPI::listen ()
 {
 	this->endpoint->setHandler(this->router.handler());
@@ -98,6 +114,10 @@ void VetulusAPI::listen ()
 }
 
 
+
+/**
+ * Main execution of the API binary
+ */
 int main(int argc, char* argv[]) {
 
     string config_file = "/etc/vetulus/api.conf";
