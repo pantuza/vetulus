@@ -21,9 +21,12 @@
 
 #include "api.h"
 #include "json.hpp"
+#include "spdlog/spdlog.h"
+
 
 using json = nlohmann::json;
 
+namespace spd = spdlog;
 
 using namespace Pistache;
 
@@ -132,6 +135,10 @@ int main(int argc, char* argv[]) {
     config.load(config_file);
 
     VetulusAPI server(config);
+
+    // Console logger with color
+    auto console = spd::stdout_color_mt("console");
+    console->info("Welcome to Vetulus API!");
 
     server.listen();
 }
