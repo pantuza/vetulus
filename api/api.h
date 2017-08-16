@@ -65,7 +65,7 @@ class VetulusAPI {
 		void listen();
 
     protected:
-        Rest::Router router;
+        VetulusRouter router;
 
     private:
         void configure();
