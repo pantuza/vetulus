@@ -1,3 +1,21 @@
+/*
+ * ============================================================================
+ *
+ *       Filename:  api.h
+ *
+ *    Description:  Vetulus API header file. It contains the customized Router
+ *                  and RouterHandler classes used by the API.
+ *
+ *        Version:  0.1
+ *        Created:  07/31/2017 12:56:37
+ *       Compiler:  g++
+ *
+ *         Author:  Gustavo Pantuza (gustavopantuza@gmail.com)
+ *   Organization:  Computer science community
+ *
+ * ============================================================================
+ */
+
 
 #include <pistache/endpoint.h>
 #include <pistache/router.h>
