@@ -16,6 +16,10 @@ using namespace Pistache;
 class VetulusRouterHandler;
 
 
+/*
+ * VetulusRouter is an extension of the Pistache Rest::Router that allows
+ * Vetulus to customize the way HTTP routing happens.
+ */
 class VetulusRouter: public Rest::Router {
 
     public:
@@ -25,6 +29,11 @@ class VetulusRouter: public Rest::Router {
 };
 
 
+/*
+ * VetulusRouterHandler customizes how the API router works. Every request
+ * is routed at onRequest implementation. Within this implementation we can
+ * log every request.
+ */
 class VetulusRouterHandler: public Http::Handler {
 
     public:
@@ -65,6 +74,9 @@ class VetulusRouterHandler: public Http::Handler {
 };
 
 
+/*
+ * Vetulus API interface definition.
+ */
 class VetulusAPI {
 
     public:
@@ -72,17 +84,24 @@ class VetulusAPI {
 		void listen();
 
     protected:
+
+        // Customized router to handle HTTP requests
         VetulusRouter router;
 
     private:
         void configure();
         void setRoutes();
 
+        // The most simple response. Used by the / uri.
         void simpleResponse(const Rest::Request& request, Http::ResponseWriter response);
 
         InfoHandler info_handler;
+
+        // Variables read from configuration file
         Port port;
         Address addr;
         int threads;
+
+        // The endpoint from Pistache that really handles HTTP requests
         shared_ptr<Http::Endpoint> endpoint;
 };
