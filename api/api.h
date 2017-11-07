@@ -25,16 +25,13 @@ class VetulusRouter: public Rest::Router {
 };
 
 
-class VetulusRouterHandler: public Rest::Private::RouterHandler {
+class VetulusRouterHandler: public Http::Handler {
 
     public:
         VetulusRouterHandler(const VetulusRouter& router)
-            : Rest::Private::RouterHandler((Rest::Router&) router)
         {
             this->router = router;
-            // Console logger with color
-            auto console = spd::stdout_color_mt("console_0");
-            console->info("Router constructor");
+            std::cout << "RouterHandler constructor" << std::endl;
         }
 
         void onRequest(const Http::Request& req, Http::ResponseWriter response)
@@ -42,9 +39,7 @@ class VetulusRouterHandler: public Rest::Private::RouterHandler {
             auto resp = response.clone();
             auto result = router.route(req, std::move(resp));
 
-            // Console logger with color
-            auto console = spd::stdout_color_mt("console_1");
-            console->info("OnRequest by router");
+            std::cout << "onRequest log" << std::endl;
 
             if (result == Rest::Router::Status::NotFound) {
 
@@ -53,7 +48,11 @@ class VetulusRouterHandler: public Rest::Private::RouterHandler {
             }
         }
 
-    protected:
+    private:
+        std::shared_ptr<Tcp::Handler> clone() const {
+            return std::make_shared<VetulusRouterHandler>(router);
+        }
+
         VetulusRouter router;
 };
 
