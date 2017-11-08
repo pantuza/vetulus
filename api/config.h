@@ -1,4 +1,6 @@
 /*
+ * Copyright 2017 <Gustavo Pantuza>
+ *
  * ============================================================================
  *
  *       Filename:  config.cc
@@ -16,27 +18,32 @@
  * ============================================================================
  */
 
+
+#ifndef API_CONFIG_H_
+#define API_CONFIG_H_
+
+
 #include <stdlib.h>
 #include <string>
 
 #include "../config/config.h"
 
 
-using namespace std;
+using std::string;
 
 
 class APIConfigLoader: public ConfigLoader {
+ public:
+    string port;
+    string addr;
+    string threads;
 
-    public:
-        string port;
-        string addr;
-        string threads;
-
-    private:
-        void set_config () {
-
-            this->port = this->variables["Port"][0];
-            this->addr = this->variables["Addr"][0];
-            this->threads = this->variables["Threads"][0];
-        }
+ private:
+    void set_config() {
+        this->port = this->variables["Port"][0];
+        this->addr = this->variables["Addr"][0];
+        this->threads = this->variables["Threads"][0];
+    }
 };
+
+#endif  // API_CONFIG_H_
