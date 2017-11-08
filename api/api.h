@@ -1,4 +1,6 @@
 /*
+ * Copyright 2017 <Gustavo Pantuza>
+ *
  * ============================================================================
  *
  *       Filename:  api.h
@@ -17,11 +19,15 @@
  */
 
 
+#ifndef API_API_H_
+#define API_API_H_
+
+
 #include <pistache/endpoint.h>
 #include <pistache/router.h>
 
-#include "config.h"
-#include "info.h"
+#include "./config.h"
+#include "./info.h"
 #include "spdlog/spdlog.h"
 
 
@@ -39,11 +45,10 @@ class VetulusRouterHandler;
  * Vetulus to customize the way HTTP routing happens.
  */
 class VetulusRouter: public Rest::Router {
-
-    public:
-        shared_ptr<VetulusRouterHandler> handler() const {
-            return std::make_shared<VetulusRouterHandler>(*this);
-        }
+ public:
+    shared_ptr<VetulusRouterHandler> handler() const {
+        return std::make_shared<VetulusRouterHandler>(*this);
+    }
 };
 
 
@@ -53,42 +58,38 @@ class VetulusRouter: public Rest::Router {
  * log every request.
  */
 class VetulusRouterHandler: public Http::Handler {
+ public:
+    explicit VetulusRouterHandler(const VetulusRouter& router) {
+        this->router = router;
 
-    public:
-        VetulusRouterHandler(const VetulusRouter& router)
-        {
-            this->router = router;
-
-            this->console = spd::get("Router");
-            if(!this->console) {
-                this->console = spd::stdout_color_mt("Router");
-            }
+        this->console = spd::get("Router");
+        if (!this->console) {
+            this->console = spd::stdout_color_mt("Router");
         }
+    }
 
-        void onRequest(const Http::Request& req, Http::ResponseWriter response)
-        {
-            auto resp = response.clone();
-            auto result = router.route(req, std::move(resp));
+    void onRequest(const Http::Request& req, Http::ResponseWriter response) {
+        auto resp = response.clone();
+        auto result = router.route(req, std::move(resp));
 
-            // Wait for Pull request to be accepted on Pistache to use
-            // the function versionString(req.version()) as parameter
-            this->console->info("{0} {1}",
-                    methodString(req.method()), req.resource());
+        // Wait for Pull request to be accepted on Pistache to use
+        // the function versionString(req.version()) as parameter
+        this->console->info("{0} {1}",
+                methodString(req.method()), req.resource());
 
-            if (result == Rest::Router::Status::NotFound) {
-
-                response.send(Http::Code::Not_Found,
-                              "Could not find a matching route bro!");
-            }
+        if (result == Rest::Router::Status::NotFound) {
+            response.send(Http::Code::Not_Found,
+                          "Could not find a matching route bro!");
         }
+    }
 
-    private:
-        std::shared_ptr<Tcp::Handler> clone() const {
-            return std::make_shared<VetulusRouterHandler>(router);
-        }
+ private:
+    std::shared_ptr<Tcp::Handler> clone() const {
+        return std::make_shared<VetulusRouterHandler>(router);
+    }
 
-        VetulusRouter router;
-        std::shared_ptr<spd::logger> console;
+    VetulusRouter router;
+    std::shared_ptr<spd::logger> console;
 };
 
 
@@ -96,30 +97,31 @@ class VetulusRouterHandler: public Http::Handler {
  * Vetulus API interface definition.
  */
 class VetulusAPI {
+ public:
+    explicit VetulusAPI(APIConfigLoader config);
+    void listen();
 
-    public:
-        VetulusAPI (APIConfigLoader config);
-		void listen();
+ protected:
+     // Customized router to handle HTTP requests
+     VetulusRouter router;
 
-    protected:
+ private:
+    void configure();
+    void setRoutes();
 
-        // Customized router to handle HTTP requests
-        VetulusRouter router;
+    // The most simple response. Used by the / uri.
+    void simpleResponse(const Rest::Request& request,
+                        Http::ResponseWriter response);
 
-    private:
-        void configure();
-        void setRoutes();
+    InfoHandler info_handler;
 
-        // The most simple response. Used by the / uri.
-        void simpleResponse(const Rest::Request& request, Http::ResponseWriter response);
+    // Variables read from configuration file
+    Port port;
+    Address addr;
+    int threads;
 
-        InfoHandler info_handler;
-
-        // Variables read from configuration file
-        Port port;
-        Address addr;
-        int threads;
-
-        // The endpoint from Pistache that really handles HTTP requests
-        shared_ptr<Http::Endpoint> endpoint;
+    // The endpoint from Pistache that really handles HTTP requests
+    shared_ptr<Http::Endpoint> endpoint;
 };
+
+#endif  // API_API_H_
