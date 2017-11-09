@@ -1,4 +1,6 @@
 /*
+ * Copyright 2017 <Gustavo Pantuza>
+ *
  * ============================================================================
  *
  *       Filename:  test_api.cc
@@ -15,6 +17,9 @@
  * ============================================================================
  */
 
+#ifndef API_TEST_API_H_
+#define API_TEST_API_H_
+
 #include <cstdio>
 
 #include <gtest/gtest.h>
@@ -28,7 +33,6 @@ using namespace std;
 
 /* Tests requesting simple request to Vetulus API */
 TEST(APITest, TestBaseAPIRequest) {
-
     Http::Client client;
     client.init(Http::Client::options().threads(1).maxConnectionsPerHost(1));
 
@@ -42,7 +46,6 @@ TEST(APITest, TestBaseAPIRequest) {
 
 /* Tests requesting simple request to Vetulus API */
 TEST(APITest, TestBaseInfoAPIRequest) {
-
     Http::Client client;
     client.init(Http::Client::options().threads(1).maxConnectionsPerHost(1));
 
@@ -55,7 +58,9 @@ TEST(APITest, TestBaseInfoAPIRequest) {
 
 
 int main(int argc, char **argv) {
-
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }
+
+
+#endif  // API_TEST_API_H_
