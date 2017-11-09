@@ -1,4 +1,6 @@
 /*
+ * Copyright 2017 <Gustavo Pantuza>
+ *
  * ============================================================================
  *
  *       Filename:  main_api.cpp
@@ -14,6 +16,9 @@
  *
  * ============================================================================
  */
+
+#ifndef API_INFO_H_
+#define API_INFO_H_
 
 
 #include <pistache/endpoint.h>
@@ -31,33 +36,32 @@ using namespace Pistache;
  * Class to describe the most basic information about the Vetulus API
  */
 class InfoHandler {
+ public:
+    void setRoutes(Rest::Router& router) {
+        using namespace Rest;
 
-    public:
-        void setRoutes(Rest::Router& router) {
-            using namespace Rest;
-
-            Routes::Get(
-                router,
-                "/info",
-                Routes::bind(&InfoHandler::getInfo, this)
-            );
-        }
+        Routes::Get(
+            router,
+            "/info",
+            Routes::bind(&InfoHandler::getInfo, this));
+    }
 
 
-        /*
-         * Basic Vetulus API information
-         */
-        void getInfo(const Rest::Request& request,
-                     Http::ResponseWriter response) {
+    /*
+     * Basic Vetulus API information
+     */
+    void getInfo(const Rest::Request& request, Http::ResponseWriter response) {
+        json data;
+        data["server"] = "Vetulus API";
+        data["version"] = {0, 1, 0};
+        data["description"] = "Your data structure as a service";
+        data["project"] = "https://github.com/pantuza/vetulus";
+        data["license"] = "General Public License v3";
+        data["Language"] = "C++11";
 
-            json data;
-            data["server"] = "Vetulus API";
-            data["version"] = {0, 1, 0};
-            data["description"] = "Your data structure as a service";
-            data["project"] = "https://github.com/pantuza/vetulus";
-            data["license"] = "General Public License v3";
-            data["Language"] = "C++11";
-
-            response.send(Http::Code::Ok, data.dump());
-        }
+        response.send(Http::Code::Ok, data.dump());
+    }
 };
+
+
+#endif  // API_INFO_H_
