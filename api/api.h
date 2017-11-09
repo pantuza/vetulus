@@ -46,7 +46,8 @@ class VetulusRouterHandler;
  */
 class VetulusRouter: public Rest::Router {
  public:
-    shared_ptr<VetulusRouterHandler> handler() const {
+    shared_ptr<VetulusRouterHandler> handler() const
+    {
         return std::make_shared<VetulusRouterHandler>(*this);
     }
 };
@@ -59,7 +60,8 @@ class VetulusRouter: public Rest::Router {
  */
 class VetulusRouterHandler: public Http::Handler {
  public:
-    explicit VetulusRouterHandler(const VetulusRouter& router) {
+    explicit VetulusRouterHandler(const VetulusRouter& router)
+    {
         this->router = router;
 
         this->console = spd::get("Router");
@@ -68,7 +70,8 @@ class VetulusRouterHandler: public Http::Handler {
         }
     }
 
-    void onRequest(const Http::Request& req, Http::ResponseWriter response) {
+    void onRequest(const Http::Request& req, Http::ResponseWriter response)
+    {
         auto resp = response.clone();
         auto result = router.route(req, std::move(resp));
 
@@ -84,7 +87,8 @@ class VetulusRouterHandler: public Http::Handler {
     }
 
  private:
-    std::shared_ptr<Tcp::Handler> clone() const {
+    std::shared_ptr<Tcp::Handler> clone() const
+    {
         return std::make_shared<VetulusRouterHandler>(router);
     }
 

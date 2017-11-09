@@ -1,4 +1,6 @@
 /*
+ * Copyright 2017 <Gustavo Pantuza>
+ *
  * ============================================================================
  *
  *       Filename:  main_api.cpp
@@ -19,9 +21,9 @@
 
 #include <pistache/endpoint.h>
 
-#include "api.h"
-#include "json.hpp"
-#include "spdlog/spdlog.h"
+#include "./api.h"
+#include "./json.hpp"
+#include "./spdlog/spdlog.h"
 
 
 using json = nlohmann::json;
@@ -35,7 +37,7 @@ using namespace Pistache;
 /**
  * Callback to handle SIGINT signal when caught
  */
-static void sigintCallback (int signal)
+static void sigintCallback(int signal)
 {
     cout << "Caught keyboard interruption. Shuting down Vetulus API" << endl;
     exit(1);
@@ -46,7 +48,7 @@ static void sigintCallback (int signal)
 /**
  * Vetulus API Constructor. We create a Pistache HTTP Endpoint
  */
-VetulusAPI::VetulusAPI (APIConfigLoader config)
+VetulusAPI::VetulusAPI(APIConfigLoader config)
     : port(Port(stoi(config.port)))
     , addr(config.addr, port)
     , threads(stoi(config.threads))
@@ -60,27 +62,26 @@ VetulusAPI::VetulusAPI (APIConfigLoader config)
 /**
  * Configures the Web server based on configuration file
  */
-void VetulusAPI::configure ()
+void VetulusAPI::configure()
 {
     auto opts = Http::Endpoint::options().threads(this->threads).flags(
             Tcp::Options::InstallSignalHandler);
 
-	this->endpoint->init(opts);
+    this->endpoint->init(opts);
 }
 
 
 /**
  * Set L7 routes handled by Pistache
  */
-void VetulusAPI::setRoutes ()
+void VetulusAPI::setRoutes()
 {
     using namespace Rest;
 
     Routes::Get(
         this->router,
         "/",
-        Routes::bind(&VetulusAPI::simpleResponse, this)
-    );
+        Routes::bind(&VetulusAPI::simpleResponse, this));
 
     /*
      * Every new API goes here. A new class should implement the setRoutes
@@ -90,7 +91,8 @@ void VetulusAPI::setRoutes ()
 }
 
 
-void VetulusAPI::simpleResponse (const Rest::Request& request, Http::ResponseWriter response)
+void VetulusAPI::simpleResponse(const Rest::Request& request,
+                                Http::ResponseWriter response)
 {
     json data;
     data["status"] = 200;
@@ -104,9 +106,9 @@ void VetulusAPI::simpleResponse (const Rest::Request& request, Http::ResponseWri
 /**
  * Enters in listen mode and waits for connections
  */
-void VetulusAPI::listen ()
+void VetulusAPI::listen()
 {
-	this->endpoint->setHandler(this->router.handler());
+    this->endpoint->setHandler(this->router.handler());
 
     cout << "Vetulus API listening at " << this->addr.host()
          << ":" << this->addr.port() << " with "
@@ -122,10 +124,9 @@ void VetulusAPI::listen ()
  * Main execution of the API binary
  */
 int main(int argc, char* argv[]) {
-
     string config_file = "/etc/vetulus/api.conf";
 
-    if(argc > 1) {
+    if (argc > 1) {
         config_file = argv[1];
     }
 
@@ -141,4 +142,6 @@ int main(int argc, char* argv[]) {
     console->info("Welcome to Vetulus API!");
 
     server.listen();
+
+    return EXIT_SUCCESS;
 }
