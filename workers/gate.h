@@ -21,17 +21,27 @@
 #define WORKERS_GATE_H_
 
 
+#include "./spdlog/spdlog.h"
+
 #include "./config.h"
+#include "./pool.h"
+
+
+namespace spd = spdlog;
 
 
 class Gate {
  public:
-     explicit Gate(WorkersConfigLoader config);
-     void listen();
+    explicit Gate(WorkersConfigLoader config);
+    void listen();
+    void shutdown();
+
+    ThreadPool* pool;
 
  private:
     // Variables read from configuration file
     int threads;
+    std::shared_ptr<spd::logger> console;
 };
 
 #endif  // WORKERS_GATE_H_
