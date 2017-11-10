@@ -21,25 +21,30 @@
 
 #include <iostream>
 
-#include "./spdlog/spdlog.h"
-
 #include "./gate.h"
-
-
-namespace spd = spdlog;
+#include "./pool.h"
 
 
 Gate::Gate(WorkersConfigLoader config)
-    : threads(stoi(config.threads))
 {
+    this->threads = stoi(config.threads);
+    this->pool = new ThreadPool(this->threads);
+
+    this->console = spd::stdout_color_mt("Gate");
+    this->console->info("Welcome to Vetulus Workers Gate");
 }
 
 
 void Gate::listen()
 {
-
+    this->pool->arise();
 }
 
+
+void Gate::shutdown()
+{
+    this->pool->die();
+}
 
 /**
  * Callback to handle SIGINT signal when caught
@@ -69,10 +74,6 @@ int main(int argc, char* argv[]) {
     config.load(config_file);
 
     Gate gate(config);
-
-    // Console logger with color
-    auto console = spd::stdout_color_mt("Gate");
-    console->info("Welcome to Vetulus Workers Gate");
 
     gate.listen();
 
