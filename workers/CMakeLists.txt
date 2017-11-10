@@ -24,7 +24,7 @@ include_directories(${Headers_SRC})
 
 
 # Target binary
-add_executable(vetulus_gate gate.cc ${Config_SRC} ${Headers_SRC}/spdlog)
+add_executable(vetulus_gate gate.cc pool.cc ${Config_SRC} ${Headers_SRC}/spdlog)
 # add_executable(test_vetulus_gate test_gate.cc ${Headers_SRC}/json.hpp ${Headers_SRC}/spdlog)
 
 # target_link_libraries(test_vetulus_api gtest)
