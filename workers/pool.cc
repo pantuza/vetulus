@@ -43,9 +43,10 @@ void ThreadPool::arise()
     {
         this->workers.push_back(thread([=] {this->work(i);}));
     }
-    std::this_thread::sleep_for( std::chrono::seconds( 10 ) );
+    std::this_thread::sleep_for(std::chrono::seconds(10));
     this->die();
 }
+
 
 void ThreadPool::work(int index)
 {
@@ -57,12 +58,19 @@ void ThreadPool::work(int index)
     // Return its result
 }
 
+
 string ThreadPool::getThreadID(thread& thr)
 {
     ostringstream thread_id;
     thread_id << thr.get_id();
 
     return thread_id.str();
+}
+
+
+void ThreadPool::Add(function<void>)
+{
+
 }
 
 void ThreadPool::die()

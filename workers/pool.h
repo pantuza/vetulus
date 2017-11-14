@@ -45,6 +45,7 @@ class ThreadPool {
     explicit ThreadPool(unsigned int n_threads);
     void arise();
     void die();
+    void Add();
 
  private:
     unsigned int n_threads;
