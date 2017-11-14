@@ -45,7 +45,7 @@ class ThreadPool {
     explicit ThreadPool(unsigned int n_threads);
     void arise();
     void die();
-    void Add();
+    void Add(function<void()>);
 
  private:
     unsigned int n_threads;

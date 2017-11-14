@@ -68,7 +68,7 @@ string ThreadPool::getThreadID(thread& thr)
 }
 
 
-void ThreadPool::Add(function<void>)
+void ThreadPool::Add(function<void()>)
 {
 
 }
