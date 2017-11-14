@@ -52,7 +52,7 @@ void Gate::shutdown()
 static void sigintCallback(int signal)
 {
     cout << "Caught keyboard interruption. Shuting down Vetulus Gate" << endl;
-    exit(1);
+    exit(EXIT_FAILURE);
 }
 
 
