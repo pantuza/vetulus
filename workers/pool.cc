@@ -53,6 +53,13 @@ void ThreadPool::work(int index)
     this->console->info("Starting thread {0}",
                         this->getThreadID(this->workers[index]));
 
+    while (!this->tasks.empty()) {
+        function<void()> fn = this->tasks.front();
+        this->tasks.pop();
+
+        fn();
+    }
+
     // dequeue a function
     // Run it
     // Return its result
