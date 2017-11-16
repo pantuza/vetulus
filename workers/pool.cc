@@ -75,10 +75,11 @@ string ThreadPool::getThreadID(thread& thr)
 }
 
 
-void ThreadPool::Add(function<void()>)
+void ThreadPool::Add(function<void()> fn)
 {
-
+    this->tasks.push(fn);
 }
+
 
 void ThreadPool::die()
 {
