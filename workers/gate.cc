@@ -37,6 +37,15 @@ Gate::Gate(WorkersConfigLoader config)
 
 void Gate::listen()
 {
+    for (int i = 0; i < 100; i++) {
+        this->pool->Add(
+            [this, i] {
+                this->console->info("function({0:d})", i);
+                std::this_thread::sleep_for(std::chrono::seconds(1));
+            }
+        );
+    }
+
     this->pool->arise();
 }
 
