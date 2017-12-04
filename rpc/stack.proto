@@ -1,0 +1,23 @@
+syntax = "proto2";
+
+
+package server;
+
+
+message Item {
+    required string name = 1;
+}
+
+message StackResponse {
+    required bool status = 1;
+}
+
+message NoneParam {}
+
+
+service StackServer {
+
+    rpc Push(Item) returns (StackResponse) {}
+
+    rpc Pop(NoneParam) returns (Item) {}
+}
