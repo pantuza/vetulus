@@ -3,10 +3,10 @@ all: server client
 
 
 server: proto rpc
-	g++ -std=c++11 -lprotobuf -lgrpc++ server.cc stack.grpc.pb.cc stack.pb.cc -o server
+	g++ -std=c++11 -lprotobuf -lgrpc++ stack_server.cc stack.grpc.pb.cc stack.pb.cc -o stack_server
 
 client: proto rpc
-	g++ -std=c++11 -lprotobuf -lgrpc++ client.cc stack.grpc.pb.cc stack.pb.cc -o client
+	g++ -std=c++11 -lprotobuf -lgrpc++ stack_client.cc stack.grpc.pb.cc stack.pb.cc -o stack_client
 
 proto: stack.proto
 	protoc -I . --cpp_out=. stack.proto
@@ -16,4 +16,4 @@ rpc:
 
 clean:
 	@rm -v *.pb*
-	@rm -v client server
+	@rm -v stack_client stack_server
