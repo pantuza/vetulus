@@ -20,10 +20,9 @@ using grpc::Channel;
 using grpc::ClientContext;
 using grpc::Status;
 
-using server::StackServer;
-using server::StackResponse;
-using server::Item;
-using server::NoneParam;
+using StackService::StackServer;
+using StackService::Item;
+using StackService::Empty;
 
 class StackClient {
  public:
@@ -33,11 +32,11 @@ class StackClient {
 
     bool Push(Item item) {
         ClientContext context;
-        StackResponse reply;
+        Empty reply;
 
         Status status = this->stub_->Push(&context, item, &reply);
         if (status.ok()) {
-            return reply.status();
+            return true;
         } else {
             std::cout << status.error_code() << ": " << status.error_message()
                 << std::endl;
@@ -48,8 +47,7 @@ class StackClient {
 
     Item* Pop() {
         ClientContext context;
-        StackResponse reply;
-        NoneParam none;
+        Empty none;
         Item* item = new Item();
 
         Status status = this->stub_->Pop(&context, none, item);

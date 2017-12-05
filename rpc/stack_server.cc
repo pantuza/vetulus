@@ -17,25 +17,23 @@ using grpc::Status;
 using grpc::ServerBuilder;
 using grpc::Server;
 
-using server::StackServer;
-using server::Item;
-using server::NoneParam;
-using server::StackResponse;
+using StackService::StackServer;
+using StackService::Item;
+using StackService::Empty;
 
 
 class StackServerImpl final : public StackServer::Service {
  private:
     stack<Item> items;
 
-    Status Push(ServerContext* context, const Item* item, StackResponse* reply)
+    Status Push(ServerContext* context, const Item* item, Empty* reply)
     override {
         items.push(*item);
         cout << "push(" << item->name() << ") - size[" << items.size() << "]" << endl;
-        reply->set_status(true);
         return Status::OK;
     }
 
-    Status Pop(ServerContext* context, const NoneParam* none,
+    Status Pop(ServerContext* context, const Empty* none,
                Item* item) override {
         item->set_name(items.top().name());
         items.pop();
