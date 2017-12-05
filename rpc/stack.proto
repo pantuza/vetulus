@@ -1,23 +1,36 @@
-syntax = "proto2";
+syntax = "proto3";
 
 
-package server;
+package StackService;
 
 
 message Item {
-    required string name = 1;
+    string name = 1;
 }
 
-message StackResponse {
-    required bool status = 1;
+
+message Empty {}
+
+message StackBoolResponse {
+    bool value = 1;
 }
 
-message NoneParam {}
+message StackSizeResponse {
+    int32 value = 1;
+}
 
 
 service StackServer {
 
-    rpc Push(Item) returns (StackResponse) {}
+    rpc Push(Item) returns (Empty) {}
 
-    rpc Pop(NoneParam) returns (Item) {}
+    rpc Pop(Empty) returns (Item) {}
+
+    rpc Size(Empty) returns (StackSizeResponse) {}
+
+    rpc IsEmpty(Empty) returns (StackBoolResponse) {}
+
+    rpc IsFull(Empty) returns (StackBoolResponse) {}
+
+    rpc Peek(Empty) returns (Item) {}
 }
