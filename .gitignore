@@ -33,3 +33,7 @@
 
 # Ignore build directories
 build
+
+# Ignore protobuffer compiled files and grpc generated classes
+*.pb.cc
+*.pb.h
