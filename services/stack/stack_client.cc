@@ -24,7 +24,7 @@ using grpc::ClientContext;
 using grpc::Status;
 
 using StackService::StackServer;
-using StackService::Item;
+using DogType::Dog;
 using StackService::Empty;
 
 class StackClient {
@@ -33,7 +33,7 @@ class StackClient {
     : stub_(StackServer::NewStub(channel))
     {}
 
-    bool Push(Item item) {
+    bool Push(Dog item) {
         ClientContext context;
         Empty reply;
 
@@ -48,10 +48,10 @@ class StackClient {
         return false;
     }
 
-    Item* Pop() {
+    Dog* Pop() {
         ClientContext context;
         Empty none;
-        Item* item = new Item();
+        Dog* item = new Dog();
 
         Status status = this->stub_->Pop(&context, none, item);
 
