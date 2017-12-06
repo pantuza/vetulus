@@ -4,59 +4,72 @@ cmake_minimum_required(VERSION 3.0)
 # Project
 project(StackServer)
 
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-# Protobuf
-find_package(Protobuf REQUIRED)
-message(STATUS "Using protobuf ${protobuf_VERSION}")
 
-if(Protobuf_FOUND)
-  # Protobuf_FOUND is set for package type "CONFIG"
-  set(_PROTOBUF_LIBPROTOBUF protobuf::libprotobuf)
-  set(_PROTOBUF_PROTOC protobuf::protoc)
-elseif(PROTOBUF_FOUND)
-  # PROTOBUF_FOUND is set for package type "MODULE"
-  set(_PROTOBUF_LIBPROTOBUF ${PROTOBUF_LIBRARIES})
-  set(_PROTOBUF_PROTOC ${PROTOBUF_PROTOC_EXECUTABLE})
-  include_directories(${PROTOBUF_INCLUDE_DIRS})
-else()
-  message(WARNING "Failed to locate libprotobuf and protoc!")
-endif()
+# Configuration module files
+file(GLOB Config_SRC
+    "../../config/config.cc"
+    "../../config/config.h"
+)
 
-# gRPC
-find_package(gRPC CONFIG REQUIRED)
-message(STATUS "Using gRPC ${gRPC_VERSION}")
+# Protobuffers files path
+set(protobuffers_path "../../../protos")
 
-# gRPC C++ plugin
-get_target_property(gRPC_CPP_PLUGIN_EXECUTABLE gRPC::grpc_cpp_plugin
-    IMPORTED_LOCATION_RELEASE)
 
-# Proto file
-get_filename_component(stack_proto "stack.proto" ABSOLUTE)
-get_filename_component(stack_proto_path "${stack_proto}" PATH)
+set(dog_proto_srcs "${CMAKE_CURRENT_BINARY_DIR}/dog.pb.cc")
+set(dog_proto_hdrs "${CMAKE_CURRENT_BINARY_DIR}/dog.pb.h")
 
-# Generated sources
-protobuf_generate_cpp(stack_proto_srcs stack_proto_hdrs "${stack_proto}")
+# Custom command to build Dog sources
+add_custom_command(
+    OUTPUT  "${dog_proto_srcs}" "${dog_proto_hdrs}"
+    COMMAND "protoc"
+    ARGS -I "${protobuffers_path}" --cpp_out="${CMAKE_CURRENT_BINARY_DIR}"
+         "${protobuffers_path}/dog.proto"
+)
+
+
+set(stack_proto_srcs "${CMAKE_CURRENT_BINARY_DIR}/stack.pb.cc")
+set(stack_proto_hdrs "${CMAKE_CURRENT_BINARY_DIR}/stack.pb.h")
+
+# Custom command to build Stack sources
+add_custom_command(
+    OUTPUT  "${stack_proto_srcs}" "${stack_proto_hdrs}"
+    COMMAND "protoc"
+    ARGS -I "${protobuffers_path}" --cpp_out="${CMAKE_CURRENT_BINARY_DIR}"
+         "${protobuffers_path}/stack.proto"
+)
+
+
 set(stack_grpc_srcs "${CMAKE_CURRENT_BINARY_DIR}/stack.grpc.pb.cc")
 set(stack_grpc_hdrs "${CMAKE_CURRENT_BINARY_DIR}/stack.grpc.pb.h")
+
+# Custom command to build Stack service through gRPC
 add_custom_command(
       OUTPUT "${stack_grpc_srcs}" "${stack_grpc_hdrs}"
-      COMMAND ${_PROTOBUF_PROTOC}
-      ARGS --grpc_out "${CMAKE_CURRENT_BINARY_DIR}" -I "${stack_proto_path}"
-        --plugin=protoc-gen-grpc="${gRPC_CPP_PLUGIN_EXECUTABLE}"
-        "${stack_proto}"
-      DEPENDS "${stack_proto}")
+      COMMAND "protoc"
+      ARGS --grpc_out "${CMAKE_CURRENT_BINARY_DIR}" -I "${protobuffers_path}"
+      --plugin=protoc-gen-grpc=/usr/local/bin/grpc_cpp_plugin
+        "${protobuffers_path}/stack.proto"
+)
+
 
 # Generated include directory
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
+
 # Targets stack_(client|server)
-foreach(_target
-  stack_client stack_server)
-  add_executable(${_target} "${_target}.cc"
-    ${stack_proto_srcs}
-    ${stack_grpc_srcs})
-  target_link_libraries(${_target}
-    ${_PROTOBUF_LIBPROTOBUF}
-    gRPC::grpc++_unsecure)
+foreach(_target stack_server stack_client)
+
+    add_executable(${_target}
+        "${_target}.cc"
+        ${Config_SRC}
+        ${dog_proto_srcs}
+        ${stack_proto_srcs}
+        ${stack_grpc_srcs}
+    )
+
+    target_link_libraries(${_target} protobuf)
+    target_link_libraries(${_target} grpc++)
 endforeach()
