@@ -1,18 +1,19 @@
+PROTOS_DIR := ../../protos
 
 all: server client
 
 
 server: proto rpc
-	g++ -std=c++11 -lprotobuf -lgrpc++ stack_server.cc stack.grpc.pb.cc stack.pb.cc -o stack_server
+	g++ -std=c++11 -lprotobuf -lgrpc++ stack_server.cc stack.grpc.pb.cc stack.pb.cc dog.pb.cc -o stack_server
 
 client: proto rpc
-	g++ -std=c++11 -lprotobuf -lgrpc++ stack_client.cc stack.grpc.pb.cc stack.pb.cc -o stack_client
+	g++ -std=c++11 -lprotobuf -lgrpc++ stack_client.cc stack.grpc.pb.cc stack.pb.cc dog.pb.cc -o stack_client
 
-proto: stack.proto
-	protoc -I . --cpp_out=. stack.proto
+proto: $(PROTOS_DIR)/stack.proto $(PROTOS_DIR)/dog.proto
+	protoc -I $(PROTOS_DIR) --cpp_out=. dog.proto stack.proto
 
 rpc:
-	protoc -I . --grpc_out=. --plugin=protoc-gen-grpc=$(shell which grpc_cpp_plugin) stack.proto
+	protoc -I $(PROTOS_DIR) --grpc_out=. --plugin=protoc-gen-grpc=$(shell which grpc_cpp_plugin) stack.proto
 
 clean:
 	@rm -v *.pb*
