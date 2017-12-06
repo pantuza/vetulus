@@ -8,6 +8,9 @@
 
 #include "./stack.grpc.pb.h"
 
+#include "./config.h"
+
+
 using std::cout;
 using std::endl;
 using std::cin;
@@ -73,13 +76,24 @@ int main(int argc, char* argv[]) {
 //    cout << "Enter a name to Push() on the stack. "
 //         << "Press Enter to Pop() from the stack" << endl << endl;
 
+    string config_file = "/etc/vetulus/services/stack.conf";
+
+    if (argc > 1) {
+        config_file = argv[1];
+    }
+
+    StackConfigLoader config;
+    config.load(config_file);
+
+    ostringstream config_str;
+    config_str << config.addr << ":" << config.port;
 
     for (int i = 0; i < 100; i++) {
 
-        thread* th = new thread([=] {
+        thread* th = new thread([&] {
             StackClient client(grpc::CreateChannel(
-                "localhost:50051", grpc::InsecureChannelCredentials()));
-            Item item;
+                config_str.str(), grpc::InsecureChannelCredentials()));
+            Dog item;
             ostringstream ostr;
             ostr << "Item " << i;
             item.set_name(ostr.str());
