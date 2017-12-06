@@ -22,15 +22,15 @@ using grpc::ServerBuilder;
 using grpc::Server;
 
 using StackService::StackServer;
-using StackService::Item;
+using DogType::Dog;
 using StackService::Empty;
 
 
 class StackServerImpl final : public StackServer::Service {
  private:
-    stack<Item> items;
+    stack<Dog> items;
 
-    Status Push(ServerContext* context, const Item* item, Empty* reply)
+    Status Push(ServerContext* context, const Dog* item, Empty* reply)
     override {
         items.push(*item);
         cout << "push(" << item->name() << ") - size[" << items.size() << "]" << endl;
@@ -38,7 +38,7 @@ class StackServerImpl final : public StackServer::Service {
     }
 
     Status Pop(ServerContext* context, const Empty* none,
-               Item* item) override {
+               Dog* item) override {
         item->set_name(items.top().name());
         items.pop();
         cout << "pop(" << item->name() << ") - size[" << items.size() << "]" << endl;
