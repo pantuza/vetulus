@@ -1,12 +1,9 @@
 syntax = "proto3";
 
+import "dog.proto";
 
 package StackService;
 
-
-message Item {
-    string name = 1;
-}
 
 
 message Empty {}
@@ -22,9 +19,9 @@ message StackSizeResponse {
 
 service StackServer {
 
-    rpc Push(Item) returns (Empty) {}
+    rpc Push(DogType.Dog) returns (Empty) {}
 
-    rpc Pop(Empty) returns (Item) {}
+    rpc Pop(Empty) returns (DogType.Dog) {}
 
     rpc Size(Empty) returns (StackSizeResponse) {}
 
@@ -32,5 +29,5 @@ service StackServer {
 
     rpc IsFull(Empty) returns (StackBoolResponse) {}
 
-    rpc Peek(Empty) returns (Item) {}
+    rpc Peek(Empty) returns (DogType.Dog) {}
 }
