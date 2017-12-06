@@ -1,13 +1,17 @@
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <stack>
 
 #include <grpc++/grpc++.h>
 
 #include "./stack.grpc.pb.h"
 
+#include "./config.h"
+
 
 using std::string;
+using std::ostringstream;
 using std::stack;
 using std::cout;
 using std::endl;
@@ -42,8 +46,12 @@ class StackServerImpl final : public StackServer::Service {
     }
 };
 
-void RunServer() {
-    std::string serverAddress("0.0.0.0:50051");
+
+void RunServer(StackConfigLoader config) {
+
+    ostringstream ostr;
+    ostr << config.addr << ":" << config.port;
+    string serverAddress(ostr.str());
     StackServerImpl service;
     ServerBuilder builder;
 
@@ -56,8 +64,19 @@ void RunServer() {
     server->Wait();
 }
 
+
 int main(int argc, char* argv[]) {
-    RunServer();
+
+    string config_file = "/etc/vetulus/services/stack.conf";
+
+    if (argc > 1) {
+        config_file = argv[1];
+    }
+
+    StackConfigLoader config;
+    config.load(config_file);
+
+    RunServer(config);
 
     return EXIT_SUCCESS;
 }
