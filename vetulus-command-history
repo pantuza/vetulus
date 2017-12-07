@@ -1,3 +1,6 @@
 docker run --rm -p 4242:4242 -v (pwd):/vetulus -it --name vetulus --add-host 0.0.0.0:0.0.0.0 vetulus bash
 docker build --tag vetulus .
 cpplint --verbose=5 --counting=detailed  --recursive .
+docker login
+docker tag 8076d23c5e95 pantuza/vetulus:0.1.0
+docker push pantuza/vetulus:0.1.0
