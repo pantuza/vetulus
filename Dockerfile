@@ -1,7 +1,7 @@
 FROM alpine:latest
 
 RUN apk update && \
-    apk add bash sudo python git gcc g++ cmake ninja make vim which curl
+    apk add bash sudo python git gcc g++ cmake ninja make vim which curl perl go
 
 RUN mkdir -pv /vetulus
 
