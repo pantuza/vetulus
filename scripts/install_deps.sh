@@ -11,3 +11,6 @@ echo "* You should run this script from inside scripts directory"
 
 # Installs Google Test library
 ./install_googletest.sh
+
+# Installs gRPC library
+./install_grpc.sh
