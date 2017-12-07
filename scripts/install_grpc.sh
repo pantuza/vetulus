@@ -12,10 +12,10 @@ git clone https://github.com/grpc/grpc.git
 
 cd grpc
 git submodule update --init
-
+cd cmake
 mkdir build
 cd build
-cmake ..
+cmake ../..
 make
 
 if [ $(which sudo) ]; then
@@ -25,11 +25,11 @@ else
 fi
 
 if [ "$?" == 0 ]; then
-    cd ../..
+    cd ../../../
     rm -rf grpc
     echo "Done";
 else
-    cd ../..
+    cd ../../../
     echo "Fail";
     exit 1
 fi
