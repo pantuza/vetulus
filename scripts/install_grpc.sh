@@ -17,6 +17,7 @@ mkdir build
 cd build
 cmake ../..
 make
+make grpc_cpp_plugin
 
 if [ $(which sudo) ]; then
     sudo make install
