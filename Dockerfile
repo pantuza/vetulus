@@ -15,8 +15,7 @@ RUN apk update && \
 			curl \
 			perl \
 			go \
-			openssl \
-			openssl-dev
+			openssl
 
 RUN mkdir -pv /vetulus
 

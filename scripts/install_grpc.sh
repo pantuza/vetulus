@@ -15,19 +15,13 @@ git submodule update --init
 cd cmake
 mkdir build
 cd build
-cmake -DgRPC_INSTALL=ON \
-      -DgRPC_BUILD_TESTS=OFF \
-      -DgRPC_PROTOBUF_PROVIDER=package \
-      -DgRPC_ZLIB_PROVIDER=package \
-      -DgRPC_CARES_PROVIDER=package \
-      -DgRPC_SSL_PROVIDER=package \
-      -DCMAKE_BUILD_TYPE=Release \
-      ../..
+cmake ../..
+make
 
 if [ $(which sudo) ]; then
-    sudo make -j4 install
+    sudo make install
 else
-    make -j4 install
+    make install
 fi
 
 if [ "$?" == 0 ]; then
