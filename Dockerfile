@@ -1,7 +1,22 @@
 FROM alpine:latest
 
 RUN apk update && \
-    apk add bash sudo python git gcc g++ cmake ninja make vim which curl perl go
+    apk add bash \
+			sudo \
+			python \
+			git \
+            gcc \
+			g++ \
+			cmake \
+			ninja \
+			make \
+			vim \
+			which \
+			curl \
+			perl \
+			go \
+			openssl \
+			openssl-dev
 
 RUN mkdir -pv /vetulus
 
