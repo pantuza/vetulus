@@ -15,7 +15,14 @@ RUN apk update && \
 			curl \
 			perl \
 			go \
-			openssl
+			openssl \
+            openssl-dev \
+            c-ares \
+            c-ares-dev \
+            zlib \
+            zlib-dev \
+            protobuf-c \
+            protobuf-c-dev
 
 RUN mkdir -pv /vetulus
 
