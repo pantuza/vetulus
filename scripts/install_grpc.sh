@@ -15,13 +15,19 @@ git submodule update --init
 cd cmake
 mkdir build
 cd build
+
+echo "Building gRPC dependencies.."
+cmake ../..
+make
+
+
+echo "Building gRPC library and plugins.."
 cmake -DgRPC_INSTALL=ON \
       -DgRPC_BUILD_TESTS=OFF \
-      -DgRPC_PROTOBUF_PROVIDER=package \
-      -DgRPC_ZLIB_PROVIDER=package \
-      -DgRPC_CARES_PROVIDER=package \
-      -DgRPC_SSL_PROVIDER=package \
-      -DCMAKE_BUILD_TYPE=Release \
+      -DgRPC_ZLIB_PROVIDER="package" \
+      -DgRPC_CARES_PROVIDER="package" \
+      -DgRPC_PROTOBUF_PROVIDER="package" \
+      -DgRPC_SSL_PROVIDER="package" \
       ../..
 
 if [ $(which sudo) ]; then
@@ -34,6 +40,7 @@ if [ "$?" == 0 ]; then
     cd ../../../
     rm -rf grpc
     echo "Done";
+    exit 0;
 else
     cd ../../../
     echo "Fail";
