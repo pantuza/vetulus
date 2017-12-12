@@ -8,42 +8,35 @@ echo "# Installing gRPC.."
 echo "#"
 echo
 
-git clone https://github.com/grpc/grpc.git
+git clone -b $(curl -L https://grpc.io/release) https://github.com/grpc/grpc.git
 
 cd grpc
 git submodule update --init
-cd cmake
-mkdir build
-cd build
-
-echo "Building gRPC dependencies.."
-cmake ../..
 make
-make install
-
-
-echo "Building gRPC library and plugins.."
-cmake -DgRPC_INSTALL=ON \
-      -DgRPC_BUILD_TESTS=OFF \
-      -DgRPC_ZLIB_PROVIDER="package" \
-      -DgRPC_CARES_PROVIDER="package" \
-      -DgRPC_PROTOBUF_PROVIDER="package" \
-      -DgRPC_SSL_PROVIDER="package" \
-      ../..
 
 if [ $(which sudo) ]; then
-    sudo make -j4 install
+    sudo make install
 else
-    make -j4 install
+    make install
+fi
+
+echo "Installing protobuf compiler"
+cd third_party/protobuf/
+make
+
+if [ $(which sudo) ]; then
+    sudo make install
+else
+    make install
 fi
 
 if [ "$?" == 0 ]; then
-    cd ../../../
+    cd ../../../../../
     rm -rf grpc
     echo "Done";
     exit 0;
 else
-    cd ../../../
+    cd ../../../../../
     echo "Fail";
     exit 1
 fi
