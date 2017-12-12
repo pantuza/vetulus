@@ -1,13 +1,12 @@
+sudo: required
+
 language: cpp
-compiler: g++
+
+services:
+  - docker
 
 before_install:
-    - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-    - sudo apt-get update -qq
-
-install:
-  - sudo apt-get install -qq g++-6 ninja-build perl golang libssl-dev libc-ares2 libc-ares-dev zlibc protobuf-compiler libprotobuf-dev
-  - cd scripts && sudo ./install_deps.sh
+  - docker pull pantuza/vetulus
 
 script:
-  - ./travis_build.sh
+    - docker run --rm -it --name vetulus pantuza/vetulus bash -c "cd scripts && ./travis_build.sh;"
