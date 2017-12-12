@@ -19,6 +19,7 @@ cd build
 echo "Building gRPC dependencies.."
 cmake ../..
 make
+make install
 
 
 echo "Building gRPC library and plugins.."
