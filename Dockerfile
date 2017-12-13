@@ -1,28 +1,22 @@
-FROM alpine:latest
+FROM opensuse:latest
 
-RUN apk update && \
-    apk add bash \
-            sudo \
-            python \
+RUN zypper update -y && \
+    zypper install -y \
             git \
-            gcc \
-            g++ \
+            gcc-c++ \
             cmake \
             ninja \
             make \
+            automake \
+            autoconf \
             vim \
             which \
             curl \
             perl \
             go \
-            openssl \
-            openssl-dev \
-            c-ares \
-            c-ares-dev \
-            zlib \
-            zlib-dev \
-            protobuf-c \
-            protobuf-c-dev
+            m4 \
+            libtool \
+            binutils
 
 RUN mkdir -pv /vetulus
 
