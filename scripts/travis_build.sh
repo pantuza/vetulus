@@ -14,4 +14,9 @@ cd build
 cmake -G Ninja ..
 ninja
 
+echo
+echo "#"
+echo "# Testing configuration classes"
+echo "#"
+echo
 ./test_vetulus_config
