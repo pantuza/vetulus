@@ -73,10 +73,8 @@ int main(int argc, char* argv[]) {
 
 
     cout << "gRPC Stack Server example" << endl;
-//    cout << "Enter a name to Push() on the stack. "
-//         << "Press Enter to Pop() from the stack" << endl << endl;
 
-    string config_file = "/etc/vetulus/services/stack.conf";
+    string config_file = "/etc/vetulus/services/stack_client.conf";
 
     if (argc > 1) {
         config_file = argv[1];
@@ -88,7 +86,7 @@ int main(int argc, char* argv[]) {
     ostringstream config_str;
     config_str << config.addr << ":" << config.port;
 
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < 50; i++) {
 
         thread* th = new thread([&] {
             StackClient client(grpc::CreateChannel(
@@ -104,21 +102,7 @@ int main(int argc, char* argv[]) {
         th->detach();
     }
 
-    std::this_thread::sleep_for(std::chrono::seconds(10));
+    std::this_thread::sleep_for(std::chrono::seconds(1));
 
-//    string name;
-//    while (true) {
-//        cout << "Name: ";
-//        getline(cin, name);
-//        if (name.size() > 0) {
-//            item.set_name(name);
-//            client.Push(item);
-//            cout << "Push(" << item.name() << ")" << endl;
-//        } else {
-//            item = *client.Pop();
-//            cout << "Pop(" << item.name() << ")" << endl;
-//        }
-//    }
-//
     return EXIT_SUCCESS;
 }
