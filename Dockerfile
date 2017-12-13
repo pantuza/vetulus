@@ -16,7 +16,9 @@ RUN zypper update -y && \
             go \
             m4 \
             libtool \
-            binutils
+            binutils \
+            net-tools \
+            telnet
 
 RUN mkdir -pv /vetulus
 
