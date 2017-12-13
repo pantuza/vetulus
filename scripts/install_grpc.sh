@@ -30,13 +30,13 @@ else
     make install
 fi
 
-if [ "$?" == 0 ]; then
-    cd ../../../../../
+if [ "$?" == "0" ]; then
+    cd ../../../
     rm -rf grpc
     echo "Done";
     exit 0;
 else
-    cd ../../../../../
+    cd ../../../
     echo "Fail";
     exit 1
 fi
