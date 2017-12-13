@@ -58,18 +58,26 @@ add_custom_command(
 # Generated include directory
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
+# Builds Server binary
+add_executable(stack_server
+    "stack_server.cc"
+    ${Config_SRC}
+    ${dog_proto_srcs}
+    ${stack_proto_srcs}
+    ${stack_grpc_srcs}
+)
+target_link_libraries(stack_server protobuf grpc++)
 
-# Targets stack_(client|server)
-foreach(_target stack_server stack_client)
+add_executable(test_stack_server
+    "test_stack_server.cc"
+    ${Config_SRC}
+    ${dog_proto_srcs}
+    ${stack_proto_srcs}
+    ${stack_grpc_srcs}
+)
+target_link_libraries(test_stack_server gtest protobuf grpc++)
 
-    add_executable(${_target}
-        "${_target}.cc"
-        ${Config_SRC}
-        ${dog_proto_srcs}
-        ${stack_proto_srcs}
-        ${stack_grpc_srcs}
-    )
-
-    target_link_libraries(${_target} protobuf)
-    target_link_libraries(${_target} grpc++)
-endforeach()
+# Links binary with pthread library
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+target_link_libraries(test_stack_server Threads::Threads)
