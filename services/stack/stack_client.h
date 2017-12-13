@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -26,6 +25,7 @@ using grpc::Status;
 using StackService::StackServer;
 using DogType::Dog;
 using StackService::Empty;
+
 
 class StackClient {
  public:
@@ -68,41 +68,41 @@ class StackClient {
     std::unique_ptr<StackServer::Stub> stub_;
 };
 
-
-int main(int argc, char* argv[]) {
-
-
-    cout << "gRPC Stack Server example" << endl;
-
-    string config_file = "/etc/vetulus/services/stack_client.conf";
-
-    if (argc > 1) {
-        config_file = argv[1];
-    }
-
-    StackConfigLoader config;
-    config.load(config_file);
-
-    ostringstream config_str;
-    config_str << config.addr << ":" << config.port;
-
-    for (int i = 0; i < 50; i++) {
-
-        thread* th = new thread([&] {
-            StackClient client(grpc::CreateChannel(
-                config_str.str(), grpc::InsecureChannelCredentials()));
-            Dog item;
-            ostringstream ostr;
-            ostr << "Item " << i;
-            item.set_name(ostr.str());
-            cout << "Push(" << item.name() << ")" << endl;
-            client.Push(item);
-        });
-
-        th->detach();
-    }
-
-    std::this_thread::sleep_for(std::chrono::seconds(1));
-
-    return EXIT_SUCCESS;
-}
+//
+//int main(int argc, char* argv[]) {
+//
+//
+//    cout << "gRPC Stack Server example" << endl;
+//
+//    string config_file = "/etc/vetulus/services/stack_client.conf";
+//
+//    if (argc > 1) {
+//        config_file = argv[1];
+//    }
+//
+//    StackConfigLoader config;
+//    config.load(config_file);
+//
+//    ostringstream config_str;
+//    config_str << config.addr << ":" << config.port;
+//
+//    for (int i = 0; i < 50; i++) {
+//
+//        thread* th = new thread([&] {
+//            StackClient client(grpc::CreateChannel(
+//                config_str.str(), grpc::InsecureChannelCredentials()));
+//            Dog item;
+//            ostringstream ostr;
+//            ostr << "Item " << i;
+//            item.set_name(ostr.str());
+//            cout << "Push(" << item.name() << ")" << endl;
+//            client.Push(item);
+//        });
+//
+//        th->detach();
+//    }
+//
+//    std::this_thread::sleep_for(std::chrono::seconds(1));
+//
+//    return EXIT_SUCCESS;
+//}
