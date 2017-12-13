@@ -67,7 +67,7 @@ void RunServer(StackConfigLoader config) {
 
 int main(int argc, char* argv[]) {
 
-    string config_file = "/etc/vetulus/services/stack.conf";
+    string config_file = "/etc/vetulus/services/stack_server.conf";
 
     if (argc > 1) {
         config_file = argv[1];
