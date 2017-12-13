@@ -46,7 +46,7 @@ TEST(StackServiceTest, TestPushItem)
 TEST(StackServiceTest, TestPopItem)
 {
     StackClient client(grpc::CreateChannel(
-                       "172.17.0.2:42500", grpc::InsecureChannelCredentials()));
+                       "127.0.0.1:42500", grpc::InsecureChannelCredentials()));
     ASSERT_TRUE(dynamic_cast<Dog*>(client.Pop()) != nullptr);
 }
 
@@ -66,6 +66,7 @@ int main(int argc, char **argv)
 
     ostringstream config_str;
 
+    return RUN_ALL_TESTS();
 }
 
 
