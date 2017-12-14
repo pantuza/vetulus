@@ -14,6 +14,11 @@ file(GLOB Config_SRC
     "../../config/config.h"
 )
 
+# Adds include directory
+set(Headers_SRC "../../include")
+include_directories(${Headers_SRC})
+
+
 # Protobuffers files path
 set(protobuffers_path "../../../protos")
 
@@ -62,6 +67,7 @@ include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 add_executable(stack_server
     "stack_server.cc"
     ${Config_SRC}
+    ${Headers_SRC}/spdlog
     ${dog_proto_srcs}
     ${stack_proto_srcs}
     ${stack_grpc_srcs}
