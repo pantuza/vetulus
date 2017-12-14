@@ -6,6 +6,7 @@
 #include <grpc++/grpc++.h>
 
 #include "./stack.grpc.pb.h"
+#include "./spdlog/spdlog.h"
 
 #include "./config.h"
 
@@ -15,6 +16,7 @@ using std::ostringstream;
 using std::stack;
 using std::cout;
 using std::endl;
+using std::shared_ptr;
 
 using grpc::ServerContext;
 using grpc::Status;
@@ -29,11 +31,23 @@ using StackService::Empty;
 class StackServerImpl final : public StackServer::Service {
  private:
     stack<Dog> items;
+    shared_ptr<spdlog::logger> console;
+
+ public:
+    StackServerImpl() :StackServer::Service()
+    {
+        this->console = spdlog::get("Stack");
+        if (!this->console) {
+            this->console = spdlog::stdout_color_mt("Stack");
+        }
+        this->console->info("Stack service");
+    }
 
     Status Push(ServerContext* context, const Dog* item, Empty* reply)
     override {
         items.push(*item);
-        cout << "push(" << item->name() << ") - size[" << items.size() << "]" << endl;
+        this->console->info("Push({0}) - size[{1}]",
+                            item->name(), items.size());
         return Status::OK;
     }
 
@@ -41,7 +55,8 @@ class StackServerImpl final : public StackServer::Service {
                Dog* item) override {
         item->set_name(items.top().name());
         items.pop();
-        cout << "pop(" << item->name() << ") - size[" << items.size() << "]" << endl;
+        this->console->info("Pop({0}) - size[{1}]",
+                            item->name(), items.size());
         return Status::OK;
     }
 };
@@ -52,6 +67,7 @@ void RunServer(StackConfigLoader config) {
     ostringstream ostr;
     ostr << config.addr << ":" << config.port;
     string serverAddress(ostr.str());
+
     StackServerImpl service;
     ServerBuilder builder;
 
