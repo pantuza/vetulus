@@ -25,9 +25,12 @@ using grpc::Status;
 using StackService::StackServer;
 using DogType::Dog;
 using StackService::Empty;
+using StackService::StackSizeResponse;
 
 
 class StackClient {
+ private:
+    std::unique_ptr<StackServer::Stub> stub_;
  public:
     StackClient(std::shared_ptr<Channel> channel)
     : stub_(StackServer::NewStub(channel))
@@ -64,8 +67,21 @@ class StackClient {
         return NULL;
     }
 
- private:
-    std::unique_ptr<StackServer::Stub> stub_;
+    StackSizeResponse* Size()
+    {
+        ClientContext context;
+        Empty none;
+        StackSizeResponse* size = new StackSizeResponse();
+        Status status = this->stub_->Size(&context, none, size);
+
+        if (status.ok()) {
+            return size;
+        } else {
+            std::cout << status.error_code() << ": " << status.error_message()
+                << std::endl;
+            return NULL;
+        }
+    }
 };
 
 //
