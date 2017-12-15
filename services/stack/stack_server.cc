@@ -26,6 +26,7 @@ using grpc::Server;
 using StackService::StackServer;
 using DogType::Dog;
 using StackService::Empty;
+using StackService::StackSizeResponse;
 
 
 class StackServerImpl final : public StackServer::Service {
@@ -51,12 +52,19 @@ class StackServerImpl final : public StackServer::Service {
         return Status::OK;
     }
 
-    Status Pop(ServerContext* context, const Empty* none,
-               Dog* item) override {
+    Status Pop(ServerContext* context, const Empty* none, Dog* item) override
+    {
         item->set_name(items.top().name());
         items.pop();
         this->console->info("Pop({0}) - size[{1}]",
                             item->name(), items.size());
+        return Status::OK;
+    }
+
+    Status Size(ServerContext* context, const Empty* none,
+                StackSizeResponse* size) override
+    {
+        size->set_value(this->items.size());
         return Status::OK;
     }
 };
@@ -75,7 +83,7 @@ void RunServer(StackConfigLoader config) {
     builder.RegisterService(&service);
 
     std::unique_ptr<Server> server(builder.BuildAndStart());
-    cout << "Listening on port " << serverAddress << endl;
+    spdlog::get("Stack")->info("Listening on port {0}", serverAddress);
 
     server->Wait();
 }
