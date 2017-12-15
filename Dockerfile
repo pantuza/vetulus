@@ -27,5 +27,3 @@ WORKDIR /vetulus
 ADD . /vetulus/
 
 RUN cd /vetulus/scripts/ && bash install_deps.sh
-
-EXPOSE 4242
