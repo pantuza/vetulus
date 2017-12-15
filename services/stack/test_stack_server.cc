@@ -35,7 +35,7 @@
 TEST(StackServiceTest, TestPushItem)
 {
     StackClient client(grpc::CreateChannel(
-                       "172.17.0.2:42500", grpc::InsecureChannelCredentials()));
+                   "172.17.0.2:42500", grpc::InsecureChannelCredentials()));
     Dog item;
     item.set_name("Test item");
     ASSERT_TRUE(client.Push(item));
@@ -48,6 +48,26 @@ TEST(StackServiceTest, TestPopItem)
     StackClient client(grpc::CreateChannel(
                        "127.0.0.1:42500", grpc::InsecureChannelCredentials()));
     ASSERT_TRUE(dynamic_cast<Dog*>(client.Pop()) != nullptr);
+}
+
+
+/* Tests checking the Stack size */
+TEST(StackServiceTest, TestStackSize)
+{
+    StackClient client(grpc::CreateChannel(
+                   "172.17.0.2:42500", grpc::InsecureChannelCredentials()));
+    Dog junior;
+    junior.set_name("Jorge Junior");
+    Dog nina;
+    nina.set_name("Nina");
+
+    ASSERT_EQ(client.Size()->value(), 0);
+    client.Push(junior);
+    ASSERT_EQ(client.Size()->value(), 1);
+    client.Push(nina);
+    ASSERT_EQ(client.Size()->value(), 2);
+    client.Pop();
+    ASSERT_EQ(client.Size()->value(), 1);
 }
 
 
