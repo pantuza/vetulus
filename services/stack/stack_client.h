@@ -26,6 +26,7 @@ using StackService::StackServer;
 using DogType::Dog;
 using StackService::Empty;
 using StackService::StackSizeResponse;
+using StackService::StackBoolResponse;
 
 
 class StackClient {
@@ -76,6 +77,22 @@ class StackClient {
 
         if (status.ok()) {
             return size;
+        } else {
+            std::cout << status.error_code() << ": " << status.error_message()
+                << std::endl;
+            return NULL;
+        }
+    }
+
+    StackBoolResponse* IsEmpty()
+    {
+        ClientContext context;
+        Empty none;
+        StackBoolResponse* response = new StackBoolResponse();
+
+        Status status = this->stub_->IsEmpty(&context, none, response);
+        if(status.ok()) {
+            return response;
         } else {
             std::cout << status.error_code() << ": " << status.error_message()
                 << std::endl;
