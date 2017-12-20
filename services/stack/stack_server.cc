@@ -20,6 +20,7 @@ using std::shared_ptr;
 
 using grpc::ServerContext;
 using grpc::Status;
+using grpc::StatusCode;
 using grpc::ServerBuilder;
 using grpc::Server;
 
@@ -27,6 +28,7 @@ using StackService::StackServer;
 using DogType::Dog;
 using StackService::Empty;
 using StackService::StackSizeResponse;
+using StackService::StackBoolResponse;
 
 
 class StackServerImpl final : public StackServer::Service {
@@ -46,18 +48,22 @@ class StackServerImpl final : public StackServer::Service {
 
     Status Push(ServerContext* context, const Dog* item, Empty* reply)
     override {
-        items.push(*item);
+        this->items.push(*item);
         this->console->info("Push({0}) - size[{1}]",
-                            item->name(), items.size());
+                            item->name(), this->items.size());
         return Status::OK;
     }
 
     Status Pop(ServerContext* context, const Empty* none, Dog* item) override
     {
-        item->set_name(items.top().name());
-        items.pop();
+        if(this->items.empty()) {
+            Status status(StatusCode::OUT_OF_RANGE, "The stack is empty");
+            return status;
+        }
+        item->set_name(this->items.top().name());
+        this->items.pop();
         this->console->info("Pop({0}) - size[{1}]",
-                            item->name(), items.size());
+                            item->name(), this->items.size());
         return Status::OK;
     }
 
@@ -65,6 +71,13 @@ class StackServerImpl final : public StackServer::Service {
                 StackSizeResponse* size) override
     {
         size->set_value(this->items.size());
+        return Status::OK;
+    }
+
+    Status IsEmpty(ServerContext* context, const Empty* none,
+                   StackBoolResponse* response) override
+    {
+        response->set_value(this->items.empty());
         return Status::OK;
     }
 };
