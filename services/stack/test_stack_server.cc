@@ -71,6 +71,27 @@ TEST(StackServiceTest, TestStackSize)
 }
 
 
+/* Tests checking if the stack is empty */
+TEST(StackServiceTest, TestStackIsNotEmpty)
+{
+    StackClient client(grpc::CreateChannel(
+                   "172.17.0.2:42500", grpc::InsecureChannelCredentials()));
+    Dog junior;
+    junior.set_name("Jorge Junior");
+    client.Push(junior);
+    ASSERT_FALSE(client.IsEmpty()->value());
+}
+
+
+/* Tries to pop an item when the stack is empty */
+TEST(StackServiceTest, TestStackCantPop)
+{
+    StackClient client(grpc::CreateChannel(
+                   "172.17.0.2:42500", grpc::InsecureChannelCredentials()));
+    Dog* dog = client.Pop();
+    ASSERT_TRUE(dog == NULL);
+}
+
 int main(int argc, char **argv)
 {
     ::testing::InitGoogleTest(&argc, argv);
