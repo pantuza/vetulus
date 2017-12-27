@@ -63,6 +63,7 @@ add_custom_command(
 # Generated include directory
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
+
 # Builds Server binary
 add_executable(stack_server
     "stack_server.cc"
@@ -74,6 +75,11 @@ add_executable(stack_server
 )
 target_link_libraries(stack_server protobuf grpc++)
 
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/scripts/cmake)
+if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")
+endif()
+
 add_executable(test_stack_server
     "test_stack_server.cc"
     ${Config_SRC}
@@ -81,7 +87,12 @@ add_executable(test_stack_server
     ${stack_proto_srcs}
     ${stack_grpc_srcs}
 )
+
 target_link_libraries(test_stack_server gtest protobuf grpc++)
+if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
+    target_link_libraries(test_stack_server gcov)
+endif()
+
 
 # Links binary with pthread library
 set(THREADS_PREFER_PTHREAD_FLAG ON)
