@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <thread>
 
 #include <grpc++/grpc++.h>
 
@@ -16,7 +15,6 @@ using std::cin;
 using std::string;
 using std::getline;
 using std::ostringstream;
-using std::thread;
 
 using grpc::Channel;
 using grpc::ClientContext;
@@ -33,7 +31,7 @@ class StackClient {
  private:
     std::unique_ptr<StackServer::Stub> stub_;
  public:
-    StackClient(std::shared_ptr<Channel> channel)
+    explicit StackClient(std::shared_ptr<Channel> channel)
     : stub_(StackServer::NewStub(channel))
     {}
 
@@ -91,7 +89,7 @@ class StackClient {
         StackBoolResponse* response = new StackBoolResponse();
 
         Status status = this->stub_->IsEmpty(&context, none, response);
-        if(status.ok()) {
+        if (status.ok()) {
             return response;
         } else {
             std::cout << status.error_code() << ": " << status.error_message()
@@ -100,42 +98,3 @@ class StackClient {
         }
     }
 };
-
-//
-//int main(int argc, char* argv[]) {
-//
-//
-//    cout << "gRPC Stack Server example" << endl;
-//
-//    string config_file = "/etc/vetulus/services/stack_client.conf";
-//
-//    if (argc > 1) {
-//        config_file = argv[1];
-//    }
-//
-//    StackConfigLoader config;
-//    config.load(config_file);
-//
-//    ostringstream config_str;
-//    config_str << config.addr << ":" << config.port;
-//
-//    for (int i = 0; i < 50; i++) {
-//
-//        thread* th = new thread([&] {
-//            StackClient client(grpc::CreateChannel(
-//                config_str.str(), grpc::InsecureChannelCredentials()));
-//            Dog item;
-//            ostringstream ostr;
-//            ostr << "Item " << i;
-//            item.set_name(ostr.str());
-//            cout << "Push(" << item.name() << ")" << endl;
-//            client.Push(item);
-//        });
-//
-//        th->detach();
-//    }
-//
-//    std::this_thread::sleep_for(std::chrono::seconds(1));
-//
-//    return EXIT_SUCCESS;
-//}
