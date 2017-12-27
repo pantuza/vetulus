@@ -12,7 +12,8 @@ echo
 cd ../services/stack
 mkdir -pv build
 cd build
-cmake ..
+cmake .. -DCMAKE_BUILD_TYPE=Coverage
+
 make
 
 
