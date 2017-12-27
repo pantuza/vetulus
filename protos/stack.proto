@@ -30,4 +30,6 @@ service StackServer {
     rpc IsFull(Empty) returns (StackBoolResponse) {}
 
     rpc Peek(Empty) returns (DogType.Dog) {}
+
+    rpc Clear(Empty) returns (StackBoolResponse) {}
 }
