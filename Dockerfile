@@ -18,7 +18,13 @@ RUN zypper update -y && \
             libtool \
             binutils \
             net-tools \
-            telnet
+            telnet \
+            python-pyOpenSSL \
+            python-pip
+
+RUN pip install pip --upgrade
+RUN pip install PyOpenSSL --upgrade
+RUN pip install cpp-coveralls
 
 RUN mkdir -pv /vetulus
 
