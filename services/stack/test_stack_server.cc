@@ -88,6 +88,7 @@ TEST(StackServiceTest, TestStackCantPop)
 {
     StackClient client(grpc::CreateChannel(
                    "172.17.0.2:42500", grpc::InsecureChannelCredentials()));
+    client.Clear();
     Dog* dog = client.Pop();
     ASSERT_TRUE(dog == NULL);
 }
