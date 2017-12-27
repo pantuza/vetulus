@@ -80,6 +80,20 @@ class StackServerImpl final : public StackServer::Service {
         response->set_value(this->items.empty());
         return Status::OK;
     }
+
+    Status Clear(ServerContext* context, const Empty* none,
+                   StackBoolResponse* response) override
+    {
+        if (this->items.size() > 0) {
+            while (!this->items.empty()) {
+                this->items.pop();
+            }
+            response->set_value(true);
+        } else {
+            response->set_value(false);
+        }
+        return Status::OK;
+    }
 };
 
 
