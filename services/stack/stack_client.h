@@ -97,4 +97,20 @@ class StackClient {
             return NULL;
         }
     }
+
+    StackBoolResponse* Clear ()
+    {
+        ClientContext context;
+        Empty none;
+        StackBoolResponse* response = new StackBoolResponse();
+
+        Status status = this->stub_->Clear(&context, none, response);
+        if (status.ok()) {
+            return response;
+        } else {
+            std::cout << status.error_code() << ": " << status.error_message()
+                << std::endl;
+            return NULL;
+        }
+    }
 };
