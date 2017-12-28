@@ -22,4 +22,5 @@ after_script:
   - ls --color services/stack/build/CMakeFiles/test_stack_server.dir/
 after_success:
   - ls --color services/stack/build/CMakeFiles/test_stack_server.dir/
+  - pwd
   - coveralls --root services/ --exclude-pattern '.*/build/' --gcov-options '\-lp'
