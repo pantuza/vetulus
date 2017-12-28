@@ -13,4 +13,4 @@ script:
   - docker run --rm -it --name vetulus pantuza/vetulus bash -c "cd scripts && ./travis_build.sh;"
   - docker exec -it vetulus_stack bash -c "cd scripts && ./test_stack_service.sh;"
 after_success:
-  - /usr/bin/coveralls --gcov-options '\-lp'
+  - docker exec -it vetulus_stack bash -c "coveralls --gcov-options '\-lp'"
