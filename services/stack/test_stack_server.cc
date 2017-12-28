@@ -93,6 +93,34 @@ TEST(StackServiceTest, TestStackCantPop)
     ASSERT_TRUE(dog == NULL);
 }
 
+
+/* Tests if the stack were cleared */
+TEST(StackServiceTest, TestStackClear)
+{
+    StackClient client(grpc::CreateChannel(
+                   "172.17.0.2:42500", grpc::InsecureChannelCredentials()));
+    Dog calvin;
+    calvin.set_name("Calvim");
+    client.Push(calvin);
+    ASSERT_FALSE(client.IsEmpty()->value());
+
+    client.Clear();
+    ASSERT_TRUE(client.IsEmpty()->value());
+
+}
+
+
+/* Tests if we receive false when we try to clear an empty stack */
+TEST(StackServiceTest, TestStackCantClear)
+{
+    StackClient client(grpc::CreateChannel(
+                   "172.17.0.2:42500", grpc::InsecureChannelCredentials()));
+    client.Clear();
+    StackBoolResponse* response = client.Clear();
+    ASSERT_FALSE(response->value());
+}
+
+
 int main(int argc, char **argv)
 {
     ::testing::InitGoogleTest(&argc, argv);
