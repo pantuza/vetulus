@@ -17,10 +17,6 @@ before_install:
 script:
   - docker run --rm -it --name vetulus pantuza/vetulus bash -c "cd scripts && ./travis_build.sh;"
   - docker exec -it vetulus_stack bash -c "cd scripts && ./test_stack_service.sh;"
-  - ls --color services/stack/build/CMakeFiles/test_stack_server.dir/
-after_script:
-  - ls --color services/stack/build/CMakeFiles/test_stack_server.dir/
+
 after_success:
-  - ls --color services/stack/build/CMakeFiles/test_stack_server.dir/
-  - docker exec -it vetulus_stack bash -c "coveralls --root services/ --exclude-pattern '.*/build/' --gcov-options '\-lp'"
-  - sudo coveralls --root services/ --exclude-pattern '.*/build/' --gcov-options '\-lp'
+  - docker exec -it --env COVERALLS_REPO_TOKEN=$COVERALLS_REPO_TOKEN vetulus_stack bash -c "coveralls --repo-token \$COVERALLS_REPO_TOKEN --root services/ --exclude-pattern '.*/build/' --gcov-options '\-lp'"
