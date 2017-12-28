@@ -121,6 +121,34 @@ TEST(StackServiceTest, TestStackCantClear)
 }
 
 
+/* Tests to get the top of the stack */
+TEST(StackServiceTest, TestGetTopOfStack)
+{
+    StackClient client(grpc::CreateChannel(
+                   "172.17.0.2:42500", grpc::InsecureChannelCredentials()));
+    client.Clear();
+    Dog floquinho;
+    floquinho.set_name("Floquinho");
+    client.Push(floquinho);
+
+    ASSERT_FALSE(client.IsEmpty()->value());
+    Dog* response = client.Top();
+    ASSERT_EQ(response->name(), floquinho.name());
+    ASSERT_GT(client.Size()->value(), 0);
+}
+
+
+/* Tries to get the top item when the stack is empty */
+TEST(StackServiceTest, TestCantGetTopOfStack)
+{
+    StackClient client(grpc::CreateChannel(
+                   "172.17.0.2:42500", grpc::InsecureChannelCredentials()));
+    client.Clear();
+    Dog* dog = client.Top();
+    ASSERT_TRUE(dog == NULL);
+}
+
+
 int main(int argc, char **argv)
 {
     ::testing::InitGoogleTest(&argc, argv);
@@ -135,6 +163,10 @@ int main(int argc, char **argv)
     config.load(config_file);
 
     ostringstream config_str;
+
+    StackClient client(grpc::CreateChannel(
+                   "172.17.0.2:42500", grpc::InsecureChannelCredentials()));
+    client.Clear();
 
     return RUN_ALL_TESTS();
 }
