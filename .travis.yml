@@ -6,11 +6,13 @@ services:
   - docker
 
 before_install:
-  - docker pull pantuza/vetulus
-  - docker run --rm -it -p 42500:42500 --name vetulus_stack -d pantuza/vetulus bash -c "cd scripts && ./run_stack_service.sh;"
+  - apt-get install -y python-pip
+  - pip install cpp-coveralls
+  - docker pull pantuza/vetulus:latest
+  - docker run --rm -it -p 42500:42500 --name vetulus_stack -v $(pwd):/vetulus -d pantuza/vetulus:latest bash -c "cd scripts && ./run_stack_service.sh;"
 
 script:
   - docker run --rm -it --name vetulus pantuza/vetulus bash -c "cd scripts && ./travis_build.sh;"
   - docker exec -it vetulus_stack bash -c "cd scripts && ./test_stack_service.sh;"
 after_success:
-  - docker exec -it vetulus_stack bash -c "coveralls --gcov-options '\-lp'"
+  - coveralls --gcov-options '\-lp'"
