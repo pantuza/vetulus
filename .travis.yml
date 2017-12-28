@@ -23,3 +23,4 @@ after_script:
 after_success:
   - ls --color services/stack/build/CMakeFiles/test_stack_server.dir/
   - docker exec -it vetulus_stack bash -c "coveralls --root services/ --exclude-pattern '.*/build/' --gcov-options '\-lp'"
+  - sudo coveralls --root services/ --exclude-pattern '.*/build/' --gcov-options '\-lp'
