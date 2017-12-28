@@ -6,6 +6,7 @@ services:
   - docker
 
 before_install:
+  - apt-get update
   - apt-get install -y python-pip
   - pip install cpp-coveralls
   - docker pull pantuza/vetulus:latest
