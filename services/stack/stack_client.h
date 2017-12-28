@@ -135,4 +135,22 @@ class StackClient {
             return NULL;
         }
     }
+
+    Dog* Top() {
+        ClientContext context;
+        Empty none;
+        Dog* item = new Dog();
+
+        Status status = this->stub_->Top(&context, none, item);
+
+        if (status.ok()) {
+            return item;
+        } else {
+            std::cout << status.error_code() << ": " << status.error_message()
+                << std::endl;
+        }
+        return NULL;
+    }
 };
+
+#endif // SERVICES_STACK_STACK_CLIENT_H_
