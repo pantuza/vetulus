@@ -1,3 +1,25 @@
+/*
+ * Copyright 2017 <Gustavo Pantuza>
+ *
+ * ============================================================================
+ *
+ *       Filename:  stack_client.h
+ *
+ *    Description:  C++ header file for gRPC Stack service
+ *
+ *        Version:  0.1
+ *        Created:  12/28/2017 18:01:52 PM
+ *       Compiler:  g++
+ *
+ *         Author:  Gustavo Pantuza (gustavopantuza@gmail.com)
+ *   Organization:  Computer science community
+ *
+ * ============================================================================
+ */
+
+#ifndef SERVICES_STACK_STACK_CLIENT_H_
+#define SERVICES_STACK_STACK_CLIENT_H_
+
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -98,7 +120,7 @@ class StackClient {
         }
     }
 
-    StackBoolResponse* Clear ()
+    StackBoolResponse* Clear()
     {
         ClientContext context;
         Empty none;
