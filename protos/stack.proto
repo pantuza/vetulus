@@ -27,9 +27,7 @@ service StackServer {
 
     rpc IsEmpty(Empty) returns (StackBoolResponse) {}
 
-    rpc IsFull(Empty) returns (StackBoolResponse) {}
-
-    rpc Peek(Empty) returns (DogType.Dog) {}
+    rpc Top(Empty) returns (DogType.Dog) {}
 
     rpc Clear(Empty) returns (StackBoolResponse) {}
 }
