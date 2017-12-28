@@ -94,6 +94,18 @@ class StackServerImpl final : public StackServer::Service {
         }
         return Status::OK;
     }
+
+    Status Top(ServerContext* context, const Empty* none, Dog* item) override
+    {
+        if (this->items.empty()) {
+            Status status(StatusCode::OUT_OF_RANGE, "The stack is empty");
+            return status;
+        }
+        item->set_name(this->items.top().name());
+        this->console->info("Top({0}) - size[{1}]",
+                            item->name(), this->items.size());
+        return Status::OK;
+    }
 };
 
 
