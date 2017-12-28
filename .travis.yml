@@ -18,4 +18,4 @@ script:
   - docker run --rm -it --name vetulus pantuza/vetulus bash -c "cd scripts && ./travis_build.sh;"
   - docker exec -it vetulus_stack bash -c "cd scripts && ./test_stack_service.sh;"
 after_success:
-  - coveralls --root services/ --exclude-pattern "*build*" --gcov-options '\-lp'
+  - coveralls --root services/ --exclude-pattern 'services/stack/build/*' --gcov-options '\-lp'
