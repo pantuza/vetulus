@@ -24,16 +24,16 @@ using grpc::StatusCode;
 using grpc::ServerBuilder;
 using grpc::Server;
 
-using StackService::StackServer;
 using DogType::Dog;
+using StackService::StackServer;
 using StackService::Empty;
 using StackService::StackSizeResponse;
 using StackService::StackBoolResponse;
 
-
+template<typename T>
 class StackServerImpl final : public StackServer::Service {
  private:
-    stack<Dog> items;
+    stack<T> items;
     shared_ptr<spdlog::logger> console;
 
  public:
@@ -46,7 +46,7 @@ class StackServerImpl final : public StackServer::Service {
         this->console->info("Stack service");
     }
 
-    Status Push(ServerContext* context, const Dog* item, Empty* reply)
+    Status Push(ServerContext* context, const T* item, Empty* reply)
     override {
         this->items.push(*item);
         ostringstream addr;
@@ -56,7 +56,7 @@ class StackServerImpl final : public StackServer::Service {
         return Status::OK;
     }
 
-    Status Pop(ServerContext* context, const Empty* none, Dog* item) override
+    Status Pop(ServerContext* context, const Empty* none, T* item) override
     {
         if(this->items.empty()) {
             Status status(StatusCode::OUT_OF_RANGE, "The stack is empty");
@@ -99,7 +99,7 @@ class StackServerImpl final : public StackServer::Service {
         return Status::OK;
     }
 
-    Status Top(ServerContext* context, const Empty* none, Dog* item) override
+    Status Top(ServerContext* context, const Empty* none, T* item) override
     {
         if (this->items.empty()) {
             Status status(StatusCode::OUT_OF_RANGE, "The stack is empty");
@@ -121,7 +121,7 @@ void RunServer(StackConfigLoader config) {
     ostr << config.addr << ":" << config.port;
     string serverAddress(ostr.str());
 
-    StackServerImpl service;
+    StackServerImpl<Dog> service;
     ServerBuilder builder;
 
     builder.AddListeningPort(serverAddress, grpc::InsecureServerCredentials());
