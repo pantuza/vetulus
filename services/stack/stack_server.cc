@@ -115,8 +115,8 @@ class StackServerImpl final : public StackServer::Service {
 };
 
 
-void RunServer(StackConfigLoader config) {
-
+void RunServer(StackConfigLoader config)
+{
     ostringstream ostr;
     ostr << config.addr << ":" << config.port;
     string serverAddress(ostr.str());
@@ -134,8 +134,8 @@ void RunServer(StackConfigLoader config) {
 }
 
 
-int main(int argc, char* argv[]) {
-
+int main(int argc, char* argv[])
+{
     string config_file = "/etc/vetulus/services/stack_server.conf";
 
     if (argc > 1) {
