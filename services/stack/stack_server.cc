@@ -49,8 +49,10 @@ class StackServerImpl final : public StackServer::Service {
     Status Push(ServerContext* context, const Dog* item, Empty* reply)
     override {
         this->items.push(*item);
+        ostringstream addr;
+        addr << (void *) item;
         this->console->info("Push({0}) - size[{1}]",
-                            item->name(), this->items.size());
+                           addr.str(), this->items.size());
         return Status::OK;
     }
 
@@ -60,10 +62,12 @@ class StackServerImpl final : public StackServer::Service {
             Status status(StatusCode::OUT_OF_RANGE, "The stack is empty");
             return status;
         }
-        item->set_name(this->items.top().name());
+        *item = this->items.top();
         this->items.pop();
+        ostringstream addr;
+        addr << (void *) item;
         this->console->info("Pop({0}) - size[{1}]",
-                            item->name(), this->items.size());
+                            addr.str(), this->items.size());
         return Status::OK;
     }
 
@@ -101,9 +105,11 @@ class StackServerImpl final : public StackServer::Service {
             Status status(StatusCode::OUT_OF_RANGE, "The stack is empty");
             return status;
         }
-        item->set_name(this->items.top().name());
+        *item = this->items.top();
+        ostringstream addr;
+        addr << (void *) item;
         this->console->info("Top({0}) - size[{1}]",
-                            item->name(), this->items.size());
+                            addr.str(), this->items.size());
         return Status::OK;
     }
 };
