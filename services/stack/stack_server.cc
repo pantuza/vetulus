@@ -46,11 +46,11 @@ class StackServerImpl final : public StackServer::Service {
         this->console->info("Stack service");
     }
 
-    Status Push(ServerContext* context, const T* item, Empty* reply)
-    override {
+    Status Push(ServerContext* context, const T* item, Empty* reply) override
+    {
         this->items.push(*item);
         ostringstream addr;
-        addr << (void *) item;
+        addr << reinterpret_cast<const void *>(item);
         this->console->info("Push({0}) - size[{1}]",
                            addr.str(), this->items.size());
         return Status::OK;
@@ -58,14 +58,14 @@ class StackServerImpl final : public StackServer::Service {
 
     Status Pop(ServerContext* context, const Empty* none, T* item) override
     {
-        if(this->items.empty()) {
+        if (this->items.empty()) {
             Status status(StatusCode::OUT_OF_RANGE, "The stack is empty");
             return status;
         }
         *item = this->items.top();
         this->items.pop();
         ostringstream addr;
-        addr << (void *) item;
+        addr << reinterpret_cast<void *>(item);
         this->console->info("Pop({0}) - size[{1}]",
                             addr.str(), this->items.size());
         return Status::OK;
@@ -107,7 +107,7 @@ class StackServerImpl final : public StackServer::Service {
         }
         *item = this->items.top();
         ostringstream addr;
-        addr << (void *) item;
+        addr << reinterpret_cast<void *>(item);
         this->console->info("Top({0}) - size[{1}]",
                             addr.str(), this->items.size());
         return Status::OK;
