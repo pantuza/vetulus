@@ -6,11 +6,6 @@ services:
   - docker
 
 before_install:
-  - sudo apt-get update
-  - sudo apt-get install -y python-pip
-  - sudo pip install pip --upgrade
-  - sudo pip install pyOpenSSL --upgrade
-  - sudo pip install cpp-coveralls --upgrade
   - docker pull pantuza/vetulus:latest
   - docker run --rm -it -p 42500:42500 --name vetulus_stack -v $(pwd):/vetulus -d pantuza/vetulus:latest bash -c "cd scripts && ./run_stack_service.sh;"
 
