@@ -1,3 +1,22 @@
+/*
+ * Copyright 2017 <Gustavo Pantuza>
+ *
+ * ============================================================================
+ *
+ *       Filename:  stack_server.cc
+ *
+ *    Description:  Implementation of Stack data struct as a service
+ *
+ *        Version:  1.0
+ *        Created:  12/12/2017 12:47:30 AM
+ *       Compiler:  g++
+ *
+ *         Author:  Gustavo Pantuza (gustavopantuza@gmail.com),
+ *   Organization:  Computer science community
+ *
+ * ============================================================================
+ */
+
 #include <iostream>
 #include <string>
 #include <sstream>
