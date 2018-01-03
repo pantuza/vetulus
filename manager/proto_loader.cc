@@ -18,7 +18,8 @@
  */
 
 #include <iostream>
-#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include <google/protobuf/compiler/importer.h>
 #include <google/protobuf/descriptor.h>
@@ -60,7 +61,7 @@ class VetulusContextGenerator : public GeneratorContext
  public:
     ZeroCopyOutputStream* Open(const string & filename)
     {
-        int outfd = open(filename, O_WRONLY);
+        int outfd = open(filename.c_str(), O_WRONLY);
         ZeroCopyOutputStream* output = new FileOutputStream(outfd);
         return output;
     }
