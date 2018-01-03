@@ -20,6 +20,7 @@
 #include <iostream>
 #include <fcntl.h>
 #include <unistd.h>
+#include <vector>
 
 #include <google/protobuf/compiler/importer.h>
 #include <google/protobuf/descriptor.h>
@@ -27,17 +28,20 @@
 #include <google/protobuf/compiler/cpp/cpp_generator.h>
 #include <google/protobuf/io/zero_copy_stream.h>
 #include <google/protobuf/io/zero_copy_stream_impl.h>
+#include <google/protobuf/compiler/plugin.pb.h>
 
 
 using std::cout;
 using std::endl;
 using std::string;
+using std::vector;
 
 using google::protobuf::compiler::Importer;
 using google::protobuf::compiler::DiskSourceTree;
 using google::protobuf::compiler::MultiFileErrorCollector;
 using google::protobuf::compiler::GeneratorContext;
 using google::protobuf::compiler::cpp::CppGenerator;
+using google::protobuf::compiler::Version;
 using google::protobuf::FileDescriptor;
 using google::protobuf::io::ZeroCopyOutputStream;
 using google::protobuf::io::FileOutputStream;
@@ -47,24 +51,40 @@ using google::protobuf::io::FileOutputStream;
 
 class ErrorCollector : public MultiFileErrorCollector
 {
-  public:
-    explicit ErrorCollector() {}
+ public:
+    ErrorCollector() {}
     void AddError(const string & filename, int line, int column,
                   const string & message)
     {
-        cout << "file: " << filename << "\tmessage: " << message << endl << endl;
+        cout << "file: " << filename << "\tmessage: " << message << endl;
     }
 };
 
 class VetulusContextGenerator : public GeneratorContext
 {
  public:
-    ZeroCopyOutputStream* Open(const string & filename)
+    virtual ZeroCopyOutputStream* Open(const string & filename)
     {
         int outfd = open(filename.c_str(), O_WRONLY);
         ZeroCopyOutputStream* output = new FileOutputStream(outfd);
         return output;
     }
+    virtual ZeroCopyOutputStream* OpenForAppend(const string & filename)
+    {
+        int outfd = open(filename.c_str(), O_APPEND);
+        ZeroCopyOutputStream* output = new FileOutputStream(outfd);
+        return output;
+    }
+    virtual ZeroCopyOutputStream* OpenForInsert(const string & filename,
+                                        const string & insertion_point)
+    {
+        int outfd = open(filename.c_str(), O_WRONLY);
+        ZeroCopyOutputStream* output = new FileOutputStream(outfd);
+        return output;
+
+    }
+    virtual void ListParsedFiles(vector< const FileDescriptor * > * output) {}
+    virtual void GetCompilerVersion(Version * version) const {}
 };
 
 
@@ -83,7 +103,7 @@ main(int argc, char* argv[])
 
     CppGenerator generator;
     string error = "num compilô!";
-    generator.Generate(fd, "", (GeneratorContext *) &context, &error);
+    generator.Generate(fd, "", &context, &error);
 
     return EXIT_SUCCESS;
 }
