@@ -20,7 +20,8 @@ RUN zypper update -y && \
             net-tools \
             telnet \
             python-pyOpenSSL \
-            python-pip
+            python-pip \
+            unzip
 
 RUN pip install pip --upgrade
 RUN pip install PyOpenSSL --upgrade
