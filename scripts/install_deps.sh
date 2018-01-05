@@ -14,3 +14,6 @@ echo "* You should run this script inside scripts directory"
 
 # Installs gRPC library
 ./install_grpc.sh
+
+# Installs protobuf compiler and shared libraries
+./install_protobuf.sh
