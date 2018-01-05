@@ -29,6 +29,7 @@
 #include <google/protobuf/io/zero_copy_stream.h>
 #include <google/protobuf/io/zero_copy_stream_impl.h>
 #include <google/protobuf/compiler/plugin.pb.h>
+#include <google/protobuf/io/printer.h>
 
 
 using std::cout;
