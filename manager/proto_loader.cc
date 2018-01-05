@@ -29,7 +29,6 @@
 #include <google/protobuf/io/zero_copy_stream.h>
 #include <google/protobuf/io/zero_copy_stream_impl.h>
 #include <google/protobuf/compiler/plugin.pb.h>
-#include <google/protobuf/io/printer.h>
 
 
 using std::cout;
@@ -103,8 +102,12 @@ main(int argc, char* argv[])
     context.Open("test.pb");
 
     CppGenerator generator;
-    string error = "num compilô!";
-    generator.Generate(fd, "", &context, &error);
+    string error = "Do not compile";
+    if (generator.Generate(fd, "", &context, &error)) {
+        cout << "Probably generated" << endl;
+    } else {
+        cout << "Not generated" << endl;
+    }
 
     return EXIT_SUCCESS;
 }
