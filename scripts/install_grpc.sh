@@ -8,7 +8,7 @@ echo "# Installing gRPC.."
 echo "#"
 echo
 
-git clone -b $(curl -L https://grpc.io/release) https://github.com/grpc/grpc.git
+git clone -b $(curl -s -L https://grpc.io/release) https://github.com/grpc/grpc.git
 
 cd grpc
 git submodule update --init
