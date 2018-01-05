@@ -20,23 +20,13 @@ else
     make install
 fi
 
-echo "Installing protobuf compiler"
-cd third_party/protobuf/
-make
-
-if [ $(which sudo) ]; then
-    sudo make install
-else
-    make install
-fi
-
 if [ "$?" == "0" ]; then
-    cd ../../../
+    cd ../
     rm -rf grpc
     echo "Done";
     exit 0;
 else
-    cd ../../../
+    cd ../
     echo "Fail";
     exit 1
 fi
