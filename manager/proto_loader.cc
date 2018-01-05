@@ -60,21 +60,28 @@ class ErrorCollector : public MultiFileErrorCollector
     }
 };
 
+
 class VetulusContextGenerator : public GeneratorContext
 {
  public:
     virtual ZeroCopyOutputStream* Open(const string & filename)
     {
-        int outfd = open(filename.c_str(), O_WRONLY);
+        cout << "trying to open: " << filename << endl;
+
+        int pos = filename.rfind("/");
+        int outfd = open(filename.substr(pos + 1).c_str(), O_WRONLY | O_CREAT);
+
         ZeroCopyOutputStream* output = new FileOutputStream(outfd);
         return output;
     }
+
     virtual ZeroCopyOutputStream* OpenForAppend(const string & filename)
     {
         int outfd = open(filename.c_str(), O_APPEND);
         ZeroCopyOutputStream* output = new FileOutputStream(outfd);
         return output;
     }
+
     virtual ZeroCopyOutputStream* OpenForInsert(const string & filename,
                                         const string & insertion_point)
     {
@@ -96,17 +103,16 @@ main(int argc, char* argv[])
     ErrorCollector error_collector;
     Importer importer(&tree, &error_collector);
     const FileDescriptor* fd = importer.Import("vetulus/test.proto");
-    cout << "fd: " << fd->name() << endl;
+    cout << "Importing file: " << fd->name() << endl;
 
     VetulusContextGenerator context;
-    context.Open("test.pb");
 
     CppGenerator generator;
-    string error = "Do not compile";
+    string error;
     if (generator.Generate(fd, "", &context, &error)) {
         cout << "Probably generated" << endl;
     } else {
-        cout << "Not generated" << endl;
+        cerr << "Not generated: " << error << endl;
     }
 
     return EXIT_SUCCESS;
