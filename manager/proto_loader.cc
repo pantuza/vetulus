@@ -30,6 +30,8 @@
 #include <google/protobuf/io/zero_copy_stream_impl.h>
 #include <google/protobuf/compiler/plugin.pb.h>
 
+#include "./spdlog/spdlog.h"
+
 
 using std::cout;
 using std::endl;
@@ -45,7 +47,6 @@ using google::protobuf::compiler::Version;
 using google::protobuf::FileDescriptor;
 using google::protobuf::io::ZeroCopyOutputStream;
 using google::protobuf::io::FileOutputStream;
-
 
 
 
@@ -66,7 +67,7 @@ class VetulusContextGenerator : public GeneratorContext
  public:
     virtual ZeroCopyOutputStream* Open(const string & filename)
     {
-        cout << "trying to open: " << filename << endl;
+        spdlog::get("Proto Loader")->info("Opening: {0}", filename);
 
         int pos = filename.rfind("/");
         int outfd = open(filename.substr(pos + 1).c_str(), O_WRONLY | O_CREAT);
@@ -98,21 +99,23 @@ class VetulusContextGenerator : public GeneratorContext
 int
 main(int argc, char* argv[])
 {
+    auto console = spdlog::stdout_color_mt("Proto Loader");
+
     DiskSourceTree tree;
     tree.MapPath("vetulus", ".");
     ErrorCollector error_collector;
     Importer importer(&tree, &error_collector);
     const FileDescriptor* fd = importer.Import("vetulus/test.proto");
-    cout << "Importing file: " << fd->name() << endl;
+    console->info("Importing file: {0}", fd->name());
 
     VetulusContextGenerator context;
-
-    CppGenerator generator;
     string error;
+    CppGenerator generator;
+
     if (generator.Generate(fd, "", &context, &error)) {
-        cout << "Probably generated" << endl;
+        console->info("Probably generated");
     } else {
-        cerr << "Not generated: " << error << endl;
+        console->error("Not generated: {0}", error);
     }
 
     return EXIT_SUCCESS;
