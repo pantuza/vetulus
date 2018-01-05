@@ -10,7 +10,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 add_executable(vetulus_master proto_loader.cc)
 
-target_link_libraries(vetulus_master protobuf)
+target_link_libraries(vetulus_master protobuf protoc)
 
 # Links binary with pthread library
 set(THREADS_PREFER_PTHREAD_FLAG ON)
