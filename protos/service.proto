@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package VetulusService;
+
+
+message ProtoFile {
+    bytes data = 1;
+}
+
+message Ack {
+    bool done = 1;
+}
+
+service ProtoService {
+
+    rpc Load(stream ProtoFile) returns (Ack) {}
+}
