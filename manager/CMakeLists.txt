@@ -11,6 +11,13 @@ set(Headers_SRC "../include")
 include_directories(${Headers_SRC})
 
 
+# Configuration module files
+file(GLOB Config_SRC
+    "../../config/config.cc"
+    "../../config/config.h"
+)
+
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 
@@ -48,7 +55,13 @@ add_custom_command(
 
 
 # Executable for generating c++ code
-add_executable(vetulus_master proto_loader.cc ${Headers_SRC}/spdlog ${service_proto_srcs} ${service_grpc_srcs})
+add_executable(vetulus_master
+    proto_loader.cc
+    ${Headers_SRC}/spdlog
+    ${service_proto_srcs}
+    ${service_grpc_srcs}
+    ${Config_SRC}
+)
 
 
 target_link_libraries(vetulus_master protobuf protoc grpc++)
