@@ -33,7 +33,7 @@
 using std::string;
 
 
-class ManagerConfigLoader: public ConfigLoader {
+class ProtoConfigLoader: public ConfigLoader {
  public:
     string port;
     string addr;
