@@ -13,8 +13,8 @@ include_directories(${Headers_SRC})
 
 # Configuration module files
 file(GLOB Config_SRC
-    "../../config/config.cc"
-    "../../config/config.h"
+    "../config/config.cc"
+    "../config/config.h"
 )
 
 
