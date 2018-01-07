@@ -51,7 +51,8 @@ add_custom_command(
 )
 
 
-
+# Generated include directory
+include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
 
 # Executable for generating c++ code
@@ -67,8 +68,19 @@ add_executable(vetulus_master
 target_link_libraries(vetulus_master protobuf protoc grpc++)
 
 
+# Builds Server binary
+add_executable(proto_server
+    "proto_server.cc"
+    ${Config_SRC}
+    ${Headers_SRC}/spdlog
+    ${service_proto_srcs}
+    ${service_grpc_srcs}
+)
+target_link_libraries(proto_server protobuf grpc++)
+
+
 # Links binary with pthread library
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 target_link_libraries(vetulus_master Threads::Threads)
-
+target_link_libraries(proto_server Threads::Threads)
