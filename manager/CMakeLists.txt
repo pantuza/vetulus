@@ -79,8 +79,19 @@ add_executable(proto_server
 target_link_libraries(proto_server protobuf grpc++)
 
 
+# Build test executable
+add_executable(test_proto_server
+    "test_proto_server.cc"
+    ${Config_SRC}
+    ${service_proto_srcs}
+    ${service_grpc_srcs}
+)
+target_link_libraries(test_proto_server gtest protobuf grpc++)
+
+
 # Links binary with pthread library
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 target_link_libraries(vetulus_master Threads::Threads)
 target_link_libraries(proto_server Threads::Threads)
+target_link_libraries(test_proto_server Threads::Threads)
