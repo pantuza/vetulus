@@ -8,7 +8,7 @@
 
 #include <grpc++/grpc++.h>
 
-#include "./stack.grpc.pb.h"
+#include "./service.grpc.pb.h"
 
 #include "./config.h"
 
@@ -19,7 +19,7 @@ using std::unique_ptr;
 
 using grpc::Channel;
 using grpc::ClientContext;
-using grpc::ClientWritter;
+using grpc::ClientWriter;
 using grpc::Status;
 
 using VetulusService::ProtoFile;
@@ -39,7 +39,7 @@ class ProtoClient {
         ClientContext context;
         Ack ack;
 
-        std::unique_ptr<ClientWritter<ProtoFile>> writer(
+        std::unique_ptr<ClientWriter<ProtoFile>> writer(
                 stub_->Load(&context, &ack));
 
         writer->WritesDone();
