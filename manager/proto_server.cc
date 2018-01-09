@@ -44,6 +44,7 @@ class ProtoServerImpl final : public ProtoServer::Service {
                 Ack* ack) override
     {
         this->console->info("Load({0})", "test");
+        ack->set_done(true);
         return Status::OK;
     }
 };
