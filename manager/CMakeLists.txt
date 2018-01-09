@@ -79,6 +79,11 @@ add_executable(proto_server
 target_link_libraries(proto_server protobuf grpc++)
 
 
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/scripts/cmake)
+if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")
+endif()
+
 # Build test executable
 add_executable(test_proto_server
     "test_proto_server.cc"
@@ -87,6 +92,9 @@ add_executable(test_proto_server
     ${service_grpc_srcs}
 )
 target_link_libraries(test_proto_server gtest protobuf grpc++)
+if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
+    target_link_libraries(test_proto_server gcov)
+endif()
 
 
 # Links binary with pthread library
