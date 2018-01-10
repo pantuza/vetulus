@@ -3,6 +3,7 @@
 #define MANAGER_PROTO_CLIENT_H_
 
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <sstream>
 
@@ -16,10 +17,12 @@ using std::cout;
 using std::cerr;
 using std::endl;
 using std::unique_ptr;
+using std::string;
+using std::ifstream;
+using std::stringstream;
 
 using grpc::Channel;
 using grpc::ClientContext;
-using grpc::ClientWriter;
 using grpc::Status;
 
 using VetulusService::ProtoFile;
@@ -35,15 +38,12 @@ class ProtoClient {
     : stub_(ProtoServer::NewStub(channel))
     {}
 
-    bool Load(ProtoFile file) {
+    bool Load(const ProtoFile* file) {
         ClientContext context;
         Ack ack;
 
-        std::unique_ptr<ClientWriter<ProtoFile>> writer(
-                stub_->Load(&context, &ack));
+        Status status = stub_->Load(&context, *file, &ack);
 
-        writer->WritesDone();
-        Status status = writer->Finish();
         if (status.ok() && ack.done()) {
             cout << "Writes done" << endl;
             return true;
@@ -51,6 +51,15 @@ class ProtoClient {
             cerr << "Error on write" << endl;
             return false;
         }
+    }
+
+    string ReadFileAsString(const string path)
+    {
+        ifstream proto_file(path.c_str());
+        stringstream buffer;
+        buffer << proto_file.rdbuf();
+        proto_file.close();
+        return buffer.str();
     }
 };
 
