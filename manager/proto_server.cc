@@ -11,6 +11,8 @@
 
 
 using std::string;
+using std::ifstream;
+using std::stringstream;
 using std::ostringstream;
 using std::shared_ptr;
 
@@ -19,7 +21,6 @@ using grpc::Status;
 using grpc::StatusCode;
 using grpc::ServerBuilder;
 using grpc::Server;
-using grpc::ServerReader;
 
 using VetulusService::ProtoFile;
 using VetulusService::Ack;
@@ -40,10 +41,10 @@ class ProtoServerImpl final : public ProtoServer::Service {
         this->console->info("Proto Service");
     }
 
-    Status Load(ServerContext* context, ServerReader<ProtoFile>* reader,
+    Status Load(ServerContext* context, const ProtoFile* proto,
                 Ack* ack) override
     {
-        this->console->info("Load({0})", "test");
+        this->console->info("Load({0})", proto->meta().name());
         ack->set_done(true);
         return Status::OK;
     }
