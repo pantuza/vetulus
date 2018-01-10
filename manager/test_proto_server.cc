@@ -31,6 +31,7 @@
 
 
 using VetulusService::ProtoFile;
+using VetulusService::MetaData;
 
 
 /* Tests loading a protobuffer file */
@@ -38,8 +39,15 @@ TEST(ProtoServiceTest, TestLoadProtobuffer)
 {
     ProtoClient client(grpc::CreateChannel(
                    "172.17.0.2:42501", grpc::InsecureChannelCredentials()));
+
+    string bytes = client.ReadFileAsString("/vetulus/protos/dog.proto");
     ProtoFile file;
-    ASSERT_TRUE(client.Load(file));
+    file.set_data(bytes);
+    MetaData meta;
+    meta.set_name("dog");
+    file.set_allocated_meta(&meta);
+
+    ASSERT_TRUE(client.Load(&file));
 }
 
 
