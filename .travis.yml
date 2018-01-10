@@ -8,7 +8,7 @@ services:
 before_install:
   - docker pull pantuza/vetulus:latest
   - docker run --rm -it -p 42500:42500 -p 42501:42501 --name vetulus -v $(pwd):/vetulus -d pantuza/vetulus:latest bash -c "cd scripts && ./run_stack_service.sh;"
-  - docker exec -it bash -c "cd scripts && ./run_proto_service.sh;"
+  - docker exec -it vetulus bash -c "cd scripts && ./run_proto_service.sh;"
 
 script:
   - docker exec -it vetulus bash -c "cd scripts && ./travis_build.sh;"
