@@ -8,10 +8,12 @@ services:
 before_install:
   - docker pull pantuza/vetulus:latest
   - docker run --rm -it -p 42500:42500 --name vetulus_stack -v $(pwd):/vetulus -d pantuza/vetulus:latest bash -c "cd scripts && ./run_stack_service.sh;"
+  - docker run --rm -it -p 42501:42501 --name vetulus_proto -v $(pwd):/vetulus -d pantuza/vetulus:latest bash -c "cd scripts && ./run_proto_service.sh;"
 
 script:
   - docker run --rm -it --name vetulus pantuza/vetulus bash -c "cd scripts && ./travis_build.sh;"
   - docker exec -it vetulus_stack bash -c "cd scripts && ./test_stack_service.sh;"
+  - docker exec -it vetulus_proto bash -c "cd scripts && ./test_proto_service.sh;"
 
 after_success:
-  - docker exec -it --env COVERALLS_REPO_TOKEN=$COVERALLS_REPO_TOKEN vetulus_stack bash -c "coveralls --repo-token \$COVERALLS_REPO_TOKEN --root services/ --exclude-pattern '.*/build/' --gcov-options '\-lp'"
+  - docker exec -it --env COVERALLS_REPO_TOKEN=$COVERALLS_REPO_TOKEN vetulus_stack bash -c "coveralls --repo-token \$COVERALLS_REPO_TOKEN --include services/ --include manager/ --exclude-pattern '.*/build/' --gcov-options '\-lp'"
