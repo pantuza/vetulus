@@ -18,5 +18,5 @@ message Ack {
 
 service ProtoServer {
 
-    rpc Load(stream ProtoFile) returns (Ack) {}
+    rpc Load(ProtoFile) returns (Ack) {}
 }
