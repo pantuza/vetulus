@@ -33,8 +33,6 @@
 #include "./spdlog/spdlog.h"
 
 
-using std::cout;
-using std::endl;
 using std::string;
 using std::vector;
 
@@ -57,9 +55,11 @@ class ErrorCollector : public MultiFileErrorCollector
     void AddError(const string & filename, int line, int column,
                   const string & message)
     {
-        cout << "file: " << filename << "\tmessage: " << message << endl;
+        spdlog::get("Proto Loader")->info(
+                    "File: {0}\tmessage: {1}", filename, message);
     }
 };
+
 
 
 class VetulusContextGenerator : public GeneratorContext
