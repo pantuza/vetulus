@@ -44,8 +44,7 @@ TEST(ProtoServiceTest, TestLoadProtobuffer)
     ProtoFile file;
     file.set_data(bytes);
     MetaData meta;
-    meta.set_name("dog");
-    file.set_allocated_meta(&meta);
+    file.mutable_meta()->set_name("Dog");
 
     ASSERT_TRUE(client.Load(&file));
 }
