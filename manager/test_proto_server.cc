@@ -62,6 +62,45 @@ TEST(ProtoServiceTest, TestCantLoadProtobuffer)
 }
 
 
+/* Tests if there is a error when we can not import a file */
+TEST(ProtoServiceTest, TestCheckIfProtoFileWereGenerated)
+{
+    ProtoClient client(grpc::CreateChannel(
+                   "172.17.0.2:42501", grpc::InsecureChannelCredentials()));
+
+    string bytes = client.ReadFileAsString("/vetulus/protos/dog.proto");
+    ProtoFile file;
+    file.set_data(bytes);
+    file.mutable_meta()->set_name("Dog1");
+
+    client.Load(&file);
+    ifstream protofile("Dog1.proto");
+
+    ASSERT_TRUE(protofile.good());
+}
+
+
+/* Tests if there is a error when we can not import a file */
+TEST(ProtoServiceTest, TestCheckIfCppFilesWereGenerated)
+{
+    ProtoClient client(grpc::CreateChannel(
+                   "172.17.0.2:42501", grpc::InsecureChannelCredentials()));
+
+    string bytes = client.ReadFileAsString("/vetulus/protos/dog.proto");
+    ProtoFile file;
+    file.set_data(bytes);
+    file.mutable_meta()->set_name("Dog2");
+    client.Load(&file);
+
+    ifstream headerfile("Dog2.pb.h");
+    ifstream sourcefile("Dog2.pb.cc");
+
+    ASSERT_TRUE(headerfile.good());
+    ASSERT_TRUE(sourcefile.good());
+}
+
+
+
 int main(int argc, char **argv)
 {
     ::testing::InitGoogleTest(&argc, argv);
