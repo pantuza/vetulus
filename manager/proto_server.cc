@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <fstream>
 
 #include <grpc++/grpc++.h>
 
@@ -8,6 +9,7 @@
 #include "./spdlog/spdlog.h"
 
 #include "./config.h"
+#include "./proto_loader.h"
 
 
 using std::string;
@@ -25,6 +27,8 @@ using grpc::Server;
 using VetulusService::ProtoFile;
 using VetulusService::Ack;
 using VetulusService::ProtoServer;
+
+using manager::VetulusProtoBuilder;
 
 
 class ProtoServerImpl final : public ProtoServer::Service {
@@ -45,7 +49,18 @@ class ProtoServerImpl final : public ProtoServer::Service {
                 Ack* ack) override
     {
         this->console->info("Load({0})", proto->meta().name());
-        ack->set_done(true);
+        ofstream proto_file(proto->meta().name());
+        proto_file << proto->data();
+        proto_file.close();
+
+        VetulusProtoBuilder builder("");
+        if (builder.Import(proto->meta().name())) {
+            if (builder.CppGenerate()) {
+                ack->set_done(true);
+                return Status::OK;
+            }
+        }
+        ack->set_done(false);
         return Status::OK;
     }
 };
