@@ -48,13 +48,14 @@ class ProtoServerImpl final : public ProtoServer::Service {
     Status Load(ServerContext* context, const ProtoFile* proto,
                 Ack* ack) override
     {
-        this->console->info("Load({0})", proto->meta().name());
-        ofstream proto_file(proto->meta().name());
+        string file_name = proto->meta().name() + ".proto";
+        this->console->info("Load({0})", file_name);
+        ofstream proto_file(file_name.c_str());
         proto_file << proto->data();
         proto_file.close();
 
-        VetulusProtoBuilder builder("");
-        if (builder.Import(proto->meta().name())) {
+        VetulusProtoBuilder builder;
+        if (builder.Import(file_name)) {
             if (builder.CppGenerate()) {
                 ack->set_done(true);
                 return Status::OK;
