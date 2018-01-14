@@ -113,7 +113,7 @@ namespace manager {
 class VetulusProtoBuilder {
 
  public:
-    explicit VetulusProtoBuilder(const string path)
+    explicit VetulusProtoBuilder(const string path = "")
     {
         this->console = spdlog::get("Proto Loader");
         if (!this->console) {
@@ -132,8 +132,15 @@ class VetulusProtoBuilder {
     bool Import(const string file)
     {
         this->file_descriptor = this->importer->Import("vetulus/" + file);
-        this->console->info("Importing file: {0}",
-                            this->file_descriptor->name());
+
+        if (this->file_descriptor != NULL) {
+            this->console->info("Importing file: {0}",
+                                this->file_descriptor->name());
+            return true;
+        } else {
+            this->console->error("Could not import {0}", file);
+            return false;
+        }
     }
 
     bool CppGenerate()
@@ -143,7 +150,7 @@ class VetulusProtoBuilder {
         CppGenerator generator;
 
         if (generator.Generate(this->file_descriptor, "", &context, &error)) {
-            this->console->info("Probably generated");
+            this->console->info("C++ files generated");
             return true;
         }
         this->console->error("Not generated: {0}", error);
@@ -154,7 +161,7 @@ class VetulusProtoBuilder {
     DiskSourceTree tree;
     ErrorCollector error_collector;
     Importer* importer;
-    const FileDescriptor* file_descriptor;
+    const FileDescriptor* file_descriptor = NULL;
     shared_ptr<spdlog::logger> console;
 };
 
