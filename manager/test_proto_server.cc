@@ -43,10 +43,22 @@ TEST(ProtoServiceTest, TestLoadProtobuffer)
     string bytes = client.ReadFileAsString("/vetulus/protos/dog.proto");
     ProtoFile file;
     file.set_data(bytes);
-    MetaData meta;
     file.mutable_meta()->set_name("Dog");
 
     ASSERT_TRUE(client.Load(&file));
+}
+
+
+/* Tests if there is a error when we can not import a file */
+TEST(ProtoServiceTest, TestCantLoadProtobuffer)
+{
+    ProtoClient client(grpc::CreateChannel(
+                   "172.17.0.2:42501", grpc::InsecureChannelCredentials()));
+    ProtoFile file;
+    file.set_data("invalid data");
+    file.mutable_meta()->set_name("Invalid");
+
+    ASSERT_FALSE(client.Load(&file));
 }
 
 
