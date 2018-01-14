@@ -43,7 +43,7 @@ TEST(ProtoServiceTest, TestLoadProtobuffer)
     string bytes = client.ReadFileAsString("/vetulus/protos/dog.proto");
     ProtoFile file;
     file.set_data(bytes);
-    file.mutable_meta()->set_name("Dog");
+    file.mutable_meta()->set_name("Dog0");
 
     ASSERT_TRUE(client.Load(&file));
 }
