@@ -55,6 +55,13 @@ add_custom_command(
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
 
+# Code coverage
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/scripts/cmake)
+if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")
+endif()
+
+
 # Builds Server binary
 add_executable(proto_server
     "proto_server.cc"
@@ -65,11 +72,8 @@ add_executable(proto_server
     ${service_grpc_srcs}
 )
 target_link_libraries(proto_server protobuf protoc grpc++)
-
-
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/scripts/cmake)
 if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage")
+    target_link_libraries(proto_server gcov)
 endif()
 
 # Build test executable
