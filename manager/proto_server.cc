@@ -27,6 +27,7 @@ using grpc::Server;
 using VetulusService::ProtoFile;
 using VetulusService::Ack;
 using VetulusService::ProtoServer;
+using VetulusService::MetaData;
 
 using manager::VetulusProtoBuilder;
 
@@ -62,6 +63,31 @@ class ProtoServerImpl final : public ProtoServer::Service {
             }
         }
         ack->set_done(false);
+        return Status::OK;
+    }
+
+    Status Unload(ServerContext* context, const MetaData* meta,
+                  Ack* ack) override
+    {
+        string proto_name = meta->name();
+        string proto = proto_name + ".proto";
+        string header = proto_name + ".pb.h";
+        string source = proto_name + ".pb.cc";
+
+        bool done = true;
+        if (remove(proto.c_str()) != 0) {
+            done = false;
+            this->console->error("Remove({0}): fail", proto);
+        }
+        if (remove(header.c_str()) != 0) {
+            done = false;
+            this->console->error("Remove({0}): fail", header);
+        }
+        if (remove(source.c_str()) != 0) {
+            done = false;
+            this->console->error("Remove({0}): fail", source);
+        }
+        ack->set_done(done);
         return Status::OK;
     }
 };
