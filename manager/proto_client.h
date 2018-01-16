@@ -28,6 +28,7 @@ using grpc::Status;
 using VetulusService::ProtoFile;
 using VetulusService::Ack;
 using VetulusService::ProtoServer;
+using VetulusService::MetaData;
 
 
 class ProtoClient {
@@ -38,19 +39,33 @@ class ProtoClient {
     : stub_(ProtoServer::NewStub(channel))
     {}
 
-    bool Load(const ProtoFile* file) {
+    bool Load(const ProtoFile* file)
+    {
         ClientContext context;
         Ack ack;
 
         Status status = stub_->Load(&context, *file, &ack);
 
         if (status.ok() && ack.done()) {
-            cout << "Writes done" << endl;
             return true;
         } else {
-            cerr << "Error on write" << endl;
             return false;
         }
+    }
+
+    bool Unload(const string protofile)
+    {
+        ClientContext context;
+        Ack ack;
+        MetaData meta;
+        meta.set_name(protofile);
+
+        Status status = stub_->Unload(&context, meta, &ack);
+
+        if (status.ok() && ack.done()) {
+            return true;
+        }
+        return false;
     }
 
     string ReadFileAsString(const string path)
