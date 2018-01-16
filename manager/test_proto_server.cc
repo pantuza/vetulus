@@ -100,6 +100,21 @@ TEST(ProtoServiceTest, TestCheckIfCppFilesWereGenerated)
 }
 
 
+/* Tests Unloading a imported protofile */
+TEST(ProtoServiceTest, TestRemoveAProtofile)
+{
+    ProtoClient client(grpc::CreateChannel(
+                   "172.17.0.2:42501", grpc::InsecureChannelCredentials()));
+
+    string bytes = client.ReadFileAsString("/vetulus/protos/dog.proto");
+    ProtoFile file;
+    file.set_data(bytes);
+    file.mutable_meta()->set_name("Dog3");
+    client.Load(&file);
+
+    ASSERT_TRUE(client.Unload("Dog3"));
+}
+
 
 int main(int argc, char **argv)
 {
