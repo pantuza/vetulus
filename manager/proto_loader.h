@@ -77,7 +77,8 @@ class VetulusContextGenerator : public GeneratorContext
         spdlog::get("Proto Loader")->info("Opening: {0}", filename);
 
         int pos = filename.rfind("/");
-        int outfd = open(filename.substr(pos + 1).c_str(), O_WRONLY | O_CREAT);
+        int outfd = open(filename.substr(pos + 1).c_str(),
+                         O_WRONLY | O_CREAT, S_IRUSR);
 
         ZeroCopyOutputStream* output = new FileOutputStream(outfd);
         return output;
@@ -119,7 +120,6 @@ class VetulusProtoBuilder {
         if (!this->console) {
             this->console = spdlog::stdout_color_mt("Proto Loader");
         }
-        this->console->info("Proto Loader");
 
         if (path.empty()) {
             this->tree.MapPath("vetulus", ".");
