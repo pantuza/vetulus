@@ -100,7 +100,7 @@ TEST(ProtoServiceTest, TestCheckIfCppFilesWereGenerated)
 }
 
 
-/* Tests Unloading a imported protofile */
+/* Tests Unloading an imported protofile */
 TEST(ProtoServiceTest, TestRemoveAProtofile)
 {
     ProtoClient client(grpc::CreateChannel(
@@ -115,6 +115,20 @@ TEST(ProtoServiceTest, TestRemoveAProtofile)
     ASSERT_TRUE(client.Unload("Dog3"));
 }
 
+
+/* Tests if is not possible to upload same file twice */
+TEST(ProtoServiceTest, TestUploadProtoTwice)
+{
+    ProtoClient client(grpc::CreateChannel(
+                   "172.17.0.2:42501", grpc::InsecureChannelCredentials()));
+
+    string bytes = client.ReadFileAsString("/vetulus/protos/dog.proto");
+    ProtoFile file;
+    file.set_data(bytes);
+    file.mutable_meta()->set_name("Dog0");
+
+    ASSERT_FALSE(client.Load(&file));
+}
 
 int main(int argc, char **argv)
 {
