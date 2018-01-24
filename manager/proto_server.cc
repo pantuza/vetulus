@@ -51,19 +51,29 @@ class ProtoServerImpl final : public ProtoServer::Service {
     {
         string file_name = proto->meta().name() + ".proto";
         this->console->info("Load({0})", file_name);
-        ofstream proto_file(file_name.c_str());
-        proto_file << proto->data();
-        proto_file.close();
 
-        VetulusProtoBuilder builder;
-        if (builder.Import(file_name)) {
-            if (builder.CppGenerate()) {
-                ack->set_done(true);
-                return Status::OK;
+        /* If file already exists we do not upload it */
+        ifstream infile(file_name.c_str());
+        if (infile.good()) {
+            ack->set_done(false);
+            this->console->error("Could not load file {0}. "
+                                 "File already exists", file_name);
+            return Status::OK;
+        } else {
+            ofstream proto_file(file_name.c_str());
+            proto_file << proto->data();
+            proto_file.close();
+
+            VetulusProtoBuilder builder;
+            if (builder.Import(file_name)) {
+                if (builder.CppGenerate()) {
+                    ack->set_done(true);
+                    return Status::OK;
+                }
             }
+            ack->set_done(false);
+            return Status::OK;
         }
-        ack->set_done(false);
-        return Status::OK;
     }
 
     Status Unload(ServerContext* context, const MetaData* meta,
