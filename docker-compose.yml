@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+
+    vetulus:
+        container_name: vetulus
+        image: pantuza/vetulus:latest
+        ports:
+            - "42500:42500"
+            - "42501:42501"
+        command: scripts/run_docker.sh
+        volumes:
+            - .:/vetulus
+        networks:
+            - vetulus_net
+
+networks:
+    vetulus_net:
