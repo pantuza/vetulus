@@ -38,7 +38,7 @@ using VetulusService::MetaData;
 TEST(ProtoServiceTest, TestLoadProtobuffer)
 {
     ProtoClient client(grpc::CreateChannel(
-                   "172.17.0.2:42501", grpc::InsecureChannelCredentials()));
+                   "vetulus:42501", grpc::InsecureChannelCredentials()));
 
     string bytes = client.ReadFileAsString("/vetulus/protos/dog.proto");
     ProtoFile file;
@@ -53,7 +53,7 @@ TEST(ProtoServiceTest, TestLoadProtobuffer)
 TEST(ProtoServiceTest, TestCantLoadProtobuffer)
 {
     ProtoClient client(grpc::CreateChannel(
-                   "172.17.0.2:42501", grpc::InsecureChannelCredentials()));
+                   "vetulus:42501", grpc::InsecureChannelCredentials()));
     ProtoFile file;
     file.set_data("invalid data");
     file.mutable_meta()->set_name("Invalid");
@@ -66,7 +66,7 @@ TEST(ProtoServiceTest, TestCantLoadProtobuffer)
 TEST(ProtoServiceTest, TestCheckIfProtoFileWereGenerated)
 {
     ProtoClient client(grpc::CreateChannel(
-                   "172.17.0.2:42501", grpc::InsecureChannelCredentials()));
+                   "vetulus:42501", grpc::InsecureChannelCredentials()));
 
     string bytes = client.ReadFileAsString("/vetulus/protos/dog.proto");
     ProtoFile file;
@@ -84,7 +84,7 @@ TEST(ProtoServiceTest, TestCheckIfProtoFileWereGenerated)
 TEST(ProtoServiceTest, TestCheckIfCppFilesWereGenerated)
 {
     ProtoClient client(grpc::CreateChannel(
-                   "172.17.0.2:42501", grpc::InsecureChannelCredentials()));
+                   "vetulus:42501", grpc::InsecureChannelCredentials()));
 
     string bytes = client.ReadFileAsString("/vetulus/protos/dog.proto");
     ProtoFile file;
@@ -104,7 +104,7 @@ TEST(ProtoServiceTest, TestCheckIfCppFilesWereGenerated)
 TEST(ProtoServiceTest, TestRemoveAProtofile)
 {
     ProtoClient client(grpc::CreateChannel(
-                   "172.17.0.2:42501", grpc::InsecureChannelCredentials()));
+                   "vetulus:42501", grpc::InsecureChannelCredentials()));
 
     string bytes = client.ReadFileAsString("/vetulus/protos/dog.proto");
     ProtoFile file;
@@ -120,7 +120,7 @@ TEST(ProtoServiceTest, TestRemoveAProtofile)
 TEST(ProtoServiceTest, TestUploadProtoTwice)
 {
     ProtoClient client(grpc::CreateChannel(
-                   "172.17.0.2:42501", grpc::InsecureChannelCredentials()));
+                   "vetulus:42501", grpc::InsecureChannelCredentials()));
 
     string bytes = client.ReadFileAsString("/vetulus/protos/dog.proto");
     ProtoFile file;

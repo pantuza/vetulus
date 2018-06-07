@@ -35,7 +35,7 @@
 TEST(StackServiceTest, TestPushItem)
 {
     StackClient client(grpc::CreateChannel(
-                   "172.17.0.2:42500", grpc::InsecureChannelCredentials()));
+                   "vetulus:42500", grpc::InsecureChannelCredentials()));
     Dog item;
     item.set_name("Test item");
     ASSERT_TRUE(client.Push(item));
@@ -46,7 +46,7 @@ TEST(StackServiceTest, TestPushItem)
 TEST(StackServiceTest, TestPopItem)
 {
     StackClient client(grpc::CreateChannel(
-                       "127.0.0.1:42500", grpc::InsecureChannelCredentials()));
+                       "vetulus:42500", grpc::InsecureChannelCredentials()));
     ASSERT_TRUE(dynamic_cast<Dog*>(client.Pop()) != nullptr);
 }
 
@@ -55,7 +55,7 @@ TEST(StackServiceTest, TestPopItem)
 TEST(StackServiceTest, TestStackSize)
 {
     StackClient client(grpc::CreateChannel(
-                   "172.17.0.2:42500", grpc::InsecureChannelCredentials()));
+                   "vetulus:42500", grpc::InsecureChannelCredentials()));
     Dog junior;
     junior.set_name("Jorge Junior");
     Dog nina;
@@ -75,7 +75,7 @@ TEST(StackServiceTest, TestStackSize)
 TEST(StackServiceTest, TestStackIsNotEmpty)
 {
     StackClient client(grpc::CreateChannel(
-                   "172.17.0.2:42500", grpc::InsecureChannelCredentials()));
+                   "vetulus:42500", grpc::InsecureChannelCredentials()));
     Dog junior;
     junior.set_name("Jorge Junior");
     client.Push(junior);
@@ -87,7 +87,7 @@ TEST(StackServiceTest, TestStackIsNotEmpty)
 TEST(StackServiceTest, TestStackCantPop)
 {
     StackClient client(grpc::CreateChannel(
-                   "172.17.0.2:42500", grpc::InsecureChannelCredentials()));
+                   "vetulus:42500", grpc::InsecureChannelCredentials()));
     client.Clear();
     Dog* dog = client.Pop();
     ASSERT_TRUE(dog == NULL);
@@ -98,7 +98,7 @@ TEST(StackServiceTest, TestStackCantPop)
 TEST(StackServiceTest, TestStackClear)
 {
     StackClient client(grpc::CreateChannel(
-                   "172.17.0.2:42500", grpc::InsecureChannelCredentials()));
+                   "vetulus:42500", grpc::InsecureChannelCredentials()));
     Dog calvin;
     calvin.set_name("Calvim");
     client.Push(calvin);
@@ -114,7 +114,7 @@ TEST(StackServiceTest, TestStackClear)
 TEST(StackServiceTest, TestStackCantClear)
 {
     StackClient client(grpc::CreateChannel(
-                   "172.17.0.2:42500", grpc::InsecureChannelCredentials()));
+                   "vetulus:42500", grpc::InsecureChannelCredentials()));
     client.Clear();
     StackBoolResponse* response = client.Clear();
     ASSERT_FALSE(response->value());
@@ -125,7 +125,7 @@ TEST(StackServiceTest, TestStackCantClear)
 TEST(StackServiceTest, TestGetTopOfStack)
 {
     StackClient client(grpc::CreateChannel(
-                   "172.17.0.2:42500", grpc::InsecureChannelCredentials()));
+                   "vetulus:42500", grpc::InsecureChannelCredentials()));
     client.Clear();
     Dog floquinho;
     floquinho.set_name("Floquinho");
@@ -142,7 +142,7 @@ TEST(StackServiceTest, TestGetTopOfStack)
 TEST(StackServiceTest, TestCantGetTopOfStack)
 {
     StackClient client(grpc::CreateChannel(
-                   "172.17.0.2:42500", grpc::InsecureChannelCredentials()));
+                   "vetulus:42500", grpc::InsecureChannelCredentials()));
     client.Clear();
     Dog* dog = client.Top();
     ASSERT_TRUE(dog == NULL);
@@ -165,7 +165,7 @@ int main(int argc, char **argv)
     ostringstream config_str;
 
     StackClient client(grpc::CreateChannel(
-                   "172.17.0.2:42500", grpc::InsecureChannelCredentials()));
+                   "vetulus:42500", grpc::InsecureChannelCredentials()));
     client.Clear();
 
     return RUN_ALL_TESTS();
