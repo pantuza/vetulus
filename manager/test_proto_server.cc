@@ -46,6 +46,7 @@ TEST(ProtoServiceTest, TestLoadProtobuffer)
     file.mutable_meta()->set_name("Dog0");
 
     ASSERT_TRUE(client.Load(&file));
+    ASSERT_TRUE(client.Unload(file.meta().name()));
 }
 
 
@@ -77,6 +78,7 @@ TEST(ProtoServiceTest, TestCheckIfProtoFileWereGenerated)
     ifstream protofile("Dog1.proto");
 
     ASSERT_TRUE(protofile.good());
+    ASSERT_TRUE(client.Unload(file.meta().name()));
 }
 
 
@@ -97,6 +99,7 @@ TEST(ProtoServiceTest, TestCheckIfCppFilesWereGenerated)
 
     ASSERT_TRUE(headerfile.good());
     ASSERT_TRUE(sourcefile.good());
+    ASSERT_TRUE(client.Unload(file.meta().name()));
 }
 
 
@@ -126,8 +129,9 @@ TEST(ProtoServiceTest, TestUploadProtoTwice)
     ProtoFile file;
     file.set_data(bytes);
     file.mutable_meta()->set_name("Dog0");
-
+    client.Load(&file);
     ASSERT_FALSE(client.Load(&file));
+    ASSERT_TRUE(client.Unload(file.meta().name()));
 }
 
 int main(int argc, char **argv)
