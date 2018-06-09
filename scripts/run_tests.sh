@@ -21,4 +21,4 @@ cd /vetulus/services/stack/build/
 
 echo "Testing Vetulus Proto service"
 cd /vetulus/manager/build/
-./test_proto_server /vetulus/config/files/proto_client.conf
+./test_manager_server /vetulus/config/files/manager_client.conf

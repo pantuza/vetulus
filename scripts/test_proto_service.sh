@@ -12,7 +12,7 @@ echo
 mkdir -pv ../manager/build/
 cd ../manager/build/
 
-test_bin_file=test_proto_server
+test_bin_file=test_manager_server
 
 MAX_TRIES=10;
 
@@ -42,4 +42,4 @@ do
     sleep 5;
 done;
 
-./test_proto_server /vetulus/config/files/proto_client.conf
+./test_manager_server /vetulus/config/files/manager_client.conf

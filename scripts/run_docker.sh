@@ -42,4 +42,4 @@ cmake .. -DCMAKE_BUILD_TYPE=Coverage
 make
 
 echo "Running Vetulus Proto service"
-./proto_server /vetulus/config/files/proto_server.conf
+./manager_server /vetulus/config/files/manager_server.conf
