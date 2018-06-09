@@ -16,7 +16,7 @@ message Ack {
     bool done = 1;
 }
 
-service ProtoServer {
+service Manager {
 
     rpc Load(ProtoFile) returns (Ack) {}
     rpc Unload(MetaData) returns (Ack) {}

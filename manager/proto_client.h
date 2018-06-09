@@ -27,16 +27,16 @@ using grpc::Status;
 
 using VetulusService::ProtoFile;
 using VetulusService::Ack;
-using VetulusService::ProtoServer;
+using VetulusService::Manager;
 using VetulusService::MetaData;
 
 
 class ProtoClient {
  private:
-    std::unique_ptr<ProtoServer::Stub> stub_;
+    std::unique_ptr<Manager::Stub> stub_;
  public:
     explicit ProtoClient(std::shared_ptr<Channel> channel)
-    : stub_(ProtoServer::NewStub(channel))
+    : stub_(Manager::NewStub(channel))
     {}
 
     bool Load(const ProtoFile* file)
