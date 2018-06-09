@@ -63,34 +63,34 @@ endif()
 
 
 # Builds Server binary
-add_executable(proto_server
-    "proto_server.cc"
+add_executable(manager_server
+    "manager_server.cc"
     "proto_loader.h"
     ${Config_SRC}
     ${Headers_SRC}/spdlog
     ${service_proto_srcs}
     ${service_grpc_srcs}
 )
-target_link_libraries(proto_server protobuf protoc grpc++)
+target_link_libraries(manager_server protobuf protoc grpc++)
 if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
-    target_link_libraries(proto_server gcov)
+    target_link_libraries(manager_server gcov)
 endif()
 
 # Build test executable
-add_executable(test_proto_server
-    "test_proto_server.cc"
+add_executable(test_manager_server
+    "test_manager_server.cc"
     ${Config_SRC}
     ${service_proto_srcs}
     ${service_grpc_srcs}
 )
-target_link_libraries(test_proto_server gtest protobuf grpc++)
+target_link_libraries(test_manager_server gtest protobuf grpc++)
 if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
-    target_link_libraries(test_proto_server gcov)
+    target_link_libraries(test_manager_server gcov)
 endif()
 
 
 # Links binary with pthread library
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
-target_link_libraries(proto_server Threads::Threads)
-target_link_libraries(test_proto_server Threads::Threads)
+target_link_libraries(manager_server Threads::Threads)
+target_link_libraries(test_manager_server Threads::Threads)
