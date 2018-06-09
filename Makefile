@@ -16,7 +16,7 @@ help:
 
 start:
 	@echo "Running Vetulus services"
-	@docker-compose up -d
+	@docker-compose up --detach
 	@docker logs --tail 100 --follow vetulus
 
 
