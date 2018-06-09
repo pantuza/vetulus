@@ -7,11 +7,11 @@
 
 help:
 	@echo "Vetulus Target rules:"
-	@echo "start		Runs docker composition"
-	@echo "stop			Clens and stops docker composition"
-	@echo "clean		Cleans project compilation"
-	@echo "test			Runs Vetulus tests"
-	@echo "shell		Run a shell inside Vetulus container"
+	@echo "start        Runs docker composition"
+	@echo "stop         Clens and stops docker composition"
+	@echo "clean        Cleans project compilation"
+	@echo "test         Runs Vetulus tests"
+	@echo "shell        Run a shell inside Vetulus container"
 
 
 start:
