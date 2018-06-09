@@ -1,4 +1,5 @@
 #include <iostream>
+
 #include <string>
 #include <sstream>
 #include <fstream>
@@ -26,18 +27,18 @@ using grpc::Server;
 
 using VetulusService::ProtoFile;
 using VetulusService::Ack;
-using VetulusService::ProtoServer;
+using VetulusService::Manager;
 using VetulusService::MetaData;
 
 using manager::VetulusProtoBuilder;
 
 
-class ProtoServerImpl final : public ProtoServer::Service {
+class ManagerServer final : public Manager::Service {
  private:
     shared_ptr<spdlog::logger> console;
 
  public:
-    ProtoServerImpl() :ProtoServer::Service()
+    ManagerServer() :Manager::Service()
     {
         this->console = spdlog::get("Proto");
         if (!this->console) {
@@ -106,7 +107,7 @@ class ProtoServerImpl final : public ProtoServer::Service {
 int
 main(int argc, char* argv[])
 {
-    string config_file = "/etc/vetulus/services/proto_server.conf";
+    string config_file = "/etc/vetulus/services/manager_server.conf";
 
     if (argc > 1) {
         config_file = argv[1];
@@ -119,7 +120,7 @@ main(int argc, char* argv[])
     ostr << config.addr << ":" << config.port;
     string serverAddress(ostr.str());
 
-    ProtoServerImpl service;
+    ManagerServer service;
     ServerBuilder builder;
 
     builder.AddListeningPort(serverAddress, grpc::InsecureServerCredentials());

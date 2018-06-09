@@ -3,7 +3,7 @@
  *
  * ============================================================================
  *
- *       Filename:  test_proto_server.cc
+ *       Filename:  test_manager_server.cc
  *
  *    Description:  Test program for the gRPC Proto service
  *
