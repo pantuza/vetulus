@@ -12,6 +12,7 @@ help:
 	@echo "clean        Cleans project compilation"
 	@echo "test         Runs Vetulus tests"
 	@echo "shell        Run a shell inside Vetulus container"
+	@echo "recompile    Recompile all modules"
 
 
 start:
@@ -37,3 +38,7 @@ test:
 
 shell:
 	@docker exec -it vetulus bash
+
+
+recompile:
+	@docker exec -it vetulus scripts/recompile.sh
