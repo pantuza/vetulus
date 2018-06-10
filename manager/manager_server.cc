@@ -40,11 +40,11 @@ class ManagerServer final : public Manager::Service {
  public:
     ManagerServer() :Manager::Service()
     {
-        this->console = spdlog::get("Proto");
+        this->console = spdlog::get("Manager");
         if (!this->console) {
-            this->console = spdlog::stdout_color_mt("Proto");
+            this->console = spdlog::stdout_color_mt("Manager");
         }
-        this->console->info("Proto Service");
+        this->console->info("Manager Server");
     }
 
     Status Load(ServerContext* context, const ProtoFile* proto,
@@ -127,7 +127,7 @@ main(int argc, char* argv[])
     builder.RegisterService(&service);
 
     std::unique_ptr<Server> server(builder.BuildAndStart());
-    spdlog::get("Proto")->info("Listening on port {0}", serverAddress);
+    spdlog::get("Manager")->info("Listening on port {0}", serverAddress);
 
     server->Wait();
 
