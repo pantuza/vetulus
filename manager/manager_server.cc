@@ -1,3 +1,5 @@
+#include <unistd.h>
+
 #include <iostream>
 
 #include <string>
@@ -11,6 +13,8 @@
 
 #include "./config.h"
 #include "./proto_loader.h"
+
+#include "./stack/stack_client.h"
 
 
 using std::string;
@@ -29,6 +33,7 @@ using VetulusService::ProtoFile;
 using VetulusService::Ack;
 using VetulusService::Manager;
 using VetulusService::MetaData;
+using VetulusService::ADTService;
 
 using manager::VetulusProtoBuilder;
 
@@ -100,6 +105,57 @@ class ManagerServer final : public Manager::Service {
         }
         ack->set_done(done);
         return Status::OK;
+    }
+
+    Status Register(ServerContext* context, const ADTService* adt,
+                    Ack* ack) override
+    {
+      pid_t pid = fork();
+
+      if(pid == 0) {
+
+        this->runForkedServer(adt);
+
+      } else if(pid > 0) {
+        this->console->error("Server forked: '{0}'", adt.name());
+
+      } else {
+        this->console->error("Server fork failed: '{0}'", adt.name());
+        return Status::CANCELLED;
+      }
+
+      return Status::OK;
+    }
+
+    Status Unregister(ServerContext* context, const ADTService* adt,
+                    Ack* ack) override
+    {
+        return Status::OK;
+    }
+
+    bool runForkedServer(const ADTService* adt)
+    {
+
+      ostringstream ostr;
+      ostr << adt.address() << ":" << adt.port();
+      string serverAddress(ostr.str());
+
+      ManagerServer service;
+      StackServerImpl<Dog> service;
+      ServerBuilder builder;
+
+      builder.AddListeningPort(serverAddress, grpc::InsecureServerCredentials());
+      builder.RegisterService(&service);
+
+      std::unique_ptr<Server> server(builder.BuildAndStart());
+
+      console = spdlog::get(adt.name());
+      if (!console) {
+        console = spdlog::stdout_color_mt(adt.name());
+      }
+
+      console->info("Listening on port {0}", serverAddress);
+      server->Wait();
     }
 };
 
