@@ -62,6 +62,11 @@ if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
 endif()
 
 
+# Abstract Data Types services implementation
+set(adt_services "../services/")
+include_directories(${adt_services})
+
+
 # Builds Server binary
 add_executable(manager_server
     "manager_server.cc"
@@ -70,6 +75,7 @@ add_executable(manager_server
     ${Headers_SRC}/spdlog
     ${service_proto_srcs}
     ${service_grpc_srcs}
+    "${adt_services}"
 )
 target_link_libraries(manager_server protobuf protoc grpc++)
 if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
