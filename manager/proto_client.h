@@ -29,6 +29,7 @@ using VetulusService::ProtoFile;
 using VetulusService::Ack;
 using VetulusService::Manager;
 using VetulusService::MetaData;
+using VetulusService::ADTService;
 
 
 class ProtoClient {
@@ -75,6 +76,30 @@ class ProtoClient {
         buffer << proto_file.rdbuf();
         proto_file.close();
         return buffer.str();
+    }
+
+    bool Register(const ADTService& adt)
+    {
+      ClientContext context;
+      Ack ack;
+      Status status = stub_->Register(&context, adt, &ack);
+
+      if (status.ok() && ack.done()) {
+          return true;
+      }
+      return false;
+    }
+
+    bool Unregister(const ADTService& adt)
+    {
+      ClientContext context;
+      Ack ack;
+      Status status = stub_->Unregister(&context, adt, &ack);
+
+      if (status.ok() && ack.done()) {
+          return true;
+      }
+      return false;
     }
 };
 
