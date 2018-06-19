@@ -7,7 +7,7 @@ services:
 
 before_install:
   - docker pull pantuza/vetulus:latest
-  - docker-compose up --detach
+  - docker-compose up -d
 
 script:
   - docker exec -it vetulus scripts/run_tests.sh
