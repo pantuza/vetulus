@@ -14,7 +14,7 @@
 #include "./config.h"
 #include "./proto_loader.h"
 
-#include "./stack/stack_client.h"
+// #include "./stack/stack_client.h"
 
 
 using std::string;
@@ -117,10 +117,10 @@ class ManagerServer final : public Manager::Service {
         this->runForkedServer(adt);
 
       } else if(pid > 0) {
-        this->console->error("Server forked: '{0}'", adt.name());
+        this->console->error("Server forked: '{0}'", adt->name());
 
       } else {
-        this->console->error("Server fork failed: '{0}'", adt.name());
+        this->console->error("Server fork failed: '{0}'", adt->name());
         return Status::CANCELLED;
       }
 
@@ -137,11 +137,10 @@ class ManagerServer final : public Manager::Service {
     {
 
       ostringstream ostr;
-      ostr << adt.address() << ":" << adt.port();
+      ostr << adt->address() << ":" << adt->port();
       string serverAddress(ostr.str());
 
       ManagerServer service;
-      StackServerImpl<Dog> service;
       ServerBuilder builder;
 
       builder.AddListeningPort(serverAddress, grpc::InsecureServerCredentials());
@@ -149,9 +148,9 @@ class ManagerServer final : public Manager::Service {
 
       std::unique_ptr<Server> server(builder.BuildAndStart());
 
-      console = spdlog::get(adt.name());
+      console = spdlog::get(adt->name());
       if (!console) {
-        console = spdlog::stdout_color_mt(adt.name());
+        console = spdlog::stdout_color_mt(adt->name());
       }
 
       console->info("Listening on port {0}", serverAddress);
