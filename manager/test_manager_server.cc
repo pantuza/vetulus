@@ -32,10 +32,11 @@
 
 using VetulusService::ProtoFile;
 using VetulusService::MetaData;
+using VetulusService::ADTService;
 
 
 /* Tests loading a protobuffer file */
-TEST(ProtoServiceTest, TestLoadProtobuffer)
+TEST(ManagerServiceTest, TestLoadProtobuffer)
 {
     ProtoClient client(grpc::CreateChannel(
                    "vetulus:42501", grpc::InsecureChannelCredentials()));
@@ -51,7 +52,7 @@ TEST(ProtoServiceTest, TestLoadProtobuffer)
 
 
 /* Tests if there is a error when we can not import a file */
-TEST(ProtoServiceTest, TestCantLoadProtobuffer)
+TEST(ManagerServiceTest, TestCantLoadProtobuffer)
 {
     ProtoClient client(grpc::CreateChannel(
                    "vetulus:42501", grpc::InsecureChannelCredentials()));
@@ -64,7 +65,7 @@ TEST(ProtoServiceTest, TestCantLoadProtobuffer)
 
 
 /* Tests if there is a error when we can not import a file */
-TEST(ProtoServiceTest, TestCheckIfProtoFileWereGenerated)
+TEST(ManagerServiceTest, TestCheckIfProtoFileWereGenerated)
 {
     ProtoClient client(grpc::CreateChannel(
                    "vetulus:42501", grpc::InsecureChannelCredentials()));
@@ -83,7 +84,7 @@ TEST(ProtoServiceTest, TestCheckIfProtoFileWereGenerated)
 
 
 /* Tests if there is a error when we can not import a file */
-TEST(ProtoServiceTest, TestCheckIfCppFilesWereGenerated)
+TEST(ManagerServiceTest, TestCheckIfCppFilesWereGenerated)
 {
     ProtoClient client(grpc::CreateChannel(
                    "vetulus:42501", grpc::InsecureChannelCredentials()));
@@ -104,7 +105,7 @@ TEST(ProtoServiceTest, TestCheckIfCppFilesWereGenerated)
 
 
 /* Tests Unloading an imported protofile */
-TEST(ProtoServiceTest, TestRemoveAProtofile)
+TEST(ManagerServiceTest, TestRemoveAProtofile)
 {
     ProtoClient client(grpc::CreateChannel(
                    "vetulus:42501", grpc::InsecureChannelCredentials()));
@@ -120,7 +121,7 @@ TEST(ProtoServiceTest, TestRemoveAProtofile)
 
 
 /* Tests if is not possible to upload same file twice */
-TEST(ProtoServiceTest, TestUploadProtoTwice)
+TEST(ManagerServiceTest, TestUploadProtoTwice)
 {
     ProtoClient client(grpc::CreateChannel(
                    "vetulus:42501", grpc::InsecureChannelCredentials()));
