@@ -135,6 +135,31 @@ TEST(ManagerServiceTest, TestUploadProtoTwice)
     ASSERT_TRUE(client.Unload(file.meta().name()));
 }
 
+
+/* Tests if we can fork a new server from manager service */
+TEST(ManagerServiceTest, TestForkServer)
+{
+  ProtoClient client(grpc::CreateChannel(
+                 "vetulus:42501", grpc::InsecureChannelCredentials()));
+
+  string bytes = client.ReadFileAsString("/vetulus/protos/dog.proto");
+  ProtoFile file;
+  file.set_data(bytes);
+  file.mutable_meta()->set_name("Dog0");
+  client.Load(&file);
+
+  ADTService service;
+  service.set_name("DogStack");
+  service.set_description("A Dog stack service");
+  service.set_adt("stack");
+  service.set_address("127.0.0.1");
+  service.set_port(42502);
+  service.set_log_path("/tmp/dog_stack.log");
+
+  client.Register(&service);
+}
+
+
 int main(int argc, char **argv)
 {
     ::testing::InitGoogleTest(&argc, argv);
