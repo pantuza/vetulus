@@ -78,11 +78,11 @@ class ProtoClient {
         return buffer.str();
     }
 
-    bool Register(const ADTService& adt)
+    bool Register(const ADTService* adt)
     {
       ClientContext context;
       Ack ack;
-      Status status = stub_->Register(&context, adt, &ack);
+      Status status = stub_->Register(&context, *adt, &ack);
 
       if (status.ok() && ack.done()) {
           return true;
@@ -90,11 +90,11 @@ class ProtoClient {
       return false;
     }
 
-    bool Unregister(const ADTService& adt)
+    bool Unregister(const ADTService* adt)
     {
       ClientContext context;
       Ack ack;
-      Status status = stub_->Unregister(&context, adt, &ack);
+      Status status = stub_->Unregister(&context, *adt, &ack);
 
       if (status.ok() && ack.done()) {
           return true;
