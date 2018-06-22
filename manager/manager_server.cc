@@ -1,3 +1,25 @@
+/*
+ * Copyright 2018 <Gustavo Pantuza>
+ *
+ * ============================================================================
+ *
+ *       Filename:  manager_server.cpp
+ *
+ *    Description:  Implementation of the manager server. It controls and
+ *                  forks new services.
+ *
+ *        Version:  1.0
+ *        Created:  12/03/2018 10:43:22 AM
+ *       Compiler:  g++
+ *
+ *         Author:  Gustavo Pantuza (gustavopantuza@gmail.com)
+ *   Organization:  Computer science community
+ *
+ * ============================================================================
+ */
+
+
+
 #include <unistd.h>
 
 #include <iostream>
