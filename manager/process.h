@@ -80,6 +80,10 @@ class VetulusProcess {
     process_list.push_back(process);
 
     console->info("Add process pid {0} to process list", process.process_pid);
+    console->info(process_list.size());
+    for (auto process : process_list) {
+      console->info(process.name);
+    }
     return true;
   }
 
@@ -93,6 +97,10 @@ class VetulusProcess {
 
   bool Remove (const string name)
   {
+    console->info(process_list.size());
+    for (auto process : process_list) {
+      console->info(process.name);
+    }
     for (auto process : process_list) {
 
       if (process.name == name) {
