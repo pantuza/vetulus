@@ -71,7 +71,8 @@ class ManagerServer final : public Manager::Service {
     VetulusProcess process;
 
  public:
-    ManagerServer() :Manager::Service()
+    ManagerServer()
+    : Manager::Service()
     {
         this->console = spdlog::get("Manager");
         if (!this->console) {
