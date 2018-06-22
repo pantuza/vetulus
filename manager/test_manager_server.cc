@@ -157,6 +157,7 @@ TEST(ManagerServiceTest, TestForkServer)
   service.set_log_path("/tmp/dog_stack.log");
 
   ASSERT_TRUE(client.Register(&service));
+  ASSERT_TRUE(client.Unload(file.meta().name()));
 }
 
 
