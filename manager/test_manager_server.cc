@@ -156,8 +156,27 @@ TEST(ManagerServiceTest, TestForkServer)
   service.set_port(42502);
   service.set_log_path("/tmp/dog_stack.log");
 
-  client.Register(&service);
+  ASSERT_TRUE(client.Register(&service));
 }
+
+
+/* Tests if we can kill a running process */
+TEST(ManagerServiceTest, TestKillServer)
+{
+  ProtoClient client(grpc::CreateChannel(
+                 "vetulus:42501", grpc::InsecureChannelCredentials()));
+
+  ADTService service;
+  service.set_name("DogStack");
+  service.set_description("A Dog stack service to kill");
+  service.set_adt("stack");
+  service.set_address("127.0.0.1");
+  service.set_port(42502);
+  service.set_log_path("/tmp/dog_stack.log");
+
+  ASSERT_TRUE(client.Unregister(&service));
+}
+
 
 
 int main(int argc, char **argv)
