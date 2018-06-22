@@ -35,6 +35,8 @@
 
 #include "./config.h"
 #include "./proto_loader.h"
+#include "./process.h"
+
 
 // #include "./stack/stack_client.h"
 
@@ -59,10 +61,14 @@ using VetulusService::ADTService;
 
 using manager::VetulusProtoBuilder;
 
+using processes::VetulusProcess_t;
+using processes::VetulusProcess;
+
 
 class ManagerServer final : public Manager::Service {
  private:
     shared_ptr<spdlog::logger> console;
+    VetulusProcess process;
 
  public:
     ManagerServer() :Manager::Service()
@@ -134,25 +140,43 @@ class ManagerServer final : public Manager::Service {
     {
       pid_t pid = fork();
 
-      if(pid == 0) {
+      if(pid == 0) {  // Forked child process execution block
+
+        VetulusProcess_t proc_data;
+        proc_data.process_pid = getpid();
+        proc_data.parent_pid = getppid();
+        proc_data.name = adt->name();
+        proc_data.port = adt->port();
+
+        process.Add(proc_data);
 
         this->runForkedServer(adt);
 
-      } else if(pid > 0) {
-        this->console->error("Server forked: '{0}'", adt->name());
+      } else if(pid > 0) {  // Parent process execution block
 
-      } else {
+        this->console->info("Server forked: '{0}'", adt->name());
+        ack->set_done(true);
+        return Status::OK;
+
+      } else {  // Fork error
+
         this->console->error("Server fork failed: '{0}'", adt->name());
         return Status::CANCELLED;
       }
 
+      ack->set_done(true);
       return Status::OK;
     }
 
     Status Unregister(ServerContext* context, const ADTService* adt,
                     Ack* ack) override
     {
-        return Status::OK;
+        if (process.Remove(adt->name())) {
+          this->console->info("Server killed: '{0}'", adt->name());
+          ack->set_done(true);
+          return Status::OK;
+        }
+        return Status::CANCELLED;
     }
 
     bool runForkedServer(const ADTService* adt)
