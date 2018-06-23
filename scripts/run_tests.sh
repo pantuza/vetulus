@@ -19,6 +19,12 @@ cd /vetulus/services/stack/build/
 
 
 
-echo "Testing Vetulus Proto service"
+echo "Testing Vetulus Manager service"
 cd /vetulus/manager/build/
 ./test_manager_server /vetulus/config/files/manager_client.conf
+
+
+
+echo "Testing Vetulus Processes namespace"
+cd /vetulus/manager/build/
+./test_process
