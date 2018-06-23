@@ -81,9 +81,6 @@ class VetulusProcess {
 
     console->info("Add process pid {0} to process list", process.process_pid);
     console->info(process_list.size());
-    for (auto process : process_list) {
-      console->info(process.name);
-    }
     return true;
   }
 
