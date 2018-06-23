@@ -162,6 +162,9 @@ class VetulusProcess {
   /* A list of running processes */
   list<VetulusProcess_t> process_list;
 
+  /**
+   * Uses the Linux kill systemcall to kill a running process
+   */
   bool kill_process (pid_t pid)
   {
     int killed = kill(pid, SIGTERM);
