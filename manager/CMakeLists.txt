@@ -82,7 +82,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
     target_link_libraries(manager_server gcov)
 endif()
 
-# Build test executable
+# Build manager test executable
 add_executable(test_manager_server
     "test_manager_server.cc"
     ${Config_SRC}
@@ -95,8 +95,19 @@ if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
 endif()
 
 
+# Builds processes test executable
+add_executable(test_process
+    "test_process.cc"
+)
+target_link_libraries(test_process gtest)
+if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
+    target_link_libraries(test_process gcov)
+endif()
+
+
 # Links binary with pthread library
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 target_link_libraries(manager_server Threads::Threads)
 target_link_libraries(test_manager_server Threads::Threads)
+target_link_libraries(test_process Threads::Threads)
