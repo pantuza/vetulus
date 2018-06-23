@@ -75,32 +75,57 @@ class VetulusProcess {
     }
   }
 
+  /**
+   * Adds a new process on the process list if it does not exists
+   */
   bool Add (VetulusProcess_t process)
   {
-    process_list.push_back(process);
+    for (auto i : process_list) {
+      if (i.process_pid == process.process_pid || i.name == process.name) {
 
+        console->info("Process with name {0} already exists", process.name);
+        return false;
+      }
+    }
+
+    process_list.push_back(process);
     console->info("Add process pid {0} to process list", process.process_pid);
-    console->info(process_list.size());
+
     return true;
   }
 
+  /**
+   * Tries to remove a process from process list and killing it by its pid
+   */
   bool Remove (pid_t pid)
   {
-    if (kill_process(pid)) {
-      return true;
+    for (auto i = process_list.begin(); i != process_list.end(); i++) {
+
+      if (i->process_pid == pid) {
+        if (kill_process(pid)) {
+
+          process_list.erase(i);
+          return true;
+        }
+      }
     }
+    console->info("Can't find process with pid {0}", pid);
     return false;
   }
 
+  /**
+   * Tries to remove a process from process list by its name and killing
+   * it by its pid
+   */
   bool Remove (const string name)
   {
     for (auto i = process_list.begin(); i != process_list.end(); i++) {
 
       if (i->name == name) {
-        if(Remove(i->process_pid)) {
+        if (kill_process(i->process_pid)) {
 
-          process_list.erase(i);
-          return true;
+            process_list.erase(i);
+            return true;
         }
       }
     }
@@ -108,6 +133,9 @@ class VetulusProcess {
     return false;
   }
 
+  /**
+   * Removes all processes in the process list
+   */
   bool RemoveAll ()
   {
     for (auto i = process_list.begin(); i != process_list.end(); i++) {
