@@ -110,10 +110,19 @@ class VetulusProcess {
 
   bool RemoveAll ()
   {
+    for (auto i = process_list.begin(); i != process_list.end(); i++) {
+
+      if (! kill_process(i->process_pid)) {
+        return false;
+      }
+      process_list.erase(i);
+    }
+
     return true;
   }
 
  private:
+
   /* Logging used for Processes operations */
   shared_ptr<spdlog::logger> console;
 
