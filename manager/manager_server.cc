@@ -143,19 +143,21 @@ class ManagerServer final : public Manager::Service {
 
       if(pid == 0) {  // Forked child process execution block
 
-        VetulusProcess_t proc_data;
-        proc_data.process_pid = getpid();
-        proc_data.parent_pid = getppid();
-        proc_data.name = adt->name();
-        proc_data.port = adt->port();
-
-        process.Add(proc_data);
-
         this->runForkedServer(adt);
 
       } else if(pid > 0) {  // Parent process execution block
 
+        VetulusProcess_t proc_data;
+
+        proc_data.process_pid = pid;
+        proc_data.parent_pid = getpid();
+        proc_data.name = adt->name();
+        proc_data.port = adt->port();
+
+        processes.Add(proc_data);
+
         this->console->info("Server forked: '{0}'", adt->name());
+
         ack->set_done(true);
         return Status::OK;
 
