@@ -68,7 +68,7 @@ using processes::VetulusProcess;
 class ManagerServer final : public Manager::Service {
  private:
     shared_ptr<spdlog::logger> console;
-    VetulusProcess process;
+    VetulusProcess processes;
 
  public:
     ManagerServer()
@@ -172,11 +172,13 @@ class ManagerServer final : public Manager::Service {
     Status Unregister(ServerContext* context, const ADTService* adt,
                     Ack* ack) override
     {
-        if (process.Remove(adt->name())) {
+        if (processes.Remove(adt->name())) {
+
           this->console->info("Server killed: '{0}'", adt->name());
           ack->set_done(true);
           return Status::OK;
         }
+
         return Status::CANCELLED;
     }
 
