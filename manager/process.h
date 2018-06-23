@@ -149,6 +149,11 @@ class VetulusProcess {
     return true;
   }
 
+  int Size ()
+  {
+    return process_list.size();
+  }
+
  private:
 
   /* Logging used for Processes operations */
