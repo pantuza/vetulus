@@ -94,14 +94,14 @@ class VetulusProcess {
 
   bool Remove (const string name)
   {
-    console->info(process_list.size());
-    for (auto process : process_list) {
-      console->info(process.name);
-    }
-    for (auto process : process_list) {
+    for (auto i = process_list.begin(); i != process_list.end(); i++) {
 
-      if (process.name == name) {
-        return Remove(process.process_pid);
+      if (i->name == name) {
+        if(Remove(i->process_pid)) {
+
+          process_list.erase(i);
+          return true;
+        }
       }
     }
     console->info("Can't find process with name {0}", name);
