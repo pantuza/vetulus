@@ -9,7 +9,7 @@ echo "# Building Configuration library"
 cd /vetulus/config
 mkdir build
 cd build
-cmake -G Ninja ..
+cmake -G Ninja -DCMAKE_BUILD_TYPE=Coverage ..
 ninja
 
 
