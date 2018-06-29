@@ -6,9 +6,6 @@ echo "PROJECT DEPENDENCIES INSTALLATION"
 echo
 echo "* You should run this script inside scripts directory"
 
-# Installs pistache library
-./install_pistache.sh
-
 # Installs Google Test library
 ./install_googletest.sh
 
