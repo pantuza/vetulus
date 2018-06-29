@@ -9,6 +9,7 @@ help:
 	@echo "Vetulus Target rules:"
 	@echo "start        Runs docker composition"
 	@echo "stop         Clens and stops docker composition"
+	@echo "logs         Follow Vetulus logs"
 	@echo "clean        Cleans project compilation"
 	@echo "test         Runs Vetulus tests"
 	@echo "shell        Run a shell inside Vetulus container"
@@ -18,12 +19,15 @@ help:
 start:
 	@echo "Running Vetulus services"
 	@docker-compose up --detach
-	@docker logs --tail 100 --follow vetulus
 
 
 stop: clean
 	@echo "Stoping Vetulus services"
 	@docker-compose down
+
+
+logs:
+	@docker logs --tail 100 --follow vetulus
 
 
 clean:
