@@ -28,3 +28,9 @@ cd /vetulus/manager/build/
 echo "Testing Vetulus Processes namespace"
 cd /vetulus/manager/build/
 ./test_process
+
+
+
+echo "Testing Vetulus Dispatcher namespace"
+cd /vetulus/manager/build/
+./test_dispatcher
