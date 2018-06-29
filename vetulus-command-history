@@ -5,4 +5,3 @@ docker login
 docker tag 8076d23c5e95 pantuza/vetulus:0.1.0
 docker push pantuza/vetulus:0.1.0
 git pull origin master --rebase; git checkout docker; and git pull origin docker; and git merge master --no-commit; and git push origin docker; and git checkout master;
-docker run --rm -it --name vetulus pantuza/vetulus bash -c 'cd scripts && ./travis_build.sh;'
