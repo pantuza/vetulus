@@ -78,9 +78,6 @@ add_executable(manager_server
     "${adt_services}"
 )
 target_link_libraries(manager_server protobuf protoc grpc++)
-if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
-    target_link_libraries(manager_server gcov)
-endif()
 
 # Build manager test executable
 add_executable(test_manager_server
@@ -90,9 +87,6 @@ add_executable(test_manager_server
     ${service_grpc_srcs}
 )
 target_link_libraries(test_manager_server gtest protobuf grpc++)
-if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
-    target_link_libraries(test_manager_server gcov)
-endif()
 
 
 # Builds processes test executable
@@ -100,9 +94,6 @@ add_executable(test_process
     "test_process.cc"
 )
 target_link_libraries(test_process gtest)
-if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
-    target_link_libraries(test_process gcov)
-endif()
 
 
 # Builds dispatcher test executable
@@ -110,9 +101,18 @@ add_executable(test_dispatcher
     "test_dispatcher.cc"
 )
 target_link_libraries(test_dispatcher gtest)
+
+
+#
+# Links binaries with gcov Coverage)
+#
 if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
+    target_link_libraries(manager_server gcov)
+    target_link_libraries(test_manager_server gcov)
+    target_link_libraries(test_process gcov)
     target_link_libraries(test_dispatcher gcov)
 endif()
+
 
 
 # Links binary with pthread library
