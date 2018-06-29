@@ -105,9 +105,20 @@ if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
 endif()
 
 
+# Builds dispatcher test executable
+add_executable(test_dispatcher
+    "test_dispatcher.cc"
+)
+target_link_libraries(test_dispatcher gtest)
+if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
+    target_link_libraries(test_dispatcher gcov)
+endif()
+
+
 # Links binary with pthread library
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 target_link_libraries(manager_server Threads::Threads)
 target_link_libraries(test_manager_server Threads::Threads)
 target_link_libraries(test_process Threads::Threads)
+target_link_libraries(test_dispatcher Threads::Threads)
