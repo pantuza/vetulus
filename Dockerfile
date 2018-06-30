@@ -34,3 +34,7 @@ WORKDIR /vetulus
 ADD . /vetulus/
 
 RUN cd /vetulus/scripts/ && bash install_deps.sh
+
+RUN cd /vetulus/scripts/ && bash compile.sh
+
+ENTRYPOINT /vetulus/scripts/run_docker.sh
