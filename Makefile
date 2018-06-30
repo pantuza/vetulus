@@ -21,7 +21,7 @@ start:
 	@docker-compose up --detach
 
 
-stop: clean
+stop:
 	@echo "Stoping Vetulus services"
 	@docker-compose down
 
