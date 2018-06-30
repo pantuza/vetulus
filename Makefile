@@ -32,7 +32,7 @@ logs:
 
 clean:
 	@echo "Cleaning project.."
-	@docker exec -it vetulus bash -c 'find {api,manager,config,services} -type d -iname build | xargs rm -rvf'
+	@docker exec -it vetulus bash -c 'find {manager,config,services} -type d -iname build | xargs rm -rvf'
 
 
 test:
