@@ -45,4 +45,4 @@ shell:
 
 
 recompile:
-	@docker exec -it vetulus scripts/recompile.sh
+	@docker exec -it vetulus scripts/compile.sh
