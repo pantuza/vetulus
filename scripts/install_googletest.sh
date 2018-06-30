@@ -8,6 +8,9 @@ echo "# Installing Google Test.."
 echo "#"
 echo
 
+# Forcing directory path
+cd /vetulus/scripts/
+
 git clone https://github.com/google/googletest.git
 
 cd googletest
@@ -24,11 +27,8 @@ else
 fi
 
 if [ "$?" == 0 ]; then
-    cd ../..
-    rm -rf googletest
     echo "Done";
 else
-    cd ../..
     echo "Fail";
     exit 1
 fi

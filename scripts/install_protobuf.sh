@@ -8,6 +8,9 @@ echo "# Installing Protobuf.."
 echo "#"
 echo
 
+# Forcing directory path
+cd /vetulus/scripts/
+
 
 git clone https://github.com/google/protobuf.git
 
@@ -27,12 +30,8 @@ fi
 
 
 if [ "$?" == "0" ]; then
-    cd ../
-    rm -rf protobuf
     echo "Done";
-    exit 0;
 else
-    cd ../
     echo "Fail";
     exit 1
 fi
