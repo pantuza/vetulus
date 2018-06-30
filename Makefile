@@ -19,12 +19,12 @@ help:
 
 
 start:
-	@echo "Running Vetulus services"
+	$(info Running Vetulus services)
 	@docker-compose up --detach
 
 
 stop:
-	@echo "Stoping Vetulus services"
+	$(info Stoping Vetulus services)
 	@docker-compose down
 
 
@@ -33,12 +33,12 @@ logs:
 
 
 clean:
-	@echo "Cleaning project.."
+	$(info Cleaning project)
 	@docker exec -it vetulus bash -c 'find {manager,config,services} -type d -iname build | xargs rm -rvf'
 
 
 test:
-	@echo "Running Vetulus tests"
+	$(info Running Vetulus tests)
 	@docker exec -it vetulus scripts/run_tests.sh
 
 
@@ -51,10 +51,12 @@ compile:
 
 
 build: Dockerfile
+	$(info Building docker image locally)
 	@docker build . --tag vetulus
 
 
 image:
+	$(info Triggers docker image build)
 	@git checkout master;
 	@git pull origin master --rebase;
 	@git checkout docker;
