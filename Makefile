@@ -13,7 +13,9 @@ help:
 	@echo "clean        Cleans project compilation"
 	@echo "test         Runs Vetulus tests"
 	@echo "shell        Run a shell inside Vetulus container"
-	@echo "recompile    Recompile all modules"
+	@echo "compile      Compile all modules"
+	@echo "build        Builds docker image locally"
+	@echo "image        Merges master into docker branch and pushes to remote"
 
 
 start:
@@ -44,5 +46,19 @@ shell:
 	@docker exec -it vetulus bash
 
 
-recompile:
+compile:
 	@docker exec -it vetulus scripts/compile.sh
+
+
+build: Dockerfile
+	@docker build . --tag vetulus
+
+
+image:
+	@git checkout master;
+	@git pull origin master --rebase;
+	@git checkout docker;
+	@git pull origin docker --rebase;
+	@git merge master --no-commit;
+	@git push origin docker;
+	@git checkout master;
