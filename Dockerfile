@@ -19,14 +19,14 @@ RUN apk update && \
             autoconf \
             libtool \
             openssl-dev \
-            libffi-dev
+            libffi-dev \
             git \
             curl \
 
             # Cpp-Coveralls dependencies
             python3 \
             python3-dev \
-            py2-pip \
+            py2-pip
 
 
 # Cpp Coveralls installation
