@@ -34,7 +34,7 @@ build ()
     cmake -G Ninja -DCMAKE_BUILD_TYPE=Coverage ..
     ninja
 
-    echo "Building Vetulus Proto service"
+    echo "Building Vetulus Manager service"
     cd /vetulus/manager/
     mkdir -pv build
     cd build
