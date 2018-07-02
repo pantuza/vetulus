@@ -52,7 +52,7 @@ compile:
 
 build: Dockerfile
 	$(info Building docker image locally)
-	@docker build . --tag vetulus
+	@time docker build . --tag vetulus
 
 
 image:
