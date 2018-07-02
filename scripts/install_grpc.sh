@@ -16,7 +16,7 @@ git clone -b $(curl -s -L https://grpc.io/release) https://github.com/grpc/grpc.
 
 cd grpc
 git submodule update --init
-make
+make -j 4
 
 if [ $(which sudo) ]; then
     sudo make install
