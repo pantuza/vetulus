@@ -1,40 +1,53 @@
-FROM opensuse:latest
+FROM alpine:latest
 
-RUN zypper update -y && \
-    zypper install -y \
-            git \
-            gcc-c++ \
+
+RUN apk update && \
+
+    # Project dependencies
+    apk add g++ \
             cmake \
             ninja \
+            gtest \
+            gtest-dev \
+            protobuf \
+            protobuf-dev \
+
+            # gRPC compilation dependencies
+            gcc \
             make \
             automake \
             autoconf \
-            vim \
-            which \
-            curl \
-            perl \
-            go \
-            m4 \
             libtool \
-            binutils \
-            net-tools \
-            telnet \
-            python-pyOpenSSL \
-            python-pip \
-            unzip
+            openssl-dev \
+            libffi-dev
+            git \
+            curl \
 
-RUN pip install pip --upgrade
-RUN pip install PyOpenSSL --upgrade
-RUN pip install cpp-coveralls
+            # Cpp-Coveralls dependencies
+            python3 \
+            python3-dev \
+            py2-pip \
+
+
+# Cpp Coveralls installation
+RUN pip3 install pip --upgrade
+RUN pip3 install PyOpenSSL --upgrade
+RUN pip3 install cpp-coveralls
+
 
 RUN mkdir -pv /vetulus
 
-WORKDIR /vetulus
 
 ADD . /vetulus/
 
-RUN cd /vetulus/scripts/ && bash install_deps.sh
 
-RUN cd /vetulus/scripts/ && bash compile.sh
+WORKDIR /vetulus
 
-ENTRYPOINT /vetulus/scripts/run_docker.sh
+
+RUN /vetulus/scripts/install_deps.sh
+
+
+RUN /vetulus/scripts/compile.sh
+
+
+CMD /vetulus/scripts/run_docker.sh
