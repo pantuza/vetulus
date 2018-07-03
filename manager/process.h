@@ -176,6 +176,7 @@ class VetulusProcess {
 
     } else if(errno == EINVAL || errno == ESRCH || errno == EPERM) {
 
+      this->console->error("Could not kill process pid {0}", pid);
       this->console->error(strerror(errno));
     }
     return false;
