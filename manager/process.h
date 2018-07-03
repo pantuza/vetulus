@@ -138,12 +138,13 @@ class VetulusProcess {
    */
   bool RemoveAll ()
   {
-    for (auto i = process_list.begin(); i != process_list.end(); i++) {
+    for (auto i = process_list.begin(); i != process_list.end();) {
 
       if (! kill_process(i->process_pid)) {
         return false;
       }
-      process_list.erase(i);
+
+      i = process_list.erase(i);
     }
 
     return true;
