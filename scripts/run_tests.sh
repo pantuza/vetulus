@@ -7,6 +7,25 @@
 
 
 
+
+# Waits until services are up and running
+SLEEP_TIME=10
+MAX_RETRIES=15
+
+for i in $(seq 1 ${MAX_RETRIES});
+do
+    netstat -antl | grep "4242" | grep -i LISTEN
+
+    # When server is up we break the waiting and try to run tests
+    if [ "$?" -eq "0" ]; then
+        break;
+    fi;
+
+    echo "[${i}] Waiting Vetulus service.."
+    sleep ${SLEEP_TIME};
+done;
+
+
 echo "Testing configuration classes"
 cd /vetulus/config/build
 ./test_vetulus_config
