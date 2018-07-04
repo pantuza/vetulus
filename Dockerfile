@@ -29,25 +29,25 @@ RUN apk update && \
             py2-pip
 
 
+
 # Cpp Coveralls installation
 RUN pip3 install pip --upgrade
 RUN pip3 install PyOpenSSL --upgrade
 RUN pip3 install cpp-coveralls
 
 
+
 RUN mkdir -pv /vetulus
-
-
 ADD . /vetulus/
-
-
 WORKDIR /vetulus
 
 
+
 RUN /vetulus/scripts/install_deps.sh
-
-
 RUN /vetulus/scripts/compile.sh
+
+
+EXPOSE 4242
 
 
 CMD /vetulus/scripts/run_docker.sh
