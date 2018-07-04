@@ -21,7 +21,7 @@ help:
 
 start:
 	$(info Running Vetulus services)
-	@docker-compose up --detach
+	@docker-compose up -d
 
 
 stop:
