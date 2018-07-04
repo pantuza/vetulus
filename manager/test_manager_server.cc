@@ -39,7 +39,7 @@ using VetulusService::ADTService;
 TEST(ManagerServiceTest, TestLoadProtobuffer)
 {
     ProtoClient client(grpc::CreateChannel(
-                   "vetulus:42501", grpc::InsecureChannelCredentials()));
+                   "vetulus:4242", grpc::InsecureChannelCredentials()));
 
     string bytes = client.ReadFileAsString("/vetulus/protos/dog.proto");
     ProtoFile file;
@@ -55,7 +55,7 @@ TEST(ManagerServiceTest, TestLoadProtobuffer)
 TEST(ManagerServiceTest, TestCantLoadProtobuffer)
 {
     ProtoClient client(grpc::CreateChannel(
-                   "vetulus:42501", grpc::InsecureChannelCredentials()));
+                   "vetulus:4242", grpc::InsecureChannelCredentials()));
     ProtoFile file;
     file.set_data("invalid data");
     file.mutable_meta()->set_name("Invalid");
@@ -68,7 +68,7 @@ TEST(ManagerServiceTest, TestCantLoadProtobuffer)
 TEST(ManagerServiceTest, TestCheckIfProtoFileWereGenerated)
 {
     ProtoClient client(grpc::CreateChannel(
-                   "vetulus:42501", grpc::InsecureChannelCredentials()));
+                   "vetulus:4242", grpc::InsecureChannelCredentials()));
 
     string bytes = client.ReadFileAsString("/vetulus/protos/dog.proto");
     ProtoFile file;
@@ -87,7 +87,7 @@ TEST(ManagerServiceTest, TestCheckIfProtoFileWereGenerated)
 TEST(ManagerServiceTest, TestCheckIfCppFilesWereGenerated)
 {
     ProtoClient client(grpc::CreateChannel(
-                   "vetulus:42501", grpc::InsecureChannelCredentials()));
+                   "vetulus:4242", grpc::InsecureChannelCredentials()));
 
     string bytes = client.ReadFileAsString("/vetulus/protos/dog.proto");
     ProtoFile file;
@@ -108,7 +108,7 @@ TEST(ManagerServiceTest, TestCheckIfCppFilesWereGenerated)
 TEST(ManagerServiceTest, TestRemoveAProtofile)
 {
     ProtoClient client(grpc::CreateChannel(
-                   "vetulus:42501", grpc::InsecureChannelCredentials()));
+                   "vetulus:4242", grpc::InsecureChannelCredentials()));
 
     string bytes = client.ReadFileAsString("/vetulus/protos/dog.proto");
     ProtoFile file;
@@ -124,7 +124,7 @@ TEST(ManagerServiceTest, TestRemoveAProtofile)
 TEST(ManagerServiceTest, TestUploadProtoTwice)
 {
     ProtoClient client(grpc::CreateChannel(
-                   "vetulus:42501", grpc::InsecureChannelCredentials()));
+                   "vetulus:4242", grpc::InsecureChannelCredentials()));
 
     string bytes = client.ReadFileAsString("/vetulus/protos/dog.proto");
     ProtoFile file;
@@ -140,7 +140,7 @@ TEST(ManagerServiceTest, TestUploadProtoTwice)
 TEST(ManagerServiceTest, TestForkServer)
 {
   ProtoClient client(grpc::CreateChannel(
-                 "vetulus:42501", grpc::InsecureChannelCredentials()));
+                 "vetulus:4242", grpc::InsecureChannelCredentials()));
 
   string bytes = client.ReadFileAsString("/vetulus/protos/dog.proto");
   ProtoFile file;
@@ -165,7 +165,7 @@ TEST(ManagerServiceTest, TestForkServer)
 TEST(ManagerServiceTest, TestKillServer)
 {
   ProtoClient client(grpc::CreateChannel(
-                 "vetulus:42501", grpc::InsecureChannelCredentials()));
+                 "vetulus:4242", grpc::InsecureChannelCredentials()));
 
   ADTService service;
   service.set_name("DogStack");
