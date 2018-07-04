@@ -12,7 +12,7 @@ services:
         volumes:
             - .:/vetulus
         networks:
-            - vetulus_net
+            - net
 
 networks:
-    vetulus_net:
+    net:
