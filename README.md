@@ -19,8 +19,19 @@ Let's take a look at an example:
 
 Vetulus is your **data structure as a service**.
 
-## How to Install
-> Coming soon
+See [documentation (coming soon)]() for more details and usage.
+
+## Getting started
+
+You can check vetulus service by simply running:
+
+```bash
+$> docker run --rm pantuza/vetulus
+```
+then you have a service running ready to receive requests.
+
+Checkout the example [video (coming soon)]() and the [tutorial (coming soon)]()
+
 
 ## How to contribute
 
