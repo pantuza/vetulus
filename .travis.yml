@@ -6,11 +6,10 @@ services:
   - docker
 
 before_install:
-  - docker pull pantuza/vetulus:latest
-  - docker-compose up -d
+  - make start
 
 script:
-  - docker exec -it vetulus scripts/run_tests.sh
+  - make test
 
 after_success:
   - docker exec -it --env COVERALLS_REPO_TOKEN=$COVERALLS_REPO_TOKEN vetulus bash -c "coveralls --repo-token \$COVERALLS_REPO_TOKEN --include services/ --include manager/ --include config/ --exclude-pattern '.*/build/' --gcov-options '\-lp'"
