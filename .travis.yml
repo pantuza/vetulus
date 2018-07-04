@@ -13,4 +13,4 @@ script:
   - docker exec -it vetulus scripts/run_tests.sh
 
 after_success:
-  - docker exec -it --env COVERALLS_REPO_TOKEN=$COVERALLS_REPO_TOKEN vetulus bash -c "coveralls --repo-token \$COVERALLS_REPO_TOKEN --include services/ --include manager/ --exclude-pattern '.*/build/' --gcov-options '\-lp'"
+  - docker exec -it --env COVERALLS_REPO_TOKEN=$COVERALLS_REPO_TOKEN vetulus bash -c "coveralls --repo-token \$COVERALLS_REPO_TOKEN --include services/ --include manager/ --include config/ --exclude-pattern '.*/build/' --gcov-options '\-lp'"
