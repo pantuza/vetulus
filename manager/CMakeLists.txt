@@ -107,7 +107,6 @@ target_link_libraries(test_dispatcher gtest)
 # Links binaries with gcov Coverage)
 #
 if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
-    target_link_libraries(manager_server gcov)
     target_link_libraries(test_manager_server gcov)
     target_link_libraries(test_process gcov)
     target_link_libraries(test_dispatcher gcov)
