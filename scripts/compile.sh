@@ -25,21 +25,21 @@ build ()
     mkdir -vp build
     cd build
     cmake -G Ninja -DCMAKE_BUILD_TYPE=Coverage ..
-    ninja
+    time ninja -j 4
 
     echo "Building Vetulus Stack service"
     cd /vetulus/services/stack
     mkdir -pv build
     cd build
     cmake -G Ninja -DCMAKE_BUILD_TYPE=Coverage ..
-    ninja
+    time ninja -j 4
 
     echo "Building Vetulus Manager service"
     cd /vetulus/manager/
     mkdir -pv build
     cd build
     cmake -G Ninja -DCMAKE_BUILD_TYPE=Coverage ..
-    ninja
+    time ninja -j 4
 }
 
 
