@@ -26,6 +26,7 @@ build ()
     cd build
     cmake -G Ninja -DCMAKE_BUILD_TYPE=Coverage ..
     time ninja -j 4
+    ninja install
 
     echo "Building Vetulus Stack service"
     cd /vetulus/services/stack
