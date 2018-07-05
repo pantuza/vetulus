@@ -73,7 +73,7 @@ add_executable(stack_server
     ${stack_proto_srcs}
     ${stack_grpc_srcs}
 )
-target_link_libraries(stack_server protobuf grpc++)
+target_link_libraries(stack_server protobuf grpc++ vetulus)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/scripts/cmake)
 if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
@@ -88,7 +88,7 @@ add_executable(test_stack_server
     ${stack_grpc_srcs}
 )
 
-target_link_libraries(test_stack_server gtest protobuf grpc++)
+target_link_libraries(test_stack_server gtest protobuf grpc++ vetulus)
 if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
     target_link_libraries(test_stack_server gcov)
 endif()
