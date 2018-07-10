@@ -27,7 +27,6 @@
 #include <stdlib.h>
 #include <string>
 
-// #include "../../config/config.h"
 #include "vetulus/config.h"
 
 
