@@ -1,5 +1,6 @@
 syntax = "proto3";
 
+
 package VetulusService;
 
 
@@ -26,10 +27,47 @@ message ADTService {
     string log_path = 6;
 }
 
+
+message ListOptions {
+}
+
+message ListResponse {
+    repeated ADTService services = 1;
+}
+
+
+
+/*
+ * Vetulus gRPC server interface definition
+ */
 service Manager {
 
+    /*
+     * Loads a proto file onto Vetulus server
+     */
     rpc Load (ProtoFile) returns (Ack) {}
+
+
+    /*
+     * Unloads a proto file onto Vetulus server
+     */
     rpc Unload (MetaData) returns (Ack) {}
+
+
+    /*
+     * Registers a new service. This method will fork and start the new service
+     */
     rpc Register (ADTService) returns (Ack) {}
+
+
+    /*
+     * Unregisters a running service. Kills its process.
+     */
     rpc Unregister (ADTService) returns (Ack) {}
+
+
+    /*
+     * Lists all running services
+     */
+     rpc ListServices (ListOptions) returns (ListResponse) {}
 }
