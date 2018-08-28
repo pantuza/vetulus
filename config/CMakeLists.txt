@@ -8,7 +8,7 @@ set(LIBVETULUS_VERSION 0.1.0)
 
 
 # Project name, version and description
-project (${LIBVETULUS_NAME} VERSION ${LIBVETULUS_VERSION} DESCRIPTION "Vetulus services library")
+project (${LIBVETULUS_NAME} VERSION ${LIBVETULUS_VERSION} LANGUAGES CXX DESCRIPTION "Vetulus services library")
 
 
 # Use GNU way of install paths
@@ -54,13 +54,17 @@ install(FILES ${CMAKE_BINARY_DIR}/${LIBVETULUS_NAME}.pc
 # Builds test binary for config module
 #
 
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
 
 # Target binary
 add_executable(test_vetulus_config config.cc test_config.cc)
 
+
 # Links binary with Google Test library
 target_link_libraries(test_vetulus_config gtest)
+
 
 # Links binary with pthread library
 set(THREADS_PREFER_PTHREAD_FLAG ON)
