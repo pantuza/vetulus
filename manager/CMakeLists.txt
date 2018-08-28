@@ -92,8 +92,11 @@ target_link_libraries(test_manager_server gtest protobuf grpc++)
 # Builds processes test executable
 add_executable(test_process
     "test_process.cc"
+    ${Config_SRC}
+    ${service_proto_srcs}
+    ${service_grpc_srcs}
 )
-target_link_libraries(test_process gtest)
+target_link_libraries(test_process gtest protobuf grpc++)
 
 
 # Builds dispatcher test executable
