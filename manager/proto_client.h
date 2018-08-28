@@ -30,6 +30,8 @@ using VetulusService::Ack;
 using VetulusService::Manager;
 using VetulusService::MetaData;
 using VetulusService::ADTService;
+using VetulusService::ListOptions;
+using VetulusService::ListResponse;
 
 
 class ProtoClient {
@@ -100,6 +102,15 @@ class ProtoClient {
           return true;
       }
       return false;
+    }
+
+    ListResponse ListServices (const ListOptions* opts)
+    {
+      ClientContext context;
+      ListResponse response;
+      Status status = stub_->ListServices(&context, *opts, &response);
+
+      return response;
     }
 };
 
