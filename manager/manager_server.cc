@@ -58,6 +58,8 @@ using VetulusService::Ack;
 using VetulusService::Manager;
 using VetulusService::MetaData;
 using VetulusService::ADTService;
+using VetulusService::ListOptions;
+using VetulusService::ListResponse;
 
 using manager::VetulusProtoBuilder;
 
@@ -153,6 +155,7 @@ class ManagerServer final : public Manager::Service {
         proc_data.parent_pid = getpid();
         proc_data.name = adt->name();
         proc_data.port = adt->port();
+        proc_data.adt = *adt;
 
         processes.Add(proc_data);
 
@@ -182,6 +185,18 @@ class ManagerServer final : public Manager::Service {
         }
 
         return Status::CANCELLED;
+    }
+
+    Status ListServices(ServerContext* context, const ListOptions* opts,
+                        ListResponse* response) override
+    {
+
+      for (auto& i : processes.All()) {
+        ADTService* service = response->add_services();
+        service = &i.adt;
+      }
+
+      return Status::OK;
     }
 
     bool runForkedServer(const ADTService* adt)
