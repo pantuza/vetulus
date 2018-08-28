@@ -30,12 +30,16 @@
 #include <string>
 #include <list>
 
+#include "./service.grpc.pb.h"
 #include "./spdlog/spdlog.h"
+
 
 using std::string;
 using std::list;
 using std::strerror;
 using std::shared_ptr;
+
+using VetulusService::ADTService;
 
 
 namespace processes {
@@ -52,6 +56,8 @@ struct vetulus_process {
   int port; // Port that process is listening
 
   string name; // The humanized name of the process
+
+  ADTService adt; // A reference to the service meta data
 };
 
 
@@ -153,6 +159,11 @@ class VetulusProcess {
   int Size ()
   {
     return process_list.size();
+  }
+
+  list<VetulusProcess_t>& All ()
+  {
+    return process_list;
   }
 
  private:
