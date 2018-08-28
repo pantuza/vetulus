@@ -7,16 +7,17 @@
 
 help:
 	@echo "Vetulus Target rules:"
-	@echo "start        Runs docker composition"
-	@echo "stop         Clens and stops docker composition"
-	@echo "restart      Restartes containers from docker composition"
-	@echo "logs         Follow Vetulus logs"
-	@echo "clean        Cleans project compilation"
-	@echo "test         Runs Vetulus tests"
-	@echo "shell        Run a shell inside Vetulus container"
-	@echo "compile      Compile all modules"
-	@echo "build        Builds docker image locally"
-	@echo "image        Merges master into docker branch and pushes to remote"
+	@echo
+	@echo "    start        Runs docker composition"
+	@echo "    stop         Clens and stops docker composition"
+	@echo "    restart      Restartes containers from docker composition"
+	@echo "    logs         Follow Vetulus logs"
+	@echo "    clean        Cleans project compilation"
+	@echo "    test         Runs Vetulus tests"
+	@echo "    shell        Run a shell inside Vetulus container"
+	@echo "    compile      Compile all modules"
+	@echo "    build        Builds docker image locally"
+	@echo "    image        Merges master into docker branch and pushes to remote"
 
 
 start:
