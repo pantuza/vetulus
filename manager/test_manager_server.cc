@@ -214,6 +214,20 @@ TEST(ManagerServiceTest, TestListServices)
 }
 
 
+/* Tests if services list is empty */
+TEST(ManagerServiceTest, TestListServicesIsEmpty)
+{
+  ProtoClient client(grpc::CreateChannel(
+                 "vetulus:4242", grpc::InsecureChannelCredentials()));
+
+  ListOptions opts;
+  ListResponse running_list;
+  running_list = client.ListServices(&opts);
+
+  ASSERT_EQ(running_list.services_size(), 0);
+}
+
+
 
 int main(int argc, char **argv)
 {
