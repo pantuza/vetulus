@@ -33,6 +33,9 @@
 using VetulusService::ProtoFile;
 using VetulusService::MetaData;
 using VetulusService::ADTService;
+using VetulusService::ListOptions;
+using VetulusService::ListResponse;
+
 
 
 /* Tests loading a protobuffer file */
@@ -175,6 +178,38 @@ TEST(ManagerServiceTest, TestKillServer)
   service.set_port(42502);
   service.set_log_path("/tmp/dog_stack.log");
 
+  ASSERT_TRUE(client.Unregister(&service));
+}
+
+
+/* Tests if we can list running services */
+TEST(ManagerServiceTest, TestListServices)
+{
+  ProtoClient client(grpc::CreateChannel(
+                 "vetulus:4242", grpc::InsecureChannelCredentials()));
+
+  string bytes = client.ReadFileAsString("/vetulus/protos/dog.proto");
+  ProtoFile file;
+  file.set_data(bytes);
+  file.mutable_meta()->set_name("Dog0");
+  client.Load(&file);
+
+  ADTService service;
+  service.set_name("DogStack");
+  service.set_description("A Dog stack service");
+  service.set_adt("stack");
+  service.set_address("127.0.0.1");
+  service.set_port(42502);
+  service.set_log_path("/tmp/dog_stack.log");
+
+  ASSERT_TRUE(client.Register(&service));
+
+  ListOptions opts;
+  ListResponse running_list;
+  running_list = client.ListServices(&opts);
+
+  ASSERT_EQ(running_list.services_size(), 1);
+  ASSERT_TRUE(client.Unload(file.meta().name()));
   ASSERT_TRUE(client.Unregister(&service));
 }
 
