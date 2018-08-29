@@ -29,9 +29,15 @@ using VetulusService::ProtoFile;
 using VetulusService::Ack;
 using VetulusService::Manager;
 using VetulusService::MetaData;
+
 using VetulusService::ADTService;
 using VetulusService::ListOptions;
 using VetulusService::ListResponse;
+
+using VetulusService::ADTImpl;
+using VetulusService::ListADTsOptions;
+using VetulusService::ListADTsResponse;
+
 
 
 class ProtoClient {
@@ -109,6 +115,15 @@ class ProtoClient {
       ClientContext context;
       ListResponse response;
       Status status = stub_->ListServices(&context, *opts, &response);
+
+      return response;
+    }
+
+    ListADTsResponse ListADTs (const ListADTsOptions* opts)
+    {
+      ClientContext context;
+      ListADTsResponse response;
+      Status status = stub_->ListADTs(&context, *opts, &response);
 
       return response;
     }
