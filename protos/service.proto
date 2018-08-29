@@ -49,9 +49,9 @@ service Manager {
 
 
     /*
-     * Unloads a proto file onto Vetulus server
+     * Removes a proto file from Vetulus server
      */
-    rpc Unload (MetaData) returns (Ack) {}
+    rpc Remove (MetaData) returns (Ack) {}
 
 
     /*
