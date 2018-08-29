@@ -138,7 +138,7 @@ class ManagerServer final : public Manager::Service {
         return Status::OK;
     }
 
-    Status Register(ServerContext* context, const ADTService* adt,
+    Status Start(ServerContext* context, const ADTService* adt,
                     Ack* ack) override
     {
       pid_t pid = fork();
@@ -174,7 +174,7 @@ class ManagerServer final : public Manager::Service {
       return Status::OK;
     }
 
-    Status Unregister(ServerContext* context, const ADTService* adt,
+    Status Stop(ServerContext* context, const ADTService* adt,
                     Ack* ack) override
     {
         if (processes.Remove(adt->name())) {

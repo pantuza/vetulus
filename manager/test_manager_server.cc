@@ -159,7 +159,7 @@ TEST(ManagerServiceTest, TestForkServer)
   service.set_port(42502);
   service.set_log_path("/tmp/dog_stack.log");
 
-  ASSERT_TRUE(client.Register(&service));
+  ASSERT_TRUE(client.Start(&service));
   ASSERT_TRUE(client.Remove(file.meta().name()));
 }
 
@@ -178,7 +178,7 @@ TEST(ManagerServiceTest, TestKillServer)
   service.set_port(42502);
   service.set_log_path("/tmp/dog_stack.log");
 
-  ASSERT_TRUE(client.Unregister(&service));
+  ASSERT_TRUE(client.Stop(&service));
 }
 
 
@@ -202,7 +202,7 @@ TEST(ManagerServiceTest, TestListServices)
   service.set_port(42502);
   service.set_log_path("/tmp/dog_stack.log");
 
-  ASSERT_TRUE(client.Register(&service));
+  ASSERT_TRUE(client.Start(&service));
 
   ListOptions opts;
   ListResponse running_list;
@@ -210,7 +210,7 @@ TEST(ManagerServiceTest, TestListServices)
 
   ASSERT_EQ(running_list.services_size(), 1);
   ASSERT_TRUE(client.Remove(file.meta().name()));
-  ASSERT_TRUE(client.Unregister(&service));
+  ASSERT_TRUE(client.Stop(&service));
 }
 
 
