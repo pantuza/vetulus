@@ -57,9 +57,14 @@ using VetulusService::ProtoFile;
 using VetulusService::Ack;
 using VetulusService::Manager;
 using VetulusService::MetaData;
+
 using VetulusService::ADTService;
 using VetulusService::ListOptions;
 using VetulusService::ListResponse;
+
+using VetulusService::ADTImpl;
+using VetulusService::ListADTsOptions;
+using VetulusService::ListADTsResponse;
 
 using manager::VetulusProtoBuilder;
 
@@ -199,6 +204,12 @@ class ManagerServer final : public Manager::Service {
       return Status::OK;
     }
 
+    Status ListADTs(ServerContext* context, const ListADTsOptions* opts,
+                    ListADTsResponse* response) override
+    {
+      return Status::OK;
+    }
+
     bool runForkedServer(const ADTService* adt)
     {
 
@@ -219,7 +230,9 @@ class ManagerServer final : public Manager::Service {
         console = spdlog::stdout_color_mt(adt->name());
       }
 
-      console->info("Listening on port {0}", serverAddress);
+      console->info(
+        "{0} service listening on port {1}", adt->name(), serverAddress
+      );
       server->Wait();
     }
 };
