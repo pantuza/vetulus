@@ -83,11 +83,11 @@ class ManagerServer final : public Manager::Service {
         this->console->info("Manager Server");
     }
 
-    Status Load(ServerContext* context, const ProtoFile* proto,
+    Status Add(ServerContext* context, const ProtoFile* proto,
                 Ack* ack) override
     {
         string file_name = proto->meta().name() + ".proto";
-        this->console->info("Load({0})", file_name);
+        this->console->info("Add({0})", file_name);
 
         /* If file already exists we do not upload it */
         ifstream infile(file_name.c_str());

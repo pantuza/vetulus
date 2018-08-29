@@ -42,12 +42,12 @@ class ProtoClient {
     : stub_(Manager::NewStub(channel))
     {}
 
-    bool Load(const ProtoFile* file)
+    bool Add(const ProtoFile* file)
     {
         ClientContext context;
         Ack ack;
 
-        Status status = stub_->Load(&context, *file, &ack);
+        Status status = stub_->Add(&context, *file, &ack);
 
         if (status.ok() && ack.done()) {
             return true;

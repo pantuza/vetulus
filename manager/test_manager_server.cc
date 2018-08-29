@@ -39,7 +39,7 @@ using VetulusService::ListResponse;
 
 
 /* Tests loading a protobuffer file */
-TEST(ManagerServiceTest, TestLoadProtobuffer)
+TEST(ManagerServiceTest, TestAddProtobuffer)
 {
     ProtoClient client(grpc::CreateChannel(
                    "vetulus:4242", grpc::InsecureChannelCredentials()));
@@ -49,13 +49,13 @@ TEST(ManagerServiceTest, TestLoadProtobuffer)
     file.set_data(bytes);
     file.mutable_meta()->set_name("Dog0");
 
-    ASSERT_TRUE(client.Load(&file));
+    ASSERT_TRUE(client.Add(&file));
     ASSERT_TRUE(client.Unload(file.meta().name()));
 }
 
 
 /* Tests if there is a error when we can not import a file */
-TEST(ManagerServiceTest, TestCantLoadProtobuffer)
+TEST(ManagerServiceTest, TestCantAddProtobuffer)
 {
     ProtoClient client(grpc::CreateChannel(
                    "vetulus:4242", grpc::InsecureChannelCredentials()));
@@ -63,7 +63,7 @@ TEST(ManagerServiceTest, TestCantLoadProtobuffer)
     file.set_data("invalid data");
     file.mutable_meta()->set_name("Invalid");
 
-    ASSERT_FALSE(client.Load(&file));
+    ASSERT_FALSE(client.Add(&file));
 }
 
 
@@ -78,7 +78,7 @@ TEST(ManagerServiceTest, TestCheckIfProtoFileWereGenerated)
     file.set_data(bytes);
     file.mutable_meta()->set_name("Dog1");
 
-    client.Load(&file);
+    client.Add(&file);
     ifstream protofile("Dog1.proto");
 
     ASSERT_TRUE(protofile.good());
@@ -96,7 +96,7 @@ TEST(ManagerServiceTest, TestCheckIfCppFilesWereGenerated)
     ProtoFile file;
     file.set_data(bytes);
     file.mutable_meta()->set_name("Dog2");
-    client.Load(&file);
+    client.Add(&file);
 
     ifstream headerfile("Dog2.pb.h");
     ifstream sourcefile("Dog2.pb.cc");
@@ -117,7 +117,7 @@ TEST(ManagerServiceTest, TestRemoveAProtofile)
     ProtoFile file;
     file.set_data(bytes);
     file.mutable_meta()->set_name("Dog3");
-    client.Load(&file);
+    client.Add(&file);
 
     ASSERT_TRUE(client.Unload("Dog3"));
 }
@@ -133,8 +133,8 @@ TEST(ManagerServiceTest, TestUploadProtoTwice)
     ProtoFile file;
     file.set_data(bytes);
     file.mutable_meta()->set_name("Dog0");
-    client.Load(&file);
-    ASSERT_FALSE(client.Load(&file));
+    client.Add(&file);
+    ASSERT_FALSE(client.Add(&file));
     ASSERT_TRUE(client.Unload(file.meta().name()));
 }
 
@@ -149,7 +149,7 @@ TEST(ManagerServiceTest, TestForkServer)
   ProtoFile file;
   file.set_data(bytes);
   file.mutable_meta()->set_name("Dog0");
-  client.Load(&file);
+  client.Add(&file);
 
   ADTService service;
   service.set_name("DogStack");
@@ -192,7 +192,7 @@ TEST(ManagerServiceTest, TestListServices)
   ProtoFile file;
   file.set_data(bytes);
   file.mutable_meta()->set_name("Dog0");
-  client.Load(&file);
+  client.Add(&file);
 
   ADTService service;
   service.set_name("DogStack");
