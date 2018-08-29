@@ -36,6 +36,18 @@ message ListResponse {
 }
 
 
+message ADTImpl {
+    string name = 1;
+}
+
+message ListADTsOptions {
+}
+
+
+message ListADTsResponse {
+    repeated ADTImpl adts = 1;
+}
+
 
 /*
  * Vetulus gRPC server interface definition
@@ -70,4 +82,10 @@ service Manager {
      * Lists all running services
      */
      rpc ListServices (ListOptions) returns (ListResponse) {}
+
+
+     /*
+      * Lists Abstract Data Type available implementation
+      */
+      rpc ListADTs (ListADTsOptions) returns (ListADTsResponse) {}
 }
