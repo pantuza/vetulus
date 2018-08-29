@@ -43,9 +43,9 @@ message ListResponse {
 service Manager {
 
     /*
-     * Loads a proto file onto Vetulus server
+     * Adds a proto file onto Vetulus server
      */
-    rpc Load (ProtoFile) returns (Ack) {}
+    rpc Add (ProtoFile) returns (Ack) {}
 
 
     /*
