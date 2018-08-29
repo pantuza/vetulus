@@ -113,7 +113,7 @@ class ManagerServer final : public Manager::Service {
         }
     }
 
-    Status Unload(ServerContext* context, const MetaData* meta,
+    Status Remove(ServerContext* context, const MetaData* meta,
                   Ack* ack) override
     {
         string proto_name = meta->name();

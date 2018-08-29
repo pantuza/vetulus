@@ -50,7 +50,7 @@ TEST(ManagerServiceTest, TestAddProtobuffer)
     file.mutable_meta()->set_name("Dog0");
 
     ASSERT_TRUE(client.Add(&file));
-    ASSERT_TRUE(client.Unload(file.meta().name()));
+    ASSERT_TRUE(client.Remove(file.meta().name()));
 }
 
 
@@ -82,7 +82,7 @@ TEST(ManagerServiceTest, TestCheckIfProtoFileWereGenerated)
     ifstream protofile("Dog1.proto");
 
     ASSERT_TRUE(protofile.good());
-    ASSERT_TRUE(client.Unload(file.meta().name()));
+    ASSERT_TRUE(client.Remove(file.meta().name()));
 }
 
 
@@ -103,11 +103,11 @@ TEST(ManagerServiceTest, TestCheckIfCppFilesWereGenerated)
 
     ASSERT_TRUE(headerfile.good());
     ASSERT_TRUE(sourcefile.good());
-    ASSERT_TRUE(client.Unload(file.meta().name()));
+    ASSERT_TRUE(client.Remove(file.meta().name()));
 }
 
 
-/* Tests Unloading an imported protofile */
+/* Tests Removing an imported protofile */
 TEST(ManagerServiceTest, TestRemoveAProtofile)
 {
     ProtoClient client(grpc::CreateChannel(
@@ -119,7 +119,7 @@ TEST(ManagerServiceTest, TestRemoveAProtofile)
     file.mutable_meta()->set_name("Dog3");
     client.Add(&file);
 
-    ASSERT_TRUE(client.Unload("Dog3"));
+    ASSERT_TRUE(client.Remove("Dog3"));
 }
 
 
@@ -135,7 +135,7 @@ TEST(ManagerServiceTest, TestUploadProtoTwice)
     file.mutable_meta()->set_name("Dog0");
     client.Add(&file);
     ASSERT_FALSE(client.Add(&file));
-    ASSERT_TRUE(client.Unload(file.meta().name()));
+    ASSERT_TRUE(client.Remove(file.meta().name()));
 }
 
 
@@ -160,7 +160,7 @@ TEST(ManagerServiceTest, TestForkServer)
   service.set_log_path("/tmp/dog_stack.log");
 
   ASSERT_TRUE(client.Register(&service));
-  ASSERT_TRUE(client.Unload(file.meta().name()));
+  ASSERT_TRUE(client.Remove(file.meta().name()));
 }
 
 
@@ -209,7 +209,7 @@ TEST(ManagerServiceTest, TestListServices)
   running_list = client.ListServices(&opts);
 
   ASSERT_EQ(running_list.services_size(), 1);
-  ASSERT_TRUE(client.Unload(file.meta().name()));
+  ASSERT_TRUE(client.Remove(file.meta().name()));
   ASSERT_TRUE(client.Unregister(&service));
 }
 

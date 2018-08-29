@@ -56,14 +56,14 @@ class ProtoClient {
         }
     }
 
-    bool Unload(const string protofile)
+    bool Remove(const string protofile)
     {
         ClientContext context;
         Ack ack;
         MetaData meta;
         meta.set_name(protofile);
 
-        Status status = stub_->Unload(&context, meta, &ack);
+        Status status = stub_->Remove(&context, meta, &ack);
 
         if (status.ok() && ack.done()) {
             return true;
