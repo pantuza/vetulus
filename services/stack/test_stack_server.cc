@@ -162,8 +162,6 @@ int main(int argc, char **argv)
     StackConfigLoader config;
     config.load(config_file);
 
-    ostringstream config_str;
-
     StackClient client(grpc::CreateChannel(
                    "vetulus:42500", grpc::InsecureChannelCredentials()));
     client.Clear();
