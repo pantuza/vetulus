@@ -52,6 +52,7 @@ using grpc::Status;
 using grpc::StatusCode;
 using grpc::ServerBuilder;
 using grpc::Server;
+using grpc::InsecureServerCredentials;
 
 using VetulusService::ProtoFile;
 using VetulusService::Ack;
@@ -220,7 +221,7 @@ class ManagerServer final : public Manager::Service {
       ManagerServer service;
       ServerBuilder builder;
 
-      builder.AddListeningPort(serverAddress, grpc::InsecureServerCredentials());
+      builder.AddListeningPort(serverAddress, InsecureServerCredentials());
       builder.RegisterService(&service);
 
       std::unique_ptr<Server> server(builder.BuildAndStart());
@@ -257,7 +258,7 @@ main(int argc, char* argv[])
     ManagerServer service;
     ServerBuilder builder;
 
-    builder.AddListeningPort(serverAddress, grpc::InsecureServerCredentials());
+    builder.AddListeningPort(serverAddress, InsecureServerCredentials());
     builder.RegisterService(&service);
 
     std::unique_ptr<Server> server(builder.BuildAndStart());
